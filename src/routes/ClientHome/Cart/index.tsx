@@ -22,7 +22,7 @@ export default function Cart() {
 
     const [products, setProducts] = useState<ProductDTO>();
 
-    const [valueToPay, setValueToPay] = useState<any>(cart.total);
+    const [valueToPay, setValueToPay] = useState<number>(cart.total);
 
     const inputRef = useRef<HTMLInputElement>(null); // Cria a referência
 
@@ -145,9 +145,9 @@ export default function Cart() {
 
         if (pay != undefined) {
             const newValue = cart.total - pay;
-            setValueToPay(newValue);
+            setValueToPay(Number(newValue));
         } else if (pay === undefined || null) {
-            setValueToPay(null);
+            setValueToPay(0);
         }
 
     }
@@ -211,7 +211,7 @@ export default function Cart() {
 
                                 <h4>Valor a pagar:</h4>
                                 {valueToPay && pay && pay < cart.total && pay != null &&
-                                    <h3 className="dsc-troco">R$ {(valueToPay).toFixed(2)}</h3>
+                                    <h3 className="dsc-troco">R$ {(cart.total - pay).toFixed(2)}</h3>
 
                                 }
                             </div>
