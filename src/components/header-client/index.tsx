@@ -4,9 +4,8 @@ import CartIcon from '../CartIcon/indext';
 import iconAdmin from '../../assets/admin.svg';
 import * as authService from '../../services/auth-service';
 import { ContextToken } from '../../utils/context-token';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import LoggedUser from '../LoggedUser';
-import  * as userService from '../../services/user-service';
 
 export default function HeaderClient() { /* por organização a função java script aqui
     tem que ter o mesmo nome da pasta que colocamos dentro do componente HeaderClient */
