@@ -1,26 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import * as authService from '../../services/auth-service';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { ContextToken } from '../../utils/context-token';
-import { UserDTO } from '../../models/user';
-import * as userService from '../../services/user-service';
+
 
 
 export default function LoggedUser() {
 
 
-    const [user, setUser] = useState<UserDTO>();
-
-    useEffect(() => {
-        userService.findLoggedUser()
-        .then(response =>{
-            setUser(response.data);
-            console.log(response.data)
-        });
-       
-    }, [user])
-  console.log(user?.name);
-
+   
     const { contextTokenPayload, setContextTokenPayload } = useContext(ContextToken);
 
     const navigate = useNavigate();
@@ -40,9 +28,6 @@ export default function LoggedUser() {
                 
             <div className="dsc-logged-user">
               
-              <div className="dsc-operator-name">
-              <p > Operador de caixa: {user?.name}</p>
-        </div>
             
                 <p>{contextTokenPayload.user_name}</p>
                 <span  onClick={handleLogoutClick}>Sair</span>

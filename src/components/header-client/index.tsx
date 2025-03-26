@@ -4,12 +4,26 @@ import CartIcon from '../CartIcon/indext';
 import iconAdmin from '../../assets/admin.svg';
 import * as authService from '../../services/auth-service';
 import { ContextToken } from '../../utils/context-token';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import LoggedUser from '../LoggedUser';
+import { UserDTO } from '../../models/user';
+import * as userService from '../../services/user-service';
 
 export default function HeaderClient() { /* por organização a função java script aqui
     tem que ter o mesmo nome da pasta que colocamos dentro do componente HeaderClient */
 
+
+     const [user, setUser] = useState<UserDTO>();
+    
+        useEffect(() => {
+            userService.findLoggedUser()
+            .then(response =>{
+                setUser(response.data);
+                console.log(response.data)
+            });
+           
+        }, [])
+    
   const { contextTokenPayload } = useContext(ContextToken);
 
  
@@ -44,7 +58,12 @@ export default function HeaderClient() { /* por organização a função java sc
                 <CartIcon />
               </Link>
             </div>
-           
+          { contextTokenPayload && authService.isAuthenticated() /*se existir o token e se tiver autenticado vai retornar o usuário logado*/
+                       &&   <div className="dsc-operator-name">
+              <p > Operador de caixa: {user?.name}</p>
+        </div>}
+            
+                           
           </div>
           <LoggedUser />
         </div>
