@@ -131,9 +131,9 @@
       
 }
 
-
 .dsc-pay input{
     
+    width: 20px;
     border: 3px solid var(--color-card-border);
     font-size: 14px;
     padding: 5px;
