@@ -6,24 +6,14 @@ import * as authService from '../../services/auth-service';
 import { ContextToken } from '../../utils/context-token';
 import { useContext, useEffect, useState } from 'react';
 import LoggedUser from '../LoggedUser';
-import { UserDTO } from '../../models/user';
 import  * as userService from '../../services/user-service';
 
 export default function HeaderClient() { /* por organização a função java script aqui
     tem que ter o mesmo nome da pasta que colocamos dentro do componente HeaderClient */
 
   const { contextTokenPayload } = useContext(ContextToken);
-  const [user, setUser] = useState<UserDTO>();
 
-    useEffect(() => {
-        userService.findLoggedUser()
-        .then(response =>{
-            setUser(response.data);
-            console.log(response.data)
-        });
-       
-    }, [])
-  console.log(user?.name);
+ 
 
   
 
@@ -55,10 +45,7 @@ export default function HeaderClient() { /* por organização a função java sc
                 <CartIcon />
               </Link>
             </div>
-            <div className="dsc-operator-name">
-              <p> Operador de caixa: {user?.name}</p>
            
-            </div>
           </div>
           <LoggedUser />
         </div>
