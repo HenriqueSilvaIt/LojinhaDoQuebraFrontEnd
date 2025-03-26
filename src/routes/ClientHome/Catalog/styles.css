@@ -1,0 +1,18 @@
+
+catalog-section{
+    padding: 20px 0;
+}
+
+.dsc-catalog-cards {
+    display:grid;
+    grid-gap: 20px;/* fazendo espaçamento entre um card e outro*/
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); /*primeiro argumento é pree
+    nchimento automático e o segundo argumento é é um minimo e o máximo
+    então quando a tela for expandindo e ating a largura minima do card
+     ele acrescenta mais um, e máximo colocamndo a fração que é 1*/ 
+}
+
+.dsc-section-title  {
+    text-align: center;
+    color: var(--color-font-primary);
+}

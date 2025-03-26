@@ -1,0 +1,19 @@
+.dsc-header-client {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-font-tertiary);
+  }
+  
+  .dsc-category-container {
+    display: flex;
+    flex-wrap: wrap; /*quebra a linha
+      quando estoura a largura */
+  }
+  
+.dsc-operator-name{
+
+  font-size: 12px;
+  color: white;
+  margin-right: 10px;
+  font-weight: 700;
+  
+}

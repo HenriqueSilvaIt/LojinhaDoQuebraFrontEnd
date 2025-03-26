@@ -1,0 +1,140 @@
+#cart-container-section{
+    padding: 20px 0;
+}
+
+.dsc-cart-total-container {
+
+    padding: 10px 20px;
+    text-align: right;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 14px;
+    color: var(--color-font-secondary);
+}
+
+.dsc-cart-total-container h4 {
+    color: var(--color-font-primary);
+    margin: 0 10px 0 0;
+    font-size: 13px;
+    padding: 5px;
+
+}
+
+
+.dsc-cart-total-container h3 {
+    
+    border: 3px solid var(--color-card-border);
+}
+
+
+
+.dsc-cart-item-container {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dsc-cart-item-container img{ /* formatando imagem */
+    width: 100px;
+    height: 100px;
+    margin: 10px 10px;
+
+
+}
+
+.dsc-cart-item-left {
+    display: flex;
+}
+
+.dsc-cart-item-quantity-container{
+    display: flex;
+    
+}
+
+
+.dsc-cart-item-right {
+    padding-bottom: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-font-secondary);
+}
+
+.dsc-cart-item-description {
+    padding: 10px 0;
+    color: var(--color-font-primary);
+}
+
+.dsc-cart-item-description h3 {
+    font-size: 20px;
+}
+
+.dsc-cart-item-quantity-container {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-font-primary);
+}
+
+.dsc-cart-item-quantity-btn{
+    color: var(--color-btn-primary);
+    font-weight: 700;
+    cursor: pointer; /* para deixar a mãozinha
+    quando passar o mouse em cima */
+    font-size: 20px;
+}
+
+.dsc-cart-item-quantity-container p {
+    margin: 0 5px;
+    font-size: 20px;
+}
+
+/* media query responsiidade */
+
+@media(min-width: 576px) {
+    .dsc-cart-item-container {
+      
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .dsc-cart-item-right {
+        padding-top: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .dsc-cart-total-container {
+        font-size: 24px;
+        justify-content: right;
+        
+    }
+
+    .dsc-cart-total-container h4 {
+        font-size: 20px;
+    }
+
+    .dsc-troco{
+        color: #f00;
+    }
+
+
+    .dsc-pay input {
+        border: 1px solid var(--color-card-border);
+        height: 30px;
+        font-size: 20px;
+        width: 160px;
+
+      }
+    .dsc-pay input:focus {
+        outline: none;
+    }
+      
+}
+
+
+.dsc-pay input{
+    
+    border: 3px solid var(--color-card-border);
+    font-size: 28px;
+    padding: 5px;
+}
