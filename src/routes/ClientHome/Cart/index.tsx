@@ -195,7 +195,7 @@ export default function Cart() {
                                 <h3>R$ {cart.total.toFixed(2)}</h3>
                             </div>
 
-                            <div className="dsc-cart-total-container   dsc-pay">
+                            <div className="dsc-cart-total-container dsc-pay">
                                 <h4>Valor Recebido:</h4>
                                 <input
                                     name="pag"
