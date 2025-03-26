@@ -18,11 +18,12 @@ export default function HeaderClient() { /* por organização a função java sc
         useEffect(() => {
             userService.findLoggedUser()
             .then(response =>{
+              if (user === undefined) {
                 setUser(response.data);
-                console.log(response.data)
+              }
             });
            
-        }, [])
+        }, [user])
     
   const { contextTokenPayload } = useContext(ContextToken);
 
