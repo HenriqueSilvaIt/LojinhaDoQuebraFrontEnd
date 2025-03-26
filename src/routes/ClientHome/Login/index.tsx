@@ -5,7 +5,6 @@ import * as forms from '../../../utils/form';
 import { useNavigate } from 'react-router-dom';
 import { ContextToken } from '../../../utils/context-token';
 import FormInput from '../../../components/FormInput';
-import ButtonNextPage from '../../../components/ButtonNextPage';
 import { Link } from 'react-router-dom';
 export default function Login() {
     const navigate = useNavigate();
@@ -97,12 +96,6 @@ export default function Login() {
             .catch(() => {
                 setSubmitResponseFail(true); /* para aparecer a mensagem de login e senha inválido*/
             })
-    }
-
-
-    function handleButtonRegister(event: any) {
-
-        navigate("/register")
     }
 
     return (

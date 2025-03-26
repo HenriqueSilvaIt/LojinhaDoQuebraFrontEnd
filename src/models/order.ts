@@ -40,7 +40,7 @@ export class OrderItemDTO {
         public name: string,
         public price: number,
         public imgUrl: string,
-        public barCode: string,
+        public barCode: string
     ) {}
 
         /* colocamos tudo como classe porque tem dado calculado */

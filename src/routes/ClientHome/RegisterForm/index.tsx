@@ -5,12 +5,9 @@ import FormInput from '../../../components/FormInput';
 import * as forms from '../../../utils/form';
 import * as productService from '../../../services/product-services';
 import * as categoryService from '../../../services/category-service';
-import FormTextArea from '../../../components/FormTextArea';
 /*o import é só import Select from 'react-select';, se você importa automatico vai trazer errado
  tem que fica igual no import da documentação ficial*/
 import { CategoryDTO } from '../../../models/category';
-import FormSelect from '../../../components/FormSelect';
-
 
 
 
@@ -172,6 +169,8 @@ export default function RegisterForm() {
 
     const [categories, setCategories] = useState<CategoryDTO>();
 
+    console.log(categories);
+
     /*salvar produto  editado ou craido no formulário */
     function handleSubmit(event: any) {
 
@@ -234,7 +233,7 @@ export default function RegisterForm() {
     // Define a functional component named UploadAndDisplayImage
 
     // Define a state variable to store the selected image
-
+/*
 
     const [imagem, setImagem] = useState<File | null>(null);
     const [imagemPreview, setImagemPreview] = useState<string | null>(null);
@@ -249,7 +248,7 @@ export default function RegisterForm() {
 
     function handleImagemTurnDirty(nome: string) {
         setImagemDirty(true);
-    }
+    }*/
 
 
     return (

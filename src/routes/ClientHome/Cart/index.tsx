@@ -8,7 +8,6 @@ import { ContextCartCount } from '../../../utils/context-cart';
 import SerachBar from '../../../components/SearchBar';
 import * as productService from '../../../services/product-services';
 import { ProductDTO } from '../../../models/product';
-import { cat } from '@cloudinary/url-gen/qualifiers/focusOn';
 
 
 type QueryParams = {
