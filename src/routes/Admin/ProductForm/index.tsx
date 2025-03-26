@@ -11,13 +11,9 @@ tem que fica igual no import da documentação ficial*/
 import { CategoryDTO } from '../../../models/category';
 import FormSelect from '../../../components/FormSelect';
 import { selectStyles } from '../../../utils/select';
-import { Cloudinary } from '@cloudinary/url-gen/index';
-
 
 
 export default function ProductForm() {
-
-    const cld = new Cloudinary({ cloud: { cloudName: 'dordxectu' } });
 
     const params = useParams(); /* para colocara rota ul */
 
