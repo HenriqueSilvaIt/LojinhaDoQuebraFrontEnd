@@ -313,6 +313,8 @@ value, vamos colocar o value criado na função event.target.valu*/
     const [imagemUrl, setImagemUrl] = useState<string | null>(null); // Novo estado para o URL
     const [loading, setLoading] = useState<boolean>(false);
 
+console.log(imagem, imagemDirty);
+
     async function handleImagemChange(file: File) {
         setImagem(file);
         setNovoArquivoImagem(file);
@@ -362,6 +364,7 @@ value, vamos colocar o value criado na função event.target.valu*/
 
     function handleImagemTurnDirty(nome: string) {
         setImagemDirty(true);
+        console.log(nome);
     }
 
     return (
