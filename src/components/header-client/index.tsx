@@ -18,7 +18,7 @@ export default function HeaderClient() { /* por organização a função java sc
         useEffect(() => {
             userService.findLoggedUser()
             .then(response =>{
-              if (user === null) {
+              if (user === undefined) {
                 setUser(response.data);
               }   
             });
