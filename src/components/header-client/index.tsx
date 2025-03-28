@@ -53,8 +53,10 @@ export default function HeaderClient() { /* por organização a função java sc
               }
 
               <Link to="/cart">
+              { contextTokenPayload && authService.isAuthenticated() &&/*se existir o token e se tiver autenticado vai retornar o usuário logado*/
 
                 <CartIcon />
+              }
               </Link>
             </div>
           { contextTokenPayload && authService.isAuthenticated() /*se existir o token e se tiver autenticado vai retornar o usuário logado*/

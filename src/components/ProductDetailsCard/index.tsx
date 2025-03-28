@@ -2,7 +2,6 @@ import './styles.css'
 import ProductCategory from '../ProductCategory';
 import { ProductDTO } from '../../models/product';
 import {formatDate} from '../../services/product-services';
-
 type Props = {
     product: ProductDTO;
 }
@@ -24,7 +23,9 @@ export default function ProductDetailsCard({ product }: Props) {
                 <p>
                     {product.description}
                 </p>
-                <p>Quantitidade:</p>
+               
+          
+                 <p>Quantitidade:</p>
                 {product.quantity}
                 <p>
                     Código de barras: 
@@ -41,7 +42,8 @@ export default function ProductDetailsCard({ product }: Props) {
                     Data de vencimento:  
                     <br/>
                     {formatDate(product.dueDate)}
-                </p>
+                </p> 
+                 
                 <div className="dsc-category-container">
                     {
                         product.categories.map(x => {
