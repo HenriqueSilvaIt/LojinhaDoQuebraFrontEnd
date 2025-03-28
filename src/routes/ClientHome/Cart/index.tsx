@@ -71,7 +71,7 @@ export default function Cart() {
         setContextCartCount(newCart.items.length);
     }
 
-    
+
 
     function handlePlaceOrderClick() {
         orderService.placeOrderRequest(cart)
@@ -200,8 +200,8 @@ export default function Cart() {
                                 <input
                                     name="pag"
                                     value={pay}
-                                     pattern="[0-9]+([\.,][0-9]+)?"
-                                      step="0.01"
+                                    pattern="[0-9]+([\.,][0-9]+)?"
+                                    step="0.01"
                                     type="float"
                                     onChange={handleInputChange}>
 
@@ -210,18 +210,26 @@ export default function Cart() {
                             <div className="dsc-cart-total-container ">
 
                                 <h4>Valor a pagar:</h4>
-                                {valueToPay && pay && pay < cart.total && pay != null &&
-                                    <h3 className="dsc-troco">R$ {(cart.total - pay).toFixed(2)}</h3>
+                                
 
-                                }
+                                    <div className="dsc-troco-container-valueToPay">
+                                        {valueToPay && pay && pay < cart.total && pay != null &&
+                                            <p >R$ {(cart.total - pay).toFixed(2)}</p>
+
+                                        }
+                                    </div>
+
+                                
                             </div>
                             <div className="dsc-cart-total-container ">
 
                                 <h4>Troco:</h4>
-                                {pay != undefined && pay > cart.total &&
-                                    <h3 className="dsc-troco">R$ {(pay - cart.total).toFixed(2)}</h3>
+                                <div className="dsc-troco-container-troco">
+                                    {pay != undefined && pay > cart.total &&
+                                        <p className="dsc-troco">R$ {(pay - cart.total).toFixed(2)}</p>
 
-                                }
+                                    }
+                                </div>
                             </div>
                         </div>
                         )
