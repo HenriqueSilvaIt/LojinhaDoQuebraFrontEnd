@@ -14,23 +14,21 @@ export default function HeaderClient() { /* por organização a função java sc
 
 
      const [user, setUser] = useState<UserDTO>();
+     const { contextTokenPayload } = useContext(ContextToken);
     
         useEffect(() => {
             userService.findLoggedUser()
             .then(response =>{
-              if (user === undefined) {
+           
                 setUser(response.data);
-              }   
+              
             });
            
-        }, [user])
+        }, [contextTokenPayload])
     
-  const { contextTokenPayload } = useContext(ContextToken);
+
 
  
-
-  
-
   return (
     <header className="dsc-header-client">
       <nav className="dsc-container">
