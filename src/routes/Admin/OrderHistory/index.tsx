@@ -1,24 +1,46 @@
 import './style.css';
 import { useEffect, useState } from 'react';
 import { OrderDTO } from '../../../models/order';
-import * as ordeService from '../../../services/order-service'
+import * as orderService from '../../../services/order-service'
 import moment from 'moment'; // Importe moment.js
 import { formatDateToFilter } from '../../../services/product-services';
-
+import deleteImg from '../../../assets/delete.svg';
+import DialogConfirmation from '../../../components/DialogConfirmation';
+import DialogInfo from '../../../components/DialogInfo';
 
 export default function OrderHistory() {
 
-    const [allOrders, setAllOrders] = useState<[]>([]);
+    const [allOrders, setAllOrders] = useState<OrderDTO[]>([]);
     const [order, setOrders] = useState<OrderDTO[]>([]);
     const [filterDate, setFilterDate] = useState<string>('');
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
     const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
 
+    const [dialogInfoData, setDialogInfoData] = useState<{
+        visable: boolean;
+        message: string;
+    }>({
+        visable: false,
+        message: 'Sucesso'
+    });
+
+    const [dialogConfirmationData, setDialogConfirmationData] = useState<{
+        visable: boolean;
+        orderId: number | null;
+        productId: number | null;
+        message: string;
+    }>({
+        visable: false,
+        orderId: null,
+        productId: null,
+        message: 'Tem certeza?'
+    });
+
     useEffect(() => {
         // Definir a data atual no formato "YYYY-MM-DD"
         setFilterDate(moment().format('YYYY-MM-DD'));
-        ordeService.findAll().then((response: any) => {
+        orderService.findAll().then((response: any) => {
             const sortedOrders = response.data.sort((a: OrderDTO, b: OrderDTO) => {
                 return moment(b.moment).valueOf() - moment(a.moment).valueOf(); // Ordena com base no valor da data
             });
@@ -44,7 +66,7 @@ export default function OrderHistory() {
 
         if (filterWeek) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
-                return moment(order.moment).format('YYYY-WW') === filterWeek;
+                return moment(order.moment).format('YYYY-Www') === filterWeek;
             });
         }
 
@@ -56,19 +78,43 @@ export default function OrderHistory() {
 
     }, [filterDate, allOrders, filterWeek, filterMonth]);
 
+    function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
+        if (answer === true && orderId !== null && productId !== null) {
+            orderService.deleteById(orderId, productId)
+                .then(() => {
+                    setAllOrders(allOrders.filter((order: OrderDTO) => order.id !== orderId));
+                    setDialogInfoData({ visable: true, message: "Item excluido com sucesso" });
+                })
+                .catch(error => {
+                    setDialogInfoData({
+                        visable: true,
+                        message: error.response.data.error
+                    });
+                });
+        }
+        setDialogConfirmationData({ ...dialogConfirmationData, visable: false });
+    }
+
     function handleFilterDateChange(event: any) {
         event.preventDefault();
         setFilterDate(event.target.value);
+        setFilterMonth('');
+        setFilterWeek('');
+        console.log(event.target.value);
     };
 
     function handleFilterMonthChange(event: any) {
         event.preventDefault();
         setFilterMonth(event.target.value);
+        setFilterDate('');
+        setFilterWeek('');
     }
 
     function handleFilterWeekChange(event: any) {
         event.preventDefault();
         setFilterWeek(event.target.value);
+        setFilterDate('');
+        setFilterMonth('');
     }
 
     function handleCleanFilter(event: any) {
@@ -77,6 +123,18 @@ export default function OrderHistory() {
         setFilterMonth('');
         setFilterWeek('');
     }
+
+
+
+   function handleDeleteClick(orderId: number, productId: number) {
+        setDialogConfirmationData({
+            ...dialogConfirmationData,
+            orderId: orderId,
+            productId: productId,
+            visable: true
+        });
+    }
+
 
     return (
         <main>
@@ -107,23 +165,24 @@ export default function OrderHistory() {
                             <h4> Semanal: </h4>
                             <input
                                 className="dsc-filter-date"
-                                type="Week"
+                                type="week"
                                 value={filterWeek}
-                                placeholder='Semana'
                                 onChange={handleFilterWeekChange} />
                         </div>
-                     
-                            <button className="dsc-btn-clean" onClick={handleCleanFilter}>Limpar Filtro</button>
+
+                        <button className="dsc-btn-clean" onClick={handleCleanFilter}>Limpar Filtro</button>
                     </div>
                 </div>
                 <table className="dsc-table dsc-mb20 dsc-mt20">
                     <thead>
                         <tr>
                             <th className="dsc-tb576">Número da venda</th>
+                            <th className="dsc-tb768">Id do produto</th>
                             <th>Nome da Produto</th>
                             <th className="dsc-tb768">Data</th>
                             <th className="dsc-tb768">Quantidade de produtos</th>
                             <th>Valor</th>
+                            <th>Deletar pedido</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -131,11 +190,27 @@ export default function OrderHistory() {
                             order.items.map((item) => (
                                 <tr key={`${order.id}`}>
                                     <td className="dsc-tb576">{order.id}</td>
+                                    <td>{item.productId}</td>
                                     <td>{item.name}</td>
                                     <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY')}</td>
                                     <td className="dsc-tb768">{item.quantity}</td>
                                     <td>R$ {item.subTotal.toFixed(2)}</td>
+                                    <td>
+                                        <img
+                                             onClick={() => {
+                                                if (order.id !== undefined && item.productId !== undefined) {
+                                                    handleDeleteClick(order.id, item.productId);
+                                                } else {
+                                                    console.error("IDs de pedido ou produto indefinidos.");
+                                                }
+                                            }}// Corrigido
+                                            className="dsc-product-listing-btn"
+                                            src={deleteImg}
+                                            alt="delet"
+                                        />
+                                    </td>
                                 </tr>))
+
                         )}
                     </tbody>
                 </table>
@@ -148,7 +223,17 @@ export default function OrderHistory() {
                 }
             </section>
 
-
+            {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
+                    <DialogConfirmation
+                        orderId={dialogConfirmationData.orderId}
+                        productId={dialogConfirmationData.productId}
+                        message={dialogConfirmationData.message}
+                        onDialogAnswer={handleDialogConfirmationAnswer}
+                    />
+                )}
+                {dialogInfoData.visable && (
+                    <DialogInfo message={dialogInfoData.message} onDialogClose={() => setDialogInfoData({...dialogInfoData, visable: false})}/>
+                )}
 
 
         </main>

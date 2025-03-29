@@ -44,3 +44,13 @@ export function findAll() {
     return requestBackend(config);
 }
 
+export function deleteById(orderItemId: number, productId: number) {
+    const config : AxiosRequestConfig = { 
+        method: "DELETE",
+        url: `/orders/${orderItemId}/items/${productId}`,
+        withCredentials: true /* só posso deletar se tiver logado com admin */ 
+
+    }
+
+    return requestBackend(config);
+}
