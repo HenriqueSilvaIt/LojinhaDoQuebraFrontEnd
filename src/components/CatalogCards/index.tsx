@@ -2,8 +2,11 @@ import './styles.css';
 import { ProductDTO } from '../../models/product';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../services/product-services';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
+import { ContextToken } from '../../utils/context-token';
+import * as authService from '../../services/auth-service';
+
 
 type Props = {
     product: ProductDTO;
@@ -13,6 +16,7 @@ export default function CatalogCards({ product }: Props) {
 
     const [dirty, setDirty] = useState<boolean>(false);
     const [warning, setWarning] = useState<boolean>(false);
+    const { contextTokenPayload } = useContext(ContextToken);
 
     useEffect(() => {
         console.log("Product:", product);
@@ -47,13 +51,19 @@ export default function CatalogCards({ product }: Props) {
                 <div className="dsc-catalog-card-bottom">
                     <h3>R$ {product.price.toFixed(2)}</h3>
                     <h4>{product.name}</h4>
-                    <p className="dsc-catalog-product-quantity">{product.quantity}</p>
-                    <div className="dsc-catalog-card-date">
-                        Data de Compra
-                        <p>{formatDate(product.dateBuy)}</p>
-                        Data de vencimento
-                        <p className={dirty ? "dsc-dueDate-invalid" : warning ? "dsc-dueDate-warning" : ""}> {formatDate(product.dueDate)}</p>
-                    </div>
+                    {contextTokenPayload && authService.isAuthenticated() ?
+
+                        <div className="dsc-catalog-card-date">
+                            <p className="dsc-catalog-product-quantity">{product.quantity}</p>
+                            Data de Compra
+                            <p>{formatDate(product.dateBuy)}</p>
+                            Data de vencimento
+                            <p className={dirty ? "dsc-dueDate-invalid" : warning ? "dsc-dueDate-warning" : ""}> {formatDate(product.dueDate)}</p>
+
+                        </div>
+                        :
+                        ""
+                    }
                 </div>
             </div>
         </Link>

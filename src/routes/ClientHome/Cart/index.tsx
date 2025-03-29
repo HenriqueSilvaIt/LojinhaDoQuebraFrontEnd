@@ -8,6 +8,7 @@ import { ContextCartCount } from '../../../utils/context-cart';
 import SerachBar from '../../../components/SearchBar';
 import * as productService from '../../../services/product-services';
 import { ProductDTO } from '../../../models/product';
+import Clock from '../../../components/ClockOn/clock';
 
 
 type QueryParams = {
@@ -165,8 +166,12 @@ export default function Cart() {
                         (
                             <div>
                                 <h2 className="dsc-section-title dsc-mb20">Caixa livre</h2>
+                           
+                                <Clock/>
+
                             </div>
 
+                    
                         )
                         : (<div className="dsc-card dsc-mb20">
 
@@ -191,38 +196,35 @@ export default function Cart() {
                             }
 
                             <div className="dsc-cart-total-container">
+
                                 <h4>Total da Compra:</h4>
-                                <h3>R$ {cart.total.toFixed(2)}</h3>
-                            </div>
+                                <div className="dsc-cart-totalvalue">
+                                    <h3>R$ {cart.total.toFixed(2)}</h3>
+                                </div>
 
-                            <div className="dsc-cart-total-container dsc-pay">
-                                <h4>Valor Recebido:</h4>
-                                <input
-                                    name="pag"
-                                    value={pay}
-                                    pattern="[0-9]+([\.,][0-9]+)?"
-                                    step="0.01"
-                                    type="float"
-                                    onChange={handleInputChange}>
+                                <div className="dsc-pay">
+                                    <h4>Valor Recebido:</h4>
+                                    <input
+                                        name="pag"
+                                        value={pay}
+                                        pattern="[0-9]+([\.,][0-9]+)?"
+                                        step="0.01"
+                                        type="float"
+                                        onChange={handleInputChange}>
 
-                                </input>
-                            </div>
-                            <div className="dsc-cart-total-container ">
+                                    </input>
+                                </div>
+
 
                                 <h4>Valor a pagar:</h4>
-                                
 
-                                    <div className="dsc-troco-container-valueToPay">
-                                        {valueToPay && pay && pay < cart.total && pay != null &&
-                                            <p >R$ {(cart.total - pay).toFixed(2)}</p>
 
-                                        }
-                                    </div>
+                                <div className="dsc-troco-container-valueToPay">
+                                    {valueToPay && pay && pay < cart.total && pay != null &&
+                                        <p >R$ {(cart.total - pay).toFixed(2)}</p>
 
-                                
-                            </div>
-                            <div className="dsc-cart-total-container ">
-
+                                    }
+                                </div>
                                 <h4>Troco:</h4>
                                 <div className="dsc-troco-container-troco">
                                     {pay != undefined && pay > cart.total &&
@@ -231,6 +233,7 @@ export default function Cart() {
                                     }
                                 </div>
                             </div>
+
                         </div>
                         )
                 }

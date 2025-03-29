@@ -54,7 +54,7 @@ axios.interceptors.response.use(
     function (error) {
         // Do something with response error, faz alguma coisa com o erro da resposta
         if ( error.response.status === 401){
-            history.push("/login"); /* o push ele acrescenta uma rota nova e faz o o redirecionamento
+            history.push("/catalog"); /* o push ele acrescenta uma rota nova e faz o o redirecionamento
             e como essa função é global vai para qualquer página que der esse eero */
     
         }

@@ -84,29 +84,36 @@ export default function OrderHistory() {
 
                 <h2 className="dsc-section-title dsc-mb20">Histórico de vendas</h2>
                 <div className="dsc-btn-page-container dsc-mb20">
-                    <div className="dsc-filter-container">  
-                        <h4> Dário: </h4>
-                        <input
-                            className="dsc-filter-date"
-                            type="date"
-                            value={filterDate}
-                            onChange={handleFilterDateChange}
-                        />
-                        <h4> Mensal:</h4>
-                        <input
-                            className="dsc-filter-date"
-                            type="month"
-                            value={filterMonth}
-                            onChange={handleFilterMonthChange}
-                        />
-                        <h4> Semanal: </h4>
-                        <input
-                            className="dsc-filter-date"
-                            type="Week"
-                            value={filterWeek}
-                            placeholder='Semana'
-                            onChange={handleFilterWeekChange} />
-                        <button className="dsc-btn-clean" onClick={handleCleanFilter}>Limpar Filtro</button>
+                    <div className="dsc-filter-container">
+                        <div>
+                            <h4> Dário: </h4>
+                            <input
+                                className="dsc-filter-date"
+                                type="date"
+                                value={filterDate}
+                                onChange={handleFilterDateChange}
+                            />
+                        </div>
+                        <div>
+                            <h4> Mensal:</h4>
+                            <input
+                                className="dsc-filter-date"
+                                type="month"
+                                value={filterMonth}
+                                onChange={handleFilterMonthChange}
+                            />
+                        </div>
+                        <div>
+                            <h4> Semanal: </h4>
+                            <input
+                                className="dsc-filter-date"
+                                type="Week"
+                                value={filterWeek}
+                                placeholder='Semana'
+                                onChange={handleFilterWeekChange} />
+                        </div>
+                     
+                            <button className="dsc-btn-clean" onClick={handleCleanFilter}>Limpar Filtro</button>
                     </div>
                 </div>
                 <table className="dsc-table dsc-mb20 dsc-mt20">
@@ -116,7 +123,7 @@ export default function OrderHistory() {
                             <th>Nome da Produto</th>
                             <th className="dsc-tb768">Data</th>
                             <th className="dsc-tb768">Quantidade de produtos</th>
-                            <th className="dsc-tb768">Valor</th>
+                            <th>Valor</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -127,7 +134,7 @@ export default function OrderHistory() {
                                     <td>{item.name}</td>
                                     <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY')}</td>
                                     <td className="dsc-tb768">{item.quantity}</td>
-                                    <td className="dsc-tb768">R$ {item.subTotal.toFixed(2)}</td>
+                                    <td>R$ {item.subTotal.toFixed(2)}</td>
                                 </tr>))
                         )}
                     </tbody>

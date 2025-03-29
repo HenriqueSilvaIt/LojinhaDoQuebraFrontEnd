@@ -6,9 +6,11 @@ import ButtonNextPage from '../../../components/ButtonNextPage';
 
 import * as productService from '../../../services/product-services'; /*importando
 todas as funções do service, com o apelido productService */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ProductDTO } from '../../../models/product';
 import { hasAnyRoles } from '../../../services/auth-service';
+import { ContextToken } from '../../../utils/context-token';
+import * as authService from '../../../services/auth-service';
 
 type QueryParams = {
     page: number;
@@ -17,6 +19,8 @@ type QueryParams = {
 
 export default function Catalog() {
     console.log("T", hasAnyRoles([]));
+
+    const { contextTokenPayload } = useContext(ContextToken);
 
     const [isLastPage, setIsLastPage] = useState(false); /*false para dizer que n é a ultima pagina ainda */
 
@@ -81,8 +85,13 @@ export default function Catalog() {
 
 
         < main >
+        { contextTokenPayload && authService.isAuthenticated() ? 
        <h2 className="dsc-section-title  dsc-container dsc-mb20 dsc-mt20">Estoque</h2>
+            : 
 
+            <h2 className="dsc-section-title  dsc-container dsc-mb20 dsc-mt20">Produtos disponíveis</h2>
+
+    }
             <section id="catalog-section" className="dsc-container">
                 <SerachBar onSearch={handleSearch} placeholder="Nome do produto" />
                 <div className="dsc-catalog-cards dsc-mb20 dsc-mt20">
