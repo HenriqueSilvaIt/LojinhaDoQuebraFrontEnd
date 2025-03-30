@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ProductDTO } from '../../../models/product';
 import { hasAnyRoles } from '../../../services/auth-service';
 import { ContextToken } from '../../../utils/context-token';
+import image from '../../../assets/ico-whatsapp-header.svg';
 import * as authService from '../../../services/auth-service';
 
 type QueryParams = {
@@ -126,6 +127,8 @@ tem que ser um elemento único */
                     </div>
 
                 }
+
+                <a  className="dsc-whatsapp" aria-label="Fale pelo WhatsApp" href="https://wa.me/+5511992643264"><img alt="Chat on WhatsApp" src={image}/></a>
             </section>
         </main >
 

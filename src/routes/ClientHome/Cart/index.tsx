@@ -202,6 +202,9 @@ export default function Cart() {
                                         <img src={item.imgUrl} alt={item.name} />
                                         <div className="dsc-cart-item-description">
                                             <h3>{item.name}</h3>
+                                            { item.quantity <= 4 ?
+                                                <h4 className="dsc-form-error">{item.quantity}</h4>
+                                           : "" }
                                             <div className="dsc-cart-item-quantity-container">
                                                 <div onClick={() => handleDecreaseItem(item.productId)} className="dsc-cart-item-quantity-btn">-</div>
                                                 <p>{item.quantity}</p>

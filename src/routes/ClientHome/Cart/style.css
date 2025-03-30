@@ -191,4 +191,8 @@ align-items: center;
 
         font-size: 28px;
     }
+
+.dsc-form-error h4{
+    color:black;
+}
 }
