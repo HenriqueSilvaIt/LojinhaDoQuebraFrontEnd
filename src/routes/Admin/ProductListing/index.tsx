@@ -87,14 +87,17 @@
         function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
             if (answer === true && productId !== null) {
                 productService.deleteById(productId)
+                
                     .then(() => {
                         setProducts([]);
                         setQueryParams({ ...queryParams, page: 0 });
+                        console.log(orderId);
                     })
                     .catch(error => {
                         setDialogInfoData({
                             visable: true,
                             message: error.response.data.error
+
                         });
                     });
             }
