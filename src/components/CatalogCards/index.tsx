@@ -54,7 +54,7 @@ export default function CatalogCards({ product }: Props) {
                     {contextTokenPayload && authService.isAuthenticated() ?
 
                         <div className="dsc-catalog-card-date">
-                            <p className="dsc-catalog-product-quantity">{product.quantity}</p>
+                            <p className="dsc-catalog-product-quantity"> {product.quantity}</p>
                             Data de Compra
                             <p>{formatDate(product.dateBuy)}</p>
                             Data de vencimento

@@ -114,13 +114,13 @@ export default function OrderHistory() {
         event.preventDefault();
         const weekInputValue = event.target.value;
         if (weekInputValue) {
-            setFilterWeek(moment(weekInputValue, 'YYYY-Www').format('YYYY-WW'));
+            setFilterWeek(weekInputValue); // Usar o valor diretamente do input
         } else {
             setFilterWeek('');
         }
         setFilterDate('');
         setFilterMonth('');
-        console.log(event.target.value)
+        console.log(weekInputValue);
     }
 
     function handleCleanFilter(event: any) {
