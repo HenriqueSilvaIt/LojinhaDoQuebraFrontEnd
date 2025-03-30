@@ -108,3 +108,13 @@ export function formatDateToFilter(dateString: string | Date | undefined): strin
 
     return date.format('YYYY-MM-DD');
 }
+
+export function decreaseQuantity(productId: ProductDTO) {
+
+
+    if (productId === productId) { 
+
+        productId.quantity --;
+     }
+
+}

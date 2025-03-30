@@ -10,7 +10,6 @@ import * as productService from '../../../services/product-services';
 import { ProductDTO } from '../../../models/product';
 import Clock from '../../../components/ClockOn/clock';
 
-
 type QueryParams = {
     name: string;
 }
@@ -26,7 +25,6 @@ export default function Cart() {
     const [valueToPay, setValueToPay] = useState<number>(cart.total);
 
     const inputRef = useRef<HTMLInputElement>(null); // Cria a referência
-
 
 
     useEffect(() => {
@@ -76,14 +74,36 @@ export default function Cart() {
 
     function handlePlaceOrderClick() {
         orderService.placeOrderRequest(cart)
-            .then(response => {
-                cartService.clearCart();/*se salvou o produto agora vamos usa clear para limpar o carrinho*/
-                setContextCartCount(0); /* é importante colocar isso porque uma
-             vez que vocÊ fez o pedido e limpo o carrinho tem que zerar aquela quantidade de items 
-             no carrinho do cabeçalho*/
-                navigate(`/confirmation/${response.data.id}`) /*uma vez que já fez o pedido
-             agora ele direciona para  o confirmation do id específico*/
-            })
+        
+        .then(response => {
+            // Atualizar a quantidade dos produtos no backend
+            const updatePromises = cart.items.map(item => {
+                return productService.findById(item.productId)
+                    .then(productResponse => {
+                        const product = productResponse.data;
+                        if (product) {
+                            const updatedProduct: ProductDTO = {
+                                ...product,
+                                quantity: product.quantity - item.quantity,
+                            };
+                            return productService.updateRequest(updatedProduct);
+                        }
+                        // Retorna uma Promise que resolve com null ou um valor padrão.
+                        return Promise.resolve(null);
+                    });
+            });
+
+            Promise.all(updatePromises)
+                .then(() => {
+                    cartService.clearCart();
+                    setContextCartCount(0);
+                    navigate(`/confirmation/${response.data.id}`);
+                })
+                .catch(error => {
+                    console.error("Erro ao atualizar a quantidade dos produtos:", error);
+                    // Lidar com o erro, como exibir uma mensagem para o usuário
+                });
+        });
     }
 
 
