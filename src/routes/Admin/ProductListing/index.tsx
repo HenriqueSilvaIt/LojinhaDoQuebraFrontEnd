@@ -76,33 +76,30 @@
 
         }
 
-
         function handleDeleteClick(productId: number) {
             setDialogConfirmationData({ ...dialogConfirmationData, id: productId, visable: true });
         }
-
+    
 
 
 
         /* Funação que responde a resposta se quer deletar o item ou não*/
-        function handleDialogConfirmationAnswer(answer: boolean, productId: number | null) { // Corrigido
+        function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
             if (answer === true && productId !== null) {
-                productService
-                    .deleteById(productId)
+                productService.deleteById(productId)
                     .then(() => {
                         setProducts([]);
                         setQueryParams({ ...queryParams, page: 0 });
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         setDialogInfoData({
                             visable: true,
-                            message: error.response.data.error,
+                            message: error.response.data.error
                         });
                     });
             }
             setDialogConfirmationData({ ...dialogConfirmationData, visable: false });
         }
-
 
         function handleNewProductClick() {
             navigate("/admin/products/create");
@@ -197,10 +194,10 @@
         productId={dialogConfirmationData.id}
         message={dialogConfirmationData.message}
         orderId={null}
-        onDialogAnswer={(answer: boolean, productId: number | null) => handleDialogConfirmationAnswer(answer, productId)}
+        onDialogAnswer={(answer: boolean, orderId: number | null, productId: number | null) => handleDialogConfirmationAnswer(answer, orderId, productId)}
     />
 )}
-                {/* ... (outros componentes e JSX) */}
+        
             </main>
         );
     } 

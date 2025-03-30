@@ -33,7 +33,7 @@ export default function CatalogCards({ product }: Props) {
         if (diffDays > 0) {
             setDirty(true); // Vencido
             setWarning(false);
-        } else if (diffDays >= -2 && diffDays <= 0) {
+        } else if (diffDays >= -5 && diffDays <= 0) {
             setWarning(true); // Próximo do vencimento (2 dias ou menos)
             setDirty(false);
         } else {
