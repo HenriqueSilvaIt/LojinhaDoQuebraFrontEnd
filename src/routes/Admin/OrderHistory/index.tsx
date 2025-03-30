@@ -66,7 +66,7 @@ export default function OrderHistory() {
 
         if (filterWeek) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
-                return moment(order.moment).format('YYYY-Www') === filterWeek;
+                return moment(order.moment).format('YYYY-WW') === filterWeek;
             });
         }
 
@@ -100,7 +100,7 @@ export default function OrderHistory() {
         setFilterDate(event.target.value);
         setFilterMonth('');
         setFilterWeek('');
-        console.log(event.target.value);
+       
     };
 
     function handleFilterMonthChange(event: any) {
@@ -112,9 +112,15 @@ export default function OrderHistory() {
 
     function handleFilterWeekChange(event: any) {
         event.preventDefault();
-        setFilterWeek(event.target.value);
+        const weekInputValue = event.target.value;
+        if (weekInputValue) {
+            setFilterWeek(moment(weekInputValue, 'YYYY-Www').format('YYYY-WW'));
+        } else {
+            setFilterWeek('');
+        }
         setFilterDate('');
         setFilterMonth('');
+        console.log(event.target.value)
     }
 
     function handleCleanFilter(event: any) {
@@ -177,7 +183,6 @@ export default function OrderHistory() {
                     <thead>
                         <tr>
                             <th className="dsc-tb576">Número da venda</th>
-                            <th className="dsc-tb768">Id do produto</th>
                             <th>Nome da Produto</th>
                             <th className="dsc-tb768">Data</th>
                             <th className="dsc-tb768">Quantidade de produtos</th>
@@ -190,7 +195,6 @@ export default function OrderHistory() {
                             order.items.map((item) => (
                                 <tr key={`${order.id}`}>
                                     <td className="dsc-tb576">{order.id}</td>
-                                    <td>{item.productId}</td>
                                     <td>{item.name}</td>
                                     <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY')}</td>
                                     <td className="dsc-tb768">{item.quantity}</td>

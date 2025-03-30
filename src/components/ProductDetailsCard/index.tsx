@@ -2,6 +2,11 @@ import './styles.css'
 import ProductCategory from '../ProductCategory';
 import { ProductDTO } from '../../models/product';
 import {formatDate} from '../../services/product-services';
+import * as authService from '../../services/auth-service';
+import { ContextToken } from "../../utils/context-token";
+import { useContext } from 'react';
+
+
 type Props = {
     product: ProductDTO;
 }
@@ -11,6 +16,7 @@ type Props = {
 export default function ProductDetailsCard({ product }: Props) {
 
 
+    const {contextTokenPayload} = useContext(ContextToken);
 
     return (
         <div className="dsc-card dsc-mb20">
@@ -24,8 +30,9 @@ export default function ProductDetailsCard({ product }: Props) {
                     {product.description}
                 </p>
                
-          
-                 <p>Quantitidade:</p>
+     { contextTokenPayload && authService.isAuthenticated() &&
+              <div>
+                   <p>Quantitidade:</p>
                 {product.quantity}
                 <p>
                     Código de barras: 
@@ -43,7 +50,8 @@ export default function ProductDetailsCard({ product }: Props) {
                     <br/>
                     {formatDate(product.dueDate)}
                 </p> 
-                 
+                </div>
+                }
                 <div className="dsc-category-container">
                     {
                         product.categories.map(x => {
