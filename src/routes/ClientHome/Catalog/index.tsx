@@ -128,7 +128,7 @@ tem que ser um elemento único */
 
                 }
 
-                <a  className="dsc-whatsapp" aria-label="Fale pelo WhatsApp" href="https://wa.link/y6xqep" target="_blank"><img alt="Chat on WhatsApp" src={image} /></a>
+                <a  className="dsc-whatsapp" aria-label="Fale pelo WhatsApp" href="https://api.whatsapp.com/send?phone=5511992643264&text=Ol%C3%A1%20Lojinha%20do%20quebra%2C%20%0A%0ATenho%20interesse%20em%20um%20produto%F0%9F%98%80" target="_blank"><img alt="Chat on WhatsApp" src={image} /></a>
             </section>
         </main >
 
