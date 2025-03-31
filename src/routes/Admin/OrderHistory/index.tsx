@@ -66,7 +66,7 @@ export default function OrderHistory() {
 
         if (filterWeek) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
-                return moment(order.moment).format('YYYY-WW') === filterWeek;
+                return moment(order.moment).format('YYYY-Www') === filterWeek;
             });
         }
 
@@ -114,13 +114,13 @@ export default function OrderHistory() {
         event.preventDefault();
         const weekInputValue = event.target.value;
         if (weekInputValue) {
-            setFilterWeek(weekInputValue); // Usar o valor diretamente do input
+            setFilterWeek(weekInputValue);
         } else {
             setFilterWeek('');
         }
         setFilterDate('');
         setFilterMonth('');
-        console.log(weekInputValue);
+        console.log(event.target.value)
     }
 
     function handleCleanFilter(event: any) {

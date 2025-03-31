@@ -204,15 +204,7 @@ nav {
   }
 }
 
-/*************************************************************************************/
-/*card-style*/
 
-.dsc-card {
-  /*classe tem que ter um ponto */
-  background-color: var(--color-card-bg);
-  border-radius: 4px;
-  border: 1px solid var(--color-card-border); /*borda do card do produto*/
-}
 
 /*************************************************************************************/
 /*button-style*/
