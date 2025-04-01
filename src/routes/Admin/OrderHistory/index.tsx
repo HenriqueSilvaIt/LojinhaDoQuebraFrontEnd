@@ -66,7 +66,7 @@ export default function OrderHistory() {
 
         if (filterWeek) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
-                return moment(order.moment).format('YYYY-Www') === filterWeek;
+                return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
         }
 
@@ -100,7 +100,7 @@ export default function OrderHistory() {
         setFilterDate(event.target.value);
         setFilterMonth('');
         setFilterWeek('');
-       
+
     };
 
     function handleFilterMonthChange(event: any) {
@@ -132,7 +132,7 @@ export default function OrderHistory() {
 
 
 
-   function handleDeleteClick(orderId: number, productId: number) {
+    function handleDeleteClick(orderId: number, productId: number) {
         setDialogConfirmationData({
             ...dialogConfirmationData,
             orderId: orderId,
@@ -172,6 +172,8 @@ export default function OrderHistory() {
                             <input
                                 className="dsc-filter-date"
                                 type="week"
+                                name="week"
+                                id="camp-week"
                                 value={filterWeek}
                                 onChange={handleFilterWeekChange} />
                         </div>
@@ -201,7 +203,7 @@ export default function OrderHistory() {
                                     <td>R$ {item.subTotal.toFixed(2)}</td>
                                     <td>
                                         <img
-                                             onClick={() => {
+                                            onClick={() => {
                                                 if (order.id !== undefined && item.productId !== undefined) {
                                                     handleDeleteClick(order.id, item.productId);
                                                 } else {
@@ -228,16 +230,16 @@ export default function OrderHistory() {
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
-                    <DialogConfirmation
-                        orderId={dialogConfirmationData.orderId}
-                        productId={dialogConfirmationData.productId}
-                        message={dialogConfirmationData.message}
-                        onDialogAnswer={handleDialogConfirmationAnswer}
-                    />
-                )}
-                {dialogInfoData.visable && (
-                    <DialogInfo message={dialogInfoData.message} onDialogClose={() => setDialogInfoData({...dialogInfoData, visable: false})}/>
-                )}
+                <DialogConfirmation
+                    orderId={dialogConfirmationData.orderId}
+                    productId={dialogConfirmationData.productId}
+                    message={dialogConfirmationData.message}
+                    onDialogAnswer={handleDialogConfirmationAnswer}
+                />
+            )}
+            {dialogInfoData.visable && (
+                <DialogInfo message={dialogInfoData.message} onDialogClose={() => setDialogInfoData({ ...dialogInfoData, visable: false })} />
+            )}
 
 
         </main>
