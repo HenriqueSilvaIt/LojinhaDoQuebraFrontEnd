@@ -196,7 +196,7 @@ export default function OrderHistory() {
                                 <tr key={`${order.id}`}>
                                     <td className="dsc-tb576">{order.id}</td>
                                     <td>{item.name}</td>
-                                    <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY')}</td>
+                                    <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
                                     <td className="dsc-tb768">{item.quantity}</td>
                                     <td>R$ {item.subTotal.toFixed(2)}</td>
                                     <td>
