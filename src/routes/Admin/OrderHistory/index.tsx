@@ -39,7 +39,7 @@ export default function OrderHistory() {
 
     useEffect(() => {
         // Definir a data atual no formato "YYYY-MM-DD"
-        setFilterDate(moment().format('YYYY-MM-DD'));
+        setFilterDate('');
         orderService.findAll().then((response: any) => {
             const sortedOrders = response.data.sort((a: OrderDTO, b: OrderDTO) => {
                 return moment(b.moment).valueOf() - moment(a.moment).valueOf(); // Ordena com base no valor da data
