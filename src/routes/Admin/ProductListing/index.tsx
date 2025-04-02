@@ -144,6 +144,7 @@
                             <tr>
                                 <th className="dsc-tb576">Id</th>
                                 <th></th>
+                                <th  className="dsc-tb768">Código de barra</th>
                                 <th className="dsc-tb768">Preço</th>
                                 <th className="dsc-text-left">Nome</th>
                                 <th></th>
@@ -155,7 +156,7 @@
                                 products.map(product => (
                                     <tr key={product.id}>
                                         <td className="dsc-tb576">{product.id}</td>
-                                        <td>
+                                        <td>{product.barCode}</td><td>
                                         {product.imgUrl && (   <img
                                                 className="dsc-product-listing-image"
                                                 src={product.imgUrl}
