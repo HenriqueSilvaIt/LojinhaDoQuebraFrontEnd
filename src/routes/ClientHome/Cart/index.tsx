@@ -117,9 +117,13 @@ export default function Cart() {
             productService.findByBarCode(queryParams.name)
                 .then(response => {
 
-                    const content = response.data.content;
-                    setProducts(content[0]);
-                    console.log(content[0]);
+                    const content : ProductDTO [] = response.data.content;
+
+                    const barCode = content.filter( x => x.barCode === queryParams.name);
+
+                
+                    setProducts(barCode[0]);
+                    console.log(barCode[0]);
 
                 });
         }
