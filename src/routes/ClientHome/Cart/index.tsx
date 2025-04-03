@@ -214,7 +214,7 @@ export default function Cart() {
             setShowPaymentStatus(true);
             mercadoPagoService.criarIntencaoPagamento({
                 amount: formattedTotalValue,
-                description: products?.name,
+                description: cart.items.filter((x => x.name)),
                 payment: {
                     type: paymentMethod,
                     ...(paymentMethod === 'credit_card' && { installments: 1, installments_cost: "seller" }),
