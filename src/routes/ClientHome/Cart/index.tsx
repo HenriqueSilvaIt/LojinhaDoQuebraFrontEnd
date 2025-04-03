@@ -209,12 +209,13 @@ export default function Cart() {
                 console.error('Valor total do carrinho inválido:', cart.total);
                 return;
             }
-            const formattedTotalValue = formatTotalValue(Number(cart.total));
+            const name = cart.items.filter((x => x.name)).toString();
+                        const formattedTotalValue = formatTotalValue(Number(cart.total));
             setPaymentStatus('pending');
             setShowPaymentStatus(true);
             mercadoPagoService.criarIntencaoPagamento({
                 amount: formattedTotalValue,
-                description: cart.items.filter((x => x.name)),
+                description: name,
                 payment: {
                     type: paymentMethod,
                     ...(paymentMethod === 'credit_card' && { installments: 1, installments_cost: "seller" }),
