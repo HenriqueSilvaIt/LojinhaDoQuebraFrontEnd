@@ -21,7 +21,6 @@ export default function ProductForm() {
 
     const [novoArquivoImagem, setNovoArquivoImagem] = useState<File | null>(null);
 
-
     const isEditing = params.productId !== 'create'; /* se a rota for dirente de create significa que estou editando um
         produto e não criando um novo, se for create está editando  */
 
@@ -52,8 +51,6 @@ export default function ProductForm() {
             /*messagem de erro caso essa função de falso*/
             message: "Favor informar um valor positivo"
         },
-
-
         barCode: {
 
             value: "",
@@ -134,8 +131,6 @@ export default function ProductForm() {
             message: "Escolha ao menos uma categoria",
         }
     });
-
-
 
 
     async function uploadImageToCloudinary(file: File): Promise<string | null> {
@@ -240,10 +235,7 @@ value, vamos colocar o value criado na função event.target.valu*/
 
         event.preventDefault();
 
-
          const requestBody = forms.toValues(formData);
-
-
 
         /* valida qualquer erro de formulário do front end*/
         const formDataValidated = forms.dirtyAndValidateAll(formData);
@@ -255,9 +247,6 @@ value, vamos colocar o value criado na função event.target.valu*/
 
         }
         // ... (validação do formulário)
-
-
-
 
         if (isEditing) {
             requestBody.id = params.productId; /* vamos setar o Id

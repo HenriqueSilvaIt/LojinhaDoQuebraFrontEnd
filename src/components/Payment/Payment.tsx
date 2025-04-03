@@ -10,28 +10,32 @@ export default function  Payment  ()  {
 
     const handlePagamento = () => {
      
-        mercadoPagoService.obterTokenMercadoPago()
+      /*  mercadoPagoService.obterTokenMercadoPago()
         .then (response => {
             const accessToken = response.data.access_token;
             console.log(response.data.access_token);
-            mercadoPagoService.saveAcessToken(accessToken);
+            mercadoPagoService.saveAcessToken(accessToken);*/
             mercadoPagoService.criarIntencaoPagamento({
-                "amount": 100,
-                "description": "Tauana Beuty",
-                "payment": {
-                  "installments": 1,
-                  "type": "debit_card",
-                  "installments_cost": "seller"
+                amount: valor,
+                description: "Tauana Beuty",
+                payment: {
+                  installments: 1,
+                  type: "credit_card",
+                  installments_cost: "seller"
                 },
-                "additional_info": {
-                  "external_reference": "12321hadas-12321jasd-12321jasda-123j213asd",
-                  "print_on_terminal": true
+                additional_info: {
+                  external_reference: "12321hadas-12321jasd-12321jasda-123j213asd",
+                  print_on_terminal: true
                 }
-              
             }).then(response => {
                 setPaymentIntentId(response.data.Id)
-            })
-        } )
+                console.log(response.data);
+            })     .catch(error => {
+                console.error("Erro ao criar intenção de pagamento:", error);
+                // Exibir mensagem de erro para o usuário
+            });
+        }
+        
         
         /*
         mercadoPagoService.criarIntencaoPagamento(deviceId, {
@@ -41,8 +45,7 @@ export default function  Payment  ()  {
         }).then(response => {
             setPaymentIntentId(response.data.id);
         });*/
-    };
-
+    
     useEffect(() => {
         if (paymentIntentId) {
             const interval = setInterval(() => {

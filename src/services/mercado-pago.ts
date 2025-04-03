@@ -2,7 +2,9 @@ import axios, { AxiosRequestConfig } from "axios";
 import QueryString from "qs";
 import { CLIENT_MERCADO, SECRET_MERCADO } from "../utils/system";
 import * as mercadoPagoRepository from '../localstorage/mercadopago-repostory';
-import { DEVICE_ID } from '../utils/system';
+import { requestMercadoPago} from '../utils/requests';
+
+
 const API_URL = '/mercado-pago';
 
 
@@ -30,18 +32,40 @@ export  function obterTokenMercadoPago() {
   
 }
 
+export function criarIntencaoPagamento(pagamentoData: any) {
+
+    /*Cabelaçhos da requisição, tem que ficar igual no postman que testamo no backend */
+    const headers  = {
+        "Content-Type": "application/json"
+
+        /* O algoritmo Base64.encode  do java script é o window.btoa mós colocamos depois do basic */
+    }
+
+    /* Requisição oque parametros */
+    const config : AxiosRequestConfig = {
+    method: "POST",
+    url: "/mercado-pago-payment",
+    data: pagamentoData, /*corpo no Axios é o data */
+    headers /*cabeçalho da requisição, quando o valor tem o mesmo nome do atributo só colocar
+     uma vez o nome n precisa colocar 2 */
+    }
+
+   return requestMercadoPago(config);
+}
+
 
 export const obterDispositivos = (storeId: any , posId :any)  => {
     return axios.get(`${API_URL}/dispositivos`, { params: { storeId, posId } });
 };
 
+/*
 export const criarIntencaoPagamento = ( pagamentoData : any) => {
 
     const accessToken = getAcessToken();
     const headers = {
         
        "Content-Type": "application/json",
-        "Authorization": "Berear Token" + accessToken
+       'Authorization': 'Bearer ' + accessToken, 
     };
 
     const config: AxiosRequestConfig = {
@@ -52,7 +76,7 @@ export const criarIntencaoPagamento = ( pagamentoData : any) => {
     };
 
     return  axios(config);
-};
+};*/
 
 
 export const obterStatusIntencaoPagamento = (paymentIntentId: any) => {
