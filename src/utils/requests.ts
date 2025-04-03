@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { BASE_URL } from "./system";
+import { MERCADO_URL } from './system';
 import * as authService from '../services/auth-service';
 /* Função onde será concentrada o BASE_URL que é a url da aplicação  e depois também vai ter
 a parte de passa o token */
@@ -66,3 +67,20 @@ axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+
+export function requestMercadoPago(config: AxiosRequestConfig) {
+
+
+
+    /* passando o token na autorização na hora do login */
+    const headers =   config.headers;
+
+
+
+    return axios({ ...config, baseURL: MERCADO_URL, headers }); /* config do AxiosRequestConfi vai receber ele mesmo
+     mais o baseURL, ai no caso lá no serviço do product chamado findPageRequest, não precisa mais
+     colocar a varavel do BASE_URL porque já está configurada no config, é só chamar o requestBackend dentro
+     do product-service.t*/
+
+}

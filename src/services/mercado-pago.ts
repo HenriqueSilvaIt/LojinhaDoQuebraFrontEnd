@@ -1,0 +1,82 @@
+import axios, { AxiosRequestConfig } from "axios";
+import QueryString from "qs";
+import { CLIENT_MERCADO, SECRET_MERCADO } from "../utils/system";
+import * as mercadoPagoRepository from '../localstorage/mercadopago-repostory';
+import { DEVICE_ID } from '../utils/system';
+const API_URL = '/mercado-pago';
+
+
+export  function obterTokenMercadoPago() {
+
+
+    const headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+    };
+
+    const requestBody = QueryString.stringify({
+        grant_type: "client_credentials",
+        client_id: CLIENT_MERCADO,
+        client_secret: SECRET_MERCADO,
+    });
+
+    const config: AxiosRequestConfig = {
+        method: "POST",
+        url: "https://api.mercadopago.com/oauth/token",
+        data: requestBody,
+        headers,
+    };
+ 
+        return  axios(config);
+  
+}
+
+
+export const obterDispositivos = (storeId: any , posId :any)  => {
+    return axios.get(`${API_URL}/dispositivos`, { params: { storeId, posId } });
+};
+
+export const criarIntencaoPagamento = ( pagamentoData : any) => {
+
+    const accessToken = getAcessToken();
+    const headers = {
+        
+       "Content-Type": "application/json",
+        "Authorization": "Berear Token" + accessToken
+    };
+
+    const config: AxiosRequestConfig = {
+        method: "POST",
+        url:`https://api.mercadopago.com/point/integration-api/devices/${DEVICE_ID}/payment-intents`,
+        data: pagamentoData,
+        headers,
+    };
+
+    return  axios(config);
+};
+
+
+export const obterStatusIntencaoPagamento = (paymentIntentId: any) => {
+    return axios.get(`${API_URL}/pagamentos/${paymentIntentId}`);
+};
+
+export const cancelarIntencaoPagamento = (deviceId: any, paymentIntentId: any) => {
+    return axios.delete(`${API_URL}/pagamentos/${deviceId}/${paymentIntentId}`);
+};
+
+
+/* função para realizar logout, ou seja limpa o token do local storage */
+export function removeToken() {
+    mercadoPagoRepository.remove(); /* n passamos o local storage aqui direto
+    para remover, porque na pdronização que estamos fazendo o localstorage repository é a camada
+    que chamada os dados do localstorage e aqui  chamamos o serviço do repository */
+}
+
+export function saveAcessToken(token: string) {
+
+    mercadoPagoRepository.save(token);
+
+}
+
+export function getAcessToken() {
+   return  mercadoPagoRepository.get(); /* tem que ter o return porque ele  vai retorna o token*/
+}
