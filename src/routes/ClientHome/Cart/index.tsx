@@ -209,7 +209,7 @@ export default function Cart() {
                 console.error('Valor total do carrinho inválido:', cart.total);
                 return;
             }
-            const name = cart.items.map((x => x.name)).toString();
+            const name = cart.items.map(x => x.name).join(', ');
                         const formattedTotalValue = formatTotalValue(Number(cart.total));
             setPaymentStatus('pending');
             setShowPaymentStatus(true);
