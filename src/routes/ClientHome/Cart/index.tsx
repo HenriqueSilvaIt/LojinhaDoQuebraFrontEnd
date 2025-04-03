@@ -9,7 +9,6 @@ import SerachBar from '../../../components/SearchBar';
 import * as productService from '../../../services/product-services';
 import { ProductDTO } from '../../../models/product';
 import Clock from '../../../components/ClockOn/clock';
-import Payment from '../../../components/Payment/Payment';
 
 type QueryParams = {
     name: string;
@@ -262,9 +261,7 @@ export default function Cart() {
                                 </div>
 
                             </div>
-<div>
-    <Payment/>
-</div>
+
 
                         </div>
                         )
