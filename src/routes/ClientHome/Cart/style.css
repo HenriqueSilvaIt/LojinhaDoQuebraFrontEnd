@@ -260,6 +260,17 @@ align-items: center;
     padding: 5px;
   }
 
+  .dsc-installments{
+
+    color: var(--color-font-primary);
+    margin-top: 20px;
+    padding: 5px;
+  }
+
+  .dsc-installments p{
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
   .dsc-payment-method{
 
     color: var(--color-font-primary);

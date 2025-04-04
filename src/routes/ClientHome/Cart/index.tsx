@@ -446,8 +446,9 @@ export default function Cart() {
                                         </select>
                                     </div>
                                     {paymentMethod === "credit_card" ?
-                                        <div>
-                                            <select className="dsc-btn dsc-btn-primary dsc-installments" onChange={handleInstalment}>
+                                        <div className="dsc-installments">
+                                            <p>Nº de Parcelas: </p>
+                                            <select className="dsc-btn dsc-btn-primary dsc-installments " onChange={handleInstalment}>
                                                 <option value="1">1x</option>
                                                 <option value="2">2x</option>
                                                 <option value="3">3x</option>
