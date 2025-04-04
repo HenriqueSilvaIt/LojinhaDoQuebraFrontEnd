@@ -17,7 +17,7 @@ import axios from 'axios';
 type QueryParams = {
     name: string;
 }
-
+  
 
 
 export default function Cart() {
@@ -35,6 +35,7 @@ export default function Cart() {
     const inputRef = useRef<HTMLInputElement>(null); // Cria a referência
     const [pay, setPay] = useState<number>();
     const [showPaymentStatus, setShowPaymentStatus] = useState(false); // Novo estado
+    const [instalmmentValue, setInstamentValue] = useState<any>();
 
     const { setContextCartCount } = useContext(ContextCartCount);
 
@@ -210,7 +211,7 @@ export default function Cart() {
                 return;
             }
             const name = cart.items.map(x => x.name).join(', ');
-                        const formattedTotalValue = formatTotalValue(Number(cart.total));
+            const formattedTotalValue = formatTotalValue(Number(cart.total));
             setPaymentStatus('pending');
             setShowPaymentStatus(true);
             mercadoPagoService.criarIntencaoPagamento({
@@ -218,7 +219,7 @@ export default function Cart() {
                 description: name,
                 payment: {
                     type: paymentMethod,
-                    ...(paymentMethod === 'credit_card' && { installments: 1, installments_cost: "seller" }),
+                    ...(paymentMethod === 'credit_card' && { installments: instalmmentValue,  installments_cost: "seller"}),
                 },
                 additional_info: {
                     external_reference: "12321hadas-12321jasd-12321jasda-123j213asd",
@@ -259,6 +260,11 @@ export default function Cart() {
 
     function handlePaymentMethod(event: any) {
         setPaymentMethod(event.target.value);
+    }
+
+    function handleInstalment(event: any) {
+       
+                setInstamentValue(parseInt(event.target.value, 10));
     }
 
     const handleDialogPayment = (confirm: boolean) => {
@@ -429,14 +435,35 @@ export default function Cart() {
 
                                 <div className="dsc-payment-form">
                                     <h3>Forma da pagamento</h3>
-                                    <select   className='dsc-btn dsc-btn-primary' onChange={handlePaymentMethod}>
-                                        <option value="">Selecione a forma de pagamento</option>
-                                        <option value="debit_card">Cartão de débito</option>
-                                        <option value="credit_card">Cartão de crédito</option>
-                                        <option value="Dinheiro">Dinheiro</option>
-                                        <option value="pi">Pix</option>
-                                    </select>
+                                    <div>
+                                        <select className="dsc-btn dsc-btn-primary dsc-payment-method" onChange={handlePaymentMethod}>
+                                            <option value="">Selecione a forma de pagamento</option>
+                                            <option value="debit_card">Cartão de débito</option>
+                                            <option value="credit_card">Cartão de crédito</option>
+                                            <option value="Dinheiro">Dinheiro</option>
+                                            <option value="pi">Pix</option>
 
+                                        </select>
+                                    </div>
+                                    {paymentMethod === "credit_card" ?
+                                        <div>
+                                            <select className="dsc-btn dsc-btn-primary dsc-installments" onChange={handleInstalment}>
+                                                <option value="1">1x</option>
+                                                <option value="2">2x</option>
+                                                <option value="3">3x</option>
+                                                <option value="4">4x</option>
+                                                <option value="5">5x</option>
+                                                <option value="6">6x</option>
+                                                <option value="7">7x</option>
+                                                <option value="8">8x</option>
+                                                <option value="9">9x</option>
+                                                <option value="10">10x</option>
+                                                <option value="11">11x</option>
+                                                <option value="12">12x</option>
+                                            </select>
+                                        </div> : ""
+
+                                    }
                                     <button className="dsc-btn dsc-btn-blue" onClick={handlePagamento}>Pagar</button>
                                     {paymentIntentId && paymentStatus && <p>Status do pagamento: {paymentStatus}</p>}
 
@@ -465,7 +492,7 @@ export default function Cart() {
                 {dialogInfoData.visable && (
                     <div className="dsc-dialog-background">
                         <div className="dsc-dialog-box">
-                          
+
                             {paymentStatus === 'pending' && <p>Aguardando pagamento...</p>}
                             {paymentStatus === 'success' && <p>Pagamento realizado com sucesso!</p>}
                             {paymentStatus === 'error' && <p>Erro no pagamento.</p>}
@@ -477,7 +504,7 @@ export default function Cart() {
                         </div>
                     </div>
                 )}
-                
+
                 {paymentIntentId && showPaymentStatus && <PaymentStatus paymentIntentId={paymentIntentId} />}
 
             </section>
