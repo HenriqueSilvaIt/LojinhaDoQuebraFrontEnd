@@ -38,7 +38,7 @@ export function findAll() {
         method: "GET",
         withCredentials: true, /*precisa de autorização token para acesasr essa página ur
         isso é configurado no backend*/
-   
+    
     }
 
     return requestBackend(config);

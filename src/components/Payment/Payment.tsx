@@ -23,8 +23,8 @@ export default function Payment() {
         });
     
 
-        const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
-
+        const [cart] = useState<OrderDTO>(cartService.getCart());
+        
     useEffect(() => {
         if (paymentIntentId) {
             const interval = setInterval(() => {
