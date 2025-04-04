@@ -222,7 +222,7 @@ export default function Payment() {
                 </div> : ""
 
             }
-            <button className="dsc-btn dsc-btn-blue" onClick={handlePagamento}>Pagar</button>
+            <button className="dsc-btn dsc-btn-blue" onClick={handlePagamento}>Realizar Cobrança</button>
             {paymentIntentId && paymentStatus && <p>Status do pagamento: {paymentStatus}</p>}
 
         </div>

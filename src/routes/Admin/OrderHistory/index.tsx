@@ -16,6 +16,7 @@ export default function OrderHistory() {
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
     const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
+    
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -36,46 +37,43 @@ export default function OrderHistory() {
         productId: null,
         message: 'Tem certeza?'
     });
-
     useEffect(() => {
-        // Definir a data atual no formato "YYYY-MM-DD"
         setFilterDate(moment().format('YYYY-MM-DD'));
         orderService.findAll().then((response: any) => {
-            const sortedOrders = response.data.sort((a: OrderDTO, b: OrderDTO) => {
-                return moment(b.moment).valueOf() - moment(a.moment).valueOf(); // Ordena com base no valor da data
+            // Acesse a propriedade 'content' para obter o array de pedidos
+            const sortedOrders = response.data.content.sort((a: OrderDTO, b: OrderDTO) => {
+                return moment(b.moment).valueOf() - moment(a.moment).valueOf();
             });
-            setAllOrders(sortedOrders); // Armazena todos os pedidos
+            setAllOrders(sortedOrders);
+            setOrders(sortedOrders);
         });
     }, []);
-
-
+    
     useEffect(() => {
         let filteredOrders: OrderDTO[] = allOrders;
-
+    
         if (filterDate) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
                 return formatDateToFilter(order.moment) === filterDate;
             });
         }
-
+    
         if (filterMonth) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-MM') === filterMonth;
             });
         }
-
+    
         if (filterWeek) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
         }
-
-        setOrders(filteredOrders); // Atualiza o estado order com os resultados filtrados
-
-        // Calcular o total de vendas
+    
+        setOrders(filteredOrders);
         const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
-
+    
     }, [filterDate, allOrders, filterWeek, filterMonth]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
@@ -140,6 +138,7 @@ export default function OrderHistory() {
             visable: true
         });
     }
+
 
 
     return (
@@ -227,7 +226,6 @@ export default function OrderHistory() {
                         )}
                     </tbody>
                 </table>
-            
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (

@@ -32,17 +32,14 @@ export function placeOrderRequest(cart: OrderDTO) {
 }
 
 export function findAll() {
-    
-    const config : AxiosRequestConfig = {
+    const config: AxiosRequestConfig = {
         url: `/orders`,
         method: "GET",
-        withCredentials: true, /*precisa de autorização token para acesasr essa página ur
-        isso é configurado no backend*/
-    
-    }
-
+        withCredentials: true,
+    };
     return requestBackend(config);
 }
+
 
 export function deleteById(orderItemId: number, productId: number) {
     const config : AxiosRequestConfig = { 
