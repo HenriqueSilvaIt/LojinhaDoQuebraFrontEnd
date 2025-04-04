@@ -13,8 +13,6 @@
     width: 50px;
     height: 50px;
     margin: 10px 10px;
-
-
 }
 
 .dsc-cart-item-left {
@@ -62,7 +60,6 @@
     font-size: 20px;
 }
 
-
 .dsc-cart-total-container {
 
     padding: 10px 20px;
@@ -75,20 +72,10 @@
     color: var(--color-font-secondary);
 }
 
-
-
 .dsc-cart-total-container h3 {
-    
-
-   
     font-size: 28px;
 }
 
-.dsc-cart-totalvalue{
-    border: 3px solid var(--color-card-border);
-    width: 170px;
-    height: 40px;
-}
 
 .dsc-cart-total-container h4 {
     color: var(--color-font-primary);
@@ -99,8 +86,21 @@
 }
 
 
-.dsc-pay input{
+.dsc-cart-totalvalue{
+    border: 3px solid var(--color-card-border);
+    width: 170px;
+    height: 40px;
 
+}
+
+.dsc-pay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dsc-pay input{
     text-align: center;
     width: 100%;
     height: 40px;
@@ -108,12 +108,16 @@
     border: 3px solid var(--color-card-border);
     font-size: 28px;
     padding: 5px;
+ 
 }
 
 .dsc-pay h4{ 
 
 justify-content: center ;
 align-items: center;
+display: flex;
+text-align: left;
+
 
 }
 
@@ -126,8 +130,6 @@ align-items: center;
     color:rgb(0, 162, 255);
     font-size: 26px;
 }
-
-
 
 .dsc-troco-container-troco{
 
@@ -144,6 +146,20 @@ align-items: center;
     flex-direction: column;
     font-size: 24px;
     
+}
+
+.dsc-values{
+    text-align: center;
+    justify-content: center;
+
+}
+
+
+.dsc-values h4{
+    display: flex;
+    font-size: 25;
+    text-align: left;
+    justify-content: left;
 }
 
 
@@ -164,7 +180,8 @@ align-items: center;
 
     .dsc-cart-total-container {
         display: flex;
-        justify-content: flex-start; /* Corrigido para flex-end */
+        flex-direction: row;
+        justify-content: center; /* Corrigido para flex-end */
         align-items: flex-start;   /* Corrigido para flex-end */
     }
     .dsc-cart-total-container h4 {
@@ -172,10 +189,11 @@ align-items: center;
         text-align: center;
     }
 
+
     .dsc-pay input {
         border: 3px solid var(--color-card-border);
         font-size: 28px;
-
+margin-right: 35px;
 
       }
     .dsc-pay input:focus {
@@ -196,84 +214,3 @@ align-items: center;
     color:black;
 }
 }
-
-.dsc-payment-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 100px;
-    margin-top: 80px;
-    border: 1px solid var(--color-card-border);
-    border-radius: 5px;
-    padding: 10px
-}
-
-.dsc-payment-form section{
-    width: 100px;
-    height: 100px;
-    padding: 5px;
-    color: var(--color-font-secondary);
-    align-items: center;
-    font-weight: 0;
-}
-
-.dsc-payment-form  h3{
-    font-size: 28px;
-    color: var(--color-font-primary);
-    margin-bottom: 20px;
-}
-
-
-.dsc-payment-form button {
-
-    margin-top: 20px;
-}
-
-.dsc-payment-container{
-    margin: 0 auto;
-    padding-right: 150px;
-    display: flex;
-    align-items: center;
-    justify-content:  space-between;
-}
-
-.dsc-dialog-btn-container {
-
-    width: 100%; /* para o botão n perde largura */  
-    display: grid;
-    grid-template-columns:  1fr; /* vai ocupar 2 metades do espaç*/
-    grid-gap: 20px;
-    margin-top: 10px;
-  }
-  
-
-  .dsc-dialog-box {
-    font-weight: 700;
-    color: var(--color-font-primary);
-    font-size: 20px;
-  }
-
-  .dsc-installments{
-
-    color: var(--color-font-primary);
-    margin-top: 20px;
-    padding: 5px;
-  }
-
-  .dsc-installments{
-
-    color: var(--color-font-primary);
-    margin-top: 20px;
-    padding: 5px;
-  }
-
-  .dsc-installments p{
-    margin-bottom: 10px;
-    font-weight: 700;
-  }
-  .dsc-payment-method{
-
-    color: var(--color-font-primary);
-    font-weight: 400;
-    padding: 5px;
-  } 

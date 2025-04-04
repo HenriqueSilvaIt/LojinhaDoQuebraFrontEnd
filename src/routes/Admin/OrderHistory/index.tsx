@@ -181,6 +181,13 @@ export default function OrderHistory() {
                         <button className="dsc-btn-clean" onClick={handleCleanFilter}>Limpar Filtro</button>
                     </div>
                 </div>
+                <div className="dsc-total-sales">
+                    <h3>Total de vendas: </h3>
+                    <h4> R$ {totalSales.toFixed(2)}</h4>
+                </div>
+                {
+
+                }
                 <table className="dsc-table dsc-mb20 dsc-mt20">
                     <thead>
                         <tr>
@@ -220,13 +227,7 @@ export default function OrderHistory() {
                         )}
                     </tbody>
                 </table>
-                <div className="dsc-total-sales">
-                    <h3>Total de vendas: </h3>
-                    <h4> R$ {totalSales.toFixed(2)}</h4>
-                </div>
-                {
-
-                }
+            
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (

@@ -9,43 +9,24 @@ import SerachBar from '../../../components/SearchBar';
 import * as productService from '../../../services/product-services';
 import { ProductDTO } from '../../../models/product';
 import Clock from '../../../components/ClockOn/clock';
-import * as mercadoPagoService from '../../../services/mercado-pago';
-import ButtonSecondy from '../../../components/ButtonSecondy';
-
-import axios from 'axios';
+import Payment from '../../../components/Payment/Payment';
 
 type QueryParams = {
     name: string;
 }
-  
+
 
 
 export default function Cart() {
 
-    const [paymentMethod, setPaymentMethod] = useState<string>('');
-    const [paymentStatus, setPaymentStatus] = useState<'idle' | 'pending' | 'success' | 'error'>('idle'); // Estado do pagamento
-    const [paymentIntentId, setPaymentIntentId] = useState('');
-
-
-    const navigate = useNavigate();
     const [cart, setCart] = useState<OrderDTO>(cartService.getCart()); /* já estamos iniciando
     o use state pegando p rimeiro valor que está lá no localStorage */
+
     const [products, setProducts] = useState<ProductDTO>();
+
     const [valueToPay, setValueToPay] = useState<number>(cart.total);
+
     const inputRef = useRef<HTMLInputElement>(null); // Cria a referência
-    const [pay, setPay] = useState<number>();
-    const [showPaymentStatus, setShowPaymentStatus] = useState(false); // Novo estado
-    const [instalmmentValue, setInstamentValue] = useState<any>();
-
-    const { setContextCartCount } = useContext(ContextCartCount);
-
-    const [dialogInfoData, setDialogInfoData] = useState<{
-        visable: boolean;
-        message: string;
-    }>({
-        visable: false,
-        message: 'Sucesso'
-    });
 
 
     useEffect(() => {
@@ -53,6 +34,12 @@ export default function Cart() {
             inputRef.current.focus(); // Define o foco no input
         }
     }, []); // Executa apenas uma vez após a renderização inicial
+
+    const [pay, setPay] = useState<number>();
+
+    const { setContextCartCount } = useContext(ContextCartCount);
+
+    const navigate = useNavigate();
 
     function handleClearClick() {
         cartService.clearCart(); /* aqui limpa no localstorage */
@@ -66,6 +53,7 @@ export default function Cart() {
     function handleIncreaseItem(productId: number) {
         cartService.increaseItem(productId); // incrementa o item no local storage
         setCart(cartService.getCart());// atualizar no use state para atualizar no visual
+
     }
 
     /* função para remover novo produto no carrinho */
@@ -73,7 +61,9 @@ export default function Cart() {
         cartService.decreaseItem(productId); // incrementa o item no local storage
         updateCart();
         // atualizar no use state para atualizar no visual
+
     }
+
 
     function updateCart() {
 
@@ -81,6 +71,8 @@ export default function Cart() {
         setCart(newCart);
         setContextCartCount(newCart.items.length);
     }
+
+
 
     function handlePlaceOrderClick() {
         orderService.placeOrderRequest(cart)
@@ -91,6 +83,7 @@ export default function Cart() {
                     return productService.findById(item.productId)
                         .then(productResponse => {
                             const product = productResponse.data;
+                            console.log(productResponse.data);
                             if (product) {
                                 const updatedProduct: ProductDTO = {
                                     ...product,
@@ -144,22 +137,24 @@ export default function Cart() {
     useEffect(() => {
         if (products) {
             cartService.addProduct(products);
-
             updateCart();
-
             setProducts(undefined);
         }
     }, [products])
 
 
     function handleSearch(searchText: string) {
+
         setQueryParams({ name: searchText });
+
         updateCart();
+
     }
 
     function handleInputChange(event: any) {
         event.preventDefault();
         let value = event.target.value;
+
 
         // Remove todos os caracteres não numéricos e não ponto
         value = value.replace(/[^\d.]/g, '');
@@ -185,171 +180,6 @@ export default function Cart() {
 
     }
 
-    useEffect(() => {
-        if (paymentIntentId) {
-            const interval = setInterval(() => {
-                mercadoPagoService.obterStatusIntencaoPagamento(paymentIntentId).then(response => {
-                    setPaymentStatus(response.data.state);
-                });
-            }, 5000);
-
-            return () => clearInterval(interval);
-        }
-    }, [paymentIntentId]);
-
-
-
-    function formatTotalValue(totalValue: number): number {
-        const valueInCents = totalValue * 100;
-        const roundedValue = Math.round(valueInCents);
-        return Math.abs(roundedValue);
-    }
-    const handlePagamento = () => {
-        if (paymentMethod === 'credit_card' || paymentMethod === 'debit_card') {
-            if (typeof cart.total !== 'number' || isNaN(cart.total)) {
-                console.error('Valor total do carrinho inválido:', cart.total);
-                return;
-            }
-            const name = cart.items.map(x => x.name).join(', ');
-            const formattedTotalValue = formatTotalValue(Number(cart.total));
-            setPaymentStatus('pending');
-            setShowPaymentStatus(true);
-            mercadoPagoService.criarIntencaoPagamento({
-                amount: formattedTotalValue,
-                description: name,
-                payment: {
-                    type: paymentMethod,
-                    ...(paymentMethod === 'credit_card' && { installments: instalmmentValue,  installments_cost: "seller"}),
-                },
-                additional_info: {
-                    external_reference: "12321hadas-12321jasd-12321jasda-123j213asd",
-                    print_on_terminal: true
-                }
-            }).then(response => {
-                setPaymentIntentId(response.data.Id);
-                setDialogInfoData({ ...dialogInfoData, visable: true });
-                // Adicionando um atraso de 15 segundos antes de iniciar as verificações de status
-                setTimeout(() => {
-                    const interval = setInterval(() => {
-                        mercadoPagoService.obterStatusIntencaoPagamento(response.data.Id).then(statusResponse => {
-                            if (statusResponse.data.state === 'FINISHED') {
-                                setPaymentStatus('success');
-                                clearInterval(interval);
-                                cartService.clearCart();
-                                setContextCartCount(0);
-                                navigate(`/confirmation/${response.data.Id}`);
-                            } else if (statusResponse.data.state === 'CANCELED' || statusResponse.data.state === 'ERROR') {
-                                setPaymentStatus('error');
-                                clearInterval(interval);
-                            }
-                        });
-                    }, 5000);
-                    // Limpeza do intervalo ao desmontar o componente
-                    return () => clearInterval(interval);
-                }, 15000); // 15000 milissegundos = 15 segundos
-            }).catch(error => {
-                console.error("Erro ao criar intenção de pagamento:", error);
-                setPaymentStatus('error');
-            });
-        } else if (paymentMethod === 'Dinheiro' || paymentMethod === 'Pix') {
-            console.log('Pagamento com', paymentMethod, '. Intenção de pagamento não enviada.');
-        } else if (paymentMethod) {
-            console.error('Selecione uma forma de pagamento.');
-        }
-    };
-
-    function handlePaymentMethod(event: any) {
-        setPaymentMethod(event.target.value);
-    }
-
-    function handleInstalment(event: any) {
-       
-                setInstamentValue(parseInt(event.target.value, 10));
-    }
-
-    const handleDialogPayment = (confirm: boolean) => {
-        setDialogInfoData({ ...dialogInfoData, visable: false });
-        console.log(confirm);
-    };
-
-
-
-    function PaymentStatus({ paymentIntentId }: { paymentIntentId: string }) {
-        const [paymentStatus, setPaymentStatus] = useState<any>(null);
-        const [error, setError] = useState<string | null>(null);
-
-        useEffect(() => {
-            if (paymentIntentId) {
-                axios.get(`http://localhost:8091/mercado-pago-payment-status/${paymentIntentId}`)
-                    .then(response => {
-                        setPaymentStatus(response.data);
-                    })
-                    .catch(error => {
-                        console.error('Erro ao obter status do pagamento:', error);
-                        setError('Erro ao obter status do pagamento.');
-                    });
-            }
-        }, [paymentIntentId]);
-
-        if (error) {
-            return <p>{error}</p>;
-        }
-
-        if (!paymentStatus) {
-            return <p>Carregando status do pagamento...</p>;
-        }
-
-        const status = paymentStatus.state;
-        let statusMessage = '';
-        let statusColor = 'black';
-
-        switch (status) {
-            case 'FINISHED':
-                statusMessage = 'Pagamento realizado com sucesso!';
-                statusColor = 'green';
-                break;
-            case 'CONFIRMATION_REQUIRED':
-                statusMessage = 'Confirmação necessária no dispositivo.';
-                statusColor = 'orange';
-                break;
-            case 'CANCELED':
-                statusMessage = 'Pagamento cancelado.';
-                statusColor = 'red';
-                break;
-            case 'ERROR':
-                statusMessage = 'Erro na transação.';
-                statusColor = 'red';
-                break;
-            case 'ABANDONED':
-                statusMessage = 'Pagamento abandonado.';
-                statusColor = 'gray';
-                break;
-            case 'OPEN':
-                statusMessage = 'Intenção de pagamento aberta.';
-                break;
-            case 'ON_TERMINAL':
-                statusMessage = 'Aguardando interação no terminal.';
-                break;
-            case 'PROCESSING':
-                statusMessage = 'Processando pagamento.';
-                break;
-            case 'PROCESSED':
-                statusMessage = 'Pagamento processado.';
-                break;
-            default:
-                statusMessage = 'Status do pagamento desconhecido.';
-                break;
-        }
-
-        return (
-            <div>
-                <h2>Status do Pagamento</h2>
-                <p style={{ color: statusColor }}>{statusMessage}</p>
-                <pre>{JSON.stringify(paymentStatus, null, 2)}</pre>
-            </div>
-        );
-    }
-
 
     return (/* quando abrimos chaves dentro do return é uma expressão do react */
         /* no primeiro elemento dentro da função map tem que colocar o key
@@ -363,12 +193,8 @@ export default function Cart() {
                         (
                             <div>
                                 <h2 className="dsc-section-title dsc-mb20">Caixa livre</h2>
-
                                 <Clock />
-
                             </div>
-
-
                         )
                         : (<div className="dsc-card dsc-mb20">
 
@@ -394,9 +220,9 @@ export default function Cart() {
                                 </div>
                             ))
                             }
-                            <div className="dsc-payment-container">
-                                <div className="dsc-cart-total-container">
 
+                            <div className="dsc-cart-total-container">
+                                <div className="dsc-values">
                                     <h4>Total da Compra:</h4>
                                     <div className="dsc-cart-totalvalue">
                                         <h3>R$ {cart.total.toFixed(2)}</h3>
@@ -415,8 +241,6 @@ export default function Cart() {
                                         </input>
                                     </div>
                                     <h4>Valor a pagar:</h4>
-
-
                                     <div className="dsc-troco-container-valueToPay">
                                         {valueToPay && pay && pay < cart.total && pay != null &&
                                             <p >R$ {(cart.total - pay).toFixed(2)}</p>
@@ -430,51 +254,14 @@ export default function Cart() {
 
                                         }
                                     </div>
-
                                 </div>
-
-                                <div className="dsc-payment-form">
-                                    <h3>Forma da pagamento</h3>
-                                    <div>
-                                        <select className="dsc-btn dsc-btn-primary dsc-payment-method" onChange={handlePaymentMethod}>
-                                            <option value="">Selecione a forma de pagamento</option>
-                                            <option value="debit_card">Cartão de débito</option>
-                                            <option value="credit_card">Cartão de crédito</option>
-                                            <option value="Dinheiro">Dinheiro</option>
-                                            <option value="pi">Pix</option>
-
-                                        </select>
-                                    </div>
-                                    {paymentMethod === "credit_card" ?
-                                        <div className="dsc-installments">
-                                            <p>Nº de Parcelas: </p>
-                                            <select className="dsc-btn dsc-btn-primary dsc-installments " onChange={handleInstalment}>
-                                                <option value="1">1x</option>
-                                                <option value="2">2x</option>
-                                                <option value="3">3x</option>
-                                                <option value="4">4x</option>
-                                                <option value="5">5x</option>
-                                                <option value="6">6x</option>
-                                                <option value="7">7x</option>
-                                                <option value="8">8x</option>
-                                                <option value="9">9x</option>
-                                                <option value="10">10x</option>
-                                                <option value="11">11x</option>
-                                                <option value="12">12x</option>
-                                            </select>
-                                        </div> : ""
-
-                                    }
-                                    <button className="dsc-btn dsc-btn-blue" onClick={handlePagamento}>Pagar</button>
-                                    {paymentIntentId && paymentStatus && <p>Status do pagamento: {paymentStatus}</p>}
-
-                                </div>
+                                <Payment />
                             </div>
 
                         </div>
                         )
-                }
 
+                }
 
                 <div className="dsc-btn-page-container">
 
@@ -490,23 +277,6 @@ export default function Cart() {
                         Limpar Caixa
                     </div>
                 </div>
-                {dialogInfoData.visable && (
-                    <div className="dsc-dialog-background">
-                        <div className="dsc-dialog-box">
-
-                            {paymentStatus === 'pending' && <p>Aguardando pagamento...</p>}
-                            {paymentStatus === 'success' && <p>Pagamento realizado com sucesso!</p>}
-                            {paymentStatus === 'error' && <p>Erro no pagamento.</p>}
-                            <div className="dsc-dialog-btn-container">
-                                <div onClick={() => handleDialogPayment(false)}>
-                                    <ButtonSecondy text="Fechar" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {paymentIntentId && showPaymentStatus && <PaymentStatus paymentIntentId={paymentIntentId} />}
 
             </section>
         </main>
