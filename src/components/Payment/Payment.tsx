@@ -15,7 +15,7 @@ export default function Payment() {
     const [paymentStatus, setPaymentStatus] = useState<'idle' | 'pending' | 'success' | 'error'>('idle'); // Estado do pagamento
     const [paymentIntentId, setPaymentIntentId] = useState('');
     const [formattedTotalValue, setFormattedTotalValue] = useState<any>();
-    const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
+    const [cart] = useState<OrderDTO>(cartService.getCart());
       const [dialogInfoData, setDialogInfoData] = useState<{
             visable: boolean;
             message: string;
@@ -36,6 +36,7 @@ export default function Payment() {
             return () => clearInterval(interval);
         }
     }, [paymentIntentId]);
+
 
 
 
