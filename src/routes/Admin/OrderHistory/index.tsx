@@ -41,7 +41,7 @@ export default function OrderHistory() {
     });
     useEffect(() => {
         setFilterDate(moment().format('YYYY-MM-DD'));
-        orderService.findAll().then((response: any) => {
+        orderService.findAll({ sortBy: 'moment', direction: 'desc' }).then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
           
             setAllOrders(response.data);
@@ -70,7 +70,7 @@ export default function OrderHistory() {
             });
         }
     
-        setOrders(filteredOrders);
+        setOrders([...filteredOrders].reverse());
         const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
     
