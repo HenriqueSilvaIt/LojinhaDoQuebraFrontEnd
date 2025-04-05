@@ -53,6 +53,7 @@ export default function Payment() {
             const name = cart.items.map(x => x.name).join(', ');
             const formattedTotalValue = formatTotalValue(Number(cart.total));
             setPaymentStatus('pending');
+        setDialogInfoData({ visable: true, message: 'Aguardando pagamento...' }); // Define a mensagem correta
             setShowPaymentStatus(true);
             mercadoPagoService.criarIntencaoPagamento({
                 amount: formattedTotalValue,
@@ -67,7 +68,6 @@ export default function Payment() {
                 }
             }).then(response => {
                 setPaymentIntentId(response.data.Id);
-                setDialogInfoData({ ...dialogInfoData, visable: true });
                 // Adicionando um atraso de 15 segundos antes de iniciar as verificações de status
                 setTimeout(() => {
                     const interval = setInterval(() => {
@@ -87,11 +87,17 @@ export default function Payment() {
             }).catch(error => {
                 console.error("Erro ao criar intenção de pagamento:", error);
                 setPaymentStatus('error');
+                setDialogInfoData({ visable: true, message: 'Erro ao iniciar o pagamento.' }); // Atualiza a mensagem de erro inicial
+
             });
         } else if (paymentMethod === 'Dinheiro' || paymentMethod === 'Pix') {
             console.log('Pagamento com', paymentMethod, '. Intenção de pagamento não enviada.');
+            setDialogInfoData({ visable: true, message: 'Pagamento em ' + paymentMethod + '. Processamento manual.' });
+
         } else if (paymentMethod) {
             console.error('Selecione uma forma de pagamento.');
+            setDialogInfoData({ visable: true, message: 'Selecione uma forma de pagamento.' });
+
         }
     };
 
@@ -224,6 +230,22 @@ export default function Payment() {
             }
             <button className="dsc-btn dsc-btn-blue" onClick={handlePagamento}>Realizar Cobrança</button>
             {paymentIntentId && paymentStatus && <p>Status do pagamento: {paymentStatus}</p>}
+            {dialogInfoData.visable && (
+    <div className="dsc-dialog-background">
+        <div className="dsc-dialog-box">
+            {paymentStatus === 'pending' && <p>Aguardando pagamento...</p>}
+            {paymentStatus === 'success' && <p>{dialogInfoData.message}</p>} {/* Usa a mensagem do estado */}
+            {paymentStatus === 'error' && <p>{dialogInfoData.message}</p>}   {/* Usa a mensagem do estado */}
+            {paymentStatus !== 'pending' && paymentStatus !== 'success' && paymentStatus !== 'error' && <p>{dialogInfoData.message}</p>} {/* Mensagens genéricas */}
+            <div className="dsc-dialog-btn-container">
+                <div onClick={() => handleDialogPayment(false)}>
+                    <ButtonSecondy text="Fechar" />
+                </div>
+            </div>
+        </div>
+    </div>
+)}
+    
 
         </div>
         
@@ -232,22 +254,6 @@ export default function Payment() {
     );
 
     { paymentIntentId && showPaymentStatus && <PaymentStatus paymentIntentId={paymentIntentId} /> }
-
-    {dialogInfoData.visable && (
-        <div className="dsc-dialog-background">
-            <div className="dsc-dialog-box">
-
-                {paymentStatus === 'pending' && <p>Aguardando pagamento...</p>}
-                {paymentStatus === 'success' && <p>Pagamento realizado com sucesso!</p>}
-                {paymentStatus === 'error' && <p>Erro no pagamento.</p>}
-                <div className="dsc-dialog-btn-container">
-                    <div onClick={() => handleDialogPayment(false)}>
-                        <ButtonSecondy text="Fechar" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    )}
 
   
 }
