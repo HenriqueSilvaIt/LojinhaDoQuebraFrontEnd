@@ -71,8 +71,7 @@ export default function OrderHistory() {
             });
         }
         
-        setOrders(filteredOrders);
-
+            setOrders([...filteredOrders].reverse());
             const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
             setTotalSales(salesTotal);
         
