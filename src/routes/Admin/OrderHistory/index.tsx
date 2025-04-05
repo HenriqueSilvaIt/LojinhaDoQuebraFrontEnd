@@ -1,32 +1,24 @@
 import './style.css';
 import { useEffect, useState } from 'react';
-import { OrderDTO, OrderItemDTO } from '../../../models/order';
+import { OrderDTO } from '../../../models/order';
 import * as orderService from '../../../services/order-service'
 import moment from 'moment'; // Importe moment.js
 import { formatDateToFilter } from '../../../services/product-services';
 import deleteImg from '../../../assets/delete.svg';
 import DialogConfirmation from '../../../components/DialogConfirmation';
 import DialogInfo from '../../../components/DialogInfo';
-import ButtonNextPage from '../../../components/ButtonNextPage';
 
-type QueryParams = {
-    page: number;
-    size: number;
-};
 
 export default function OrderHistory() {
 
-    const [isLastPage, setIsLastPage] = useState(false);
+   
     const [allOrders, setAllOrders] = useState<OrderDTO[]>([]);
-    const [orderItems, setOrderItems] = useState<OrderItemDTO[]>([]); // Estado para a lista plana de itens
+    const [order, setOrders] = useState<OrderDTO[]>([]);
     const [filterDate, setFilterDate] = useState<string>('');
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
     const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
-    const [queryParams, setQueryParams] = useState<QueryParams>({
-        page: 0,
-        size: 10, // Defina um tamanho de página padrão
-    });
+    
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -47,34 +39,39 @@ export default function OrderHistory() {
         productId: null,
         message: 'Tem certeza?'
     });
-
     useEffect(() => {
         setFilterDate(moment().format('YYYY-MM-DD'));
-        orderService.findAll(queryParams.page, queryParams.size).then((response: any) => {
-            setIsLastPage(response.data.last);
-            const newOrders = response.data.content;
-            setAllOrders(prevAllOrders => [...prevAllOrders, ...newOrders]); // Acumula os novos pedidos
+        orderService.findAll().then((response: any) => {
+            // Acesse a propriedade 'content' para obter o array de pedidos
+          
+            setAllOrders(response.data);
+            setOrders(response.data);
         });
-    }, [queryParams.page, queryParams.size]);
+    }, []);
+    
     useEffect(() => {
         let filteredOrders: OrderDTO[] = allOrders;
     
         if (filterDate) {
-            filteredOrders = filteredOrders.filter((order) => formatDateToFilter(order.moment) === filterDate);
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+                return formatDateToFilter(order.moment) === filterDate;
+            });
         }
+    
         if (filterMonth) {
-            filteredOrders = filteredOrders.filter((order) => moment(order.moment).format('YYYY-MM') === filterMonth);
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+                return moment(order.moment).format('YYYY-MM') === filterMonth;
+            });
         }
+    
         if (filterWeek) {
-            filteredOrders = filteredOrders.filter((order) => moment(order.moment).format('YYYY-[W]ww') === filterWeek);
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+                return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
+            });
         }
     
-        // Calcula o total de vendas com base nos subtotais dos itens nos pedidos filtrados
-        const salesTotal = filteredOrders.reduce((orderAcc, order) => {
-            const orderTotal = order.items.reduce((itemAcc, item) => itemAcc + item.subTotal, 0);
-            return orderAcc + orderTotal;
-        }, 0);
-    
+        setOrders(filteredOrders);
+        const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
     
     }, [filterDate, allOrders, filterWeek, filterMonth]);
@@ -101,6 +98,7 @@ export default function OrderHistory() {
         setFilterDate(event.target.value);
         setFilterMonth('');
         setFilterWeek('');
+
     };
 
     function handleFilterMonthChange(event: any) {
@@ -130,6 +128,8 @@ export default function OrderHistory() {
         setFilterWeek('');
     }
 
+
+
     function handleDeleteClick(orderId: number, productId: number) {
         setDialogConfirmationData({
             ...dialogConfirmationData,
@@ -139,9 +139,7 @@ export default function OrderHistory() {
         });
     }
 
-    function handleNextPageClick() {
-        setQueryParams({ ...queryParams, page: queryParams.page + 1 });
-    }
+
 
     return (
         <main>
@@ -200,37 +198,34 @@ export default function OrderHistory() {
                             <th>Deletar pedido</th>
                         </tr>
                     </thead>
-                   <tbody>
-    {allOrders.map((order) => (
-        order.items.map((item) => (
-            <tr key={`${order.id}-${item.productId}`}> {/* Chave combinada */}
-                <td className="dsc-tb576">{order.id}</td> {/* Agora acessível de order */}
-                <td>{item.name}</td>
-                <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td> {/* Agora acessível de order */}
-                <td className="dsc-tb768">{item.quantity}</td>
-                <td>R$ {item.subTotal.toFixed(2)}</td>
-                <td>
-                    <img
-                        onClick={() => {
-                            if (order.id !== undefined && item.productId !== undefined) {
-                                handleDeleteClick(order.id, item.productId);
-                            } else {
-                                console.error("IDs de pedido ou produto indefinidos.");
-                            }
-                        }}
-                        className="dsc-product-listing-btn"
-                        src={deleteImg}
-                        alt="delet"
-                    />
-                </td>
-            </tr>
-        ))
-    ))}
-</tbody>
+                    <tbody>
+                        {order.map((order) =>
+                            order.items.map((item) => (
+                                <tr key={`${order.id}`}>
+                                    <td className="dsc-tb576">{order.id}</td>
+                                    <td>{item.name}</td>
+                                    <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
+                                    <td className="dsc-tb768">{item.quantity}</td>
+                                    <td>R$ {item.subTotal.toFixed(2)}</td>
+                                    <td>
+                                        <img
+                                            onClick={() => {
+                                                if (order.id !== undefined && item.productId !== undefined) {
+                                                    handleDeleteClick(order.id, item.productId);
+                                                } else {
+                                                    console.error("IDs de pedido ou produto indefinidos.");
+                                                }
+                                            }}// Corrigido
+                                            className="dsc-product-listing-btn"
+                                            src={deleteImg}
+                                            alt="delet"
+                                        />
+                                    </td>
+                                </tr>))
+
+                        )}
+                    </tbody>
                 </table>
-                {!isLastPage && (
-                    <ButtonNextPage onNextPage={handleNextPageClick} />
-                )}
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (

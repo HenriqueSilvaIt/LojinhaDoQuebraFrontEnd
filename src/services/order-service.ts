@@ -31,15 +31,12 @@ export function placeOrderRequest(cart: OrderDTO) {
     return requestBackend(config);
 }
 
-export function findAll(page: number = 0, size: number = 10) {
+export function findAll() {
     const config: AxiosRequestConfig = {
         url: `/orders`,
         method: "GET",
         withCredentials: true,
-        params: {
-            page: page,
-            size: size
-        }
+    
     };
     return requestBackend(config);
 }
