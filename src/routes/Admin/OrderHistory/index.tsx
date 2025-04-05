@@ -8,8 +8,6 @@ import deleteImg from '../../../assets/delete.svg';
 import DialogConfirmation from '../../../components/DialogConfirmation';
 import DialogInfo from '../../../components/DialogInfo';
 import ButtonNextPage from '../../../components/ButtonNextPage';
-
-// Defina a interface OrderResponse (se você ainda não tem)
 interface OrderResponse {
     content: OrderDTO[];
     totalPages?: number;
@@ -22,32 +20,27 @@ type QueryParams = {
     page: number
 }
 
+
 export default function OrderHistory() {
 
-   
+      let minhaResposta: OrderResponse | null = null; // Inicializando com null
+
+        console.log(minhaResposta);
+  
     const [allOrders, setAllOrders] = useState<OrderDTO[]>([]);
     const [order, setOrders] = useState<OrderDTO[]>([]);
     const [filterDate, setFilterDate] = useState<string>('');
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
-    const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
-    const [isLoading, setIsLoading] = useState<boolean>(false); // Declare isLoading
-    const [errorMessage, setErrorMessage] = useState<string>(''); // Declare errorMessage
-    const [totalPages, setTotalPages] = useState<number>(0);     // Declare totalPages
-    const [totalElements, setTotalElements] = useState<number>(0); // Declare totalElements
+    const [totalSales, setTotalSales] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [totalElements, setTotalElements] = useState<number>(0);
     const [isLastPage, setIsLastPage] = useState(false);
     const [queryParams, setQueryParams] = useState<QueryParams>({
-            page: 0
-        })
-
-        console.log(isLoading);
-        console.log(totalElements);
-        console.log(errorMessage);
-        console.log(totalPages);
-
-        let minhaResposta: OrderResponse | null = null; // Inicializando com null
-        
-        console.log(minhaResposta);
+        page: 0
+    });
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -68,74 +61,68 @@ export default function OrderHistory() {
         productId: null,
         message: 'Tem certeza?'
     });
+
+    const pageSize = 10; // Defina o tamanho da página
+
     useEffect(() => {
         setFilterDate(moment().format('YYYY-MM-DD'));
         setIsLoading(true);
         setErrorMessage('');
-        orderService.findAll(queryParams.page).then((response: any) => {
-            if (response.data && Array.isArray(response.data.content)) { // Verifique se response.data.content existe e é um array
+        orderService.findAll(queryParams.page, pageSize).then((response: any) => {
+            if (response.data && Array.isArray(response.data.content)) {
                 setAllOrders(response.data.content);
                 setOrders(response.data.content);
                 setIsLastPage(response.data.last);
-                                // Se a resposta também tiver informações de paginação:
                 if (response.data.totalPages) {
                     setTotalPages(response.data.totalPages);
                 }
                 if (response.data.totalElements) {
                     setTotalElements(response.data.totalElements);
                 }
-            } else if (response.data && Array.isArray(response.data)) { // Caso a paginação não esteja implementada e a resposta seja diretamente um array
+            } else if (response.data && Array.isArray(response.data)) {
                 setAllOrders(response.data);
                 setOrders(response.data);
+                setIsLastPage(true); // Se não houver paginação, considera a primeira carga como a última
             } else {
                 console.error("Resposta da API em formato inesperado:", response.data);
                 setErrorMessage("Erro ao carregar os pedidos: Formato de dados inesperado.");
-                setOrders([]); // Garante que 'order' seja um array vazio em caso de erro
+                setOrders([]);
                 setAllOrders([]);
             }
         }).catch((error: any) => {
             console.error("Erro ao buscar pedidos:", error);
             setErrorMessage(error.message || 'Erro ao carregar os pedidos.');
-            setOrders([]); // Garante que 'order' seja um array vazio em caso de erro
+            setOrders([]);
             setAllOrders([]);
         }).finally(() => {
             setIsLoading(false);
         });
-    }, []); // Removi as dependências para este efeito inicial
-    
+    }, []); // Executa apenas na montagem inicial
+
     useEffect(() => {
         let filteredOrders: OrderDTO[] = allOrders;
-    
-        if (filterDate) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
-                return formatDateToFilter(order.moment) === filterDate;
-            });
-        }
-    
-        if (filterMonth) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
-                return moment(order.moment).format('YYYY-MM') === filterMonth;
-            });
-        }
-    
-        if (filterWeek) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
-                return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
-            });
-        }
-    
-        console.log("Valor de 'filteredOrders' antes de setOrders:", filteredOrders);
-    if (Array.isArray(filteredOrders)) {
-        setOrders(filteredOrders);
-        const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
-        setTotalSales(salesTotal);
-    } else {
-        console.error("Erro: 'filteredOrders' não é um array:", filteredOrders);
-        setOrders([]); // Garante que 'order' seja um array vazio em caso de erro
-        setTotalSales(0);
-    }
 
-}, [filterDate, allOrders, filterWeek, filterMonth]);
+        if (filterDate) {
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => formatDateToFilter(order.moment) === filterDate);
+        }
+
+        if (filterMonth) {
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => moment(order.moment).format('YYYY-MM') === filterMonth);
+        }
+
+        if (filterWeek) {
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => moment(order.moment).format('YYYY-[W]ww') === filterWeek);
+        }
+
+        const startIndex = 0; // Na Opção 2, 'order' é atualizado diretamente
+        const endIndex = startIndex + pageSize;
+        setOrders(filteredOrders.slice(startIndex, endIndex));
+        setTotalSales(filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0));
+        setIsLastPage(filteredOrders.length <= order.length); // Atualiza isLastPage baseado nos dados filtrados
+        setTotalElements(filteredOrders.length);
+        setTotalPages(Math.ceil(filteredOrders.length / pageSize));
+
+    }, [filterDate, filterMonth, filterWeek, allOrders]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
@@ -159,7 +146,6 @@ export default function OrderHistory() {
         setFilterDate(event.target.value);
         setFilterMonth('');
         setFilterWeek('');
-
     };
 
     function handleFilterMonthChange(event: any) {
@@ -187,9 +173,40 @@ export default function OrderHistory() {
         setFilterDate('');
         setFilterMonth('');
         setFilterWeek('');
+        setQueryParams({ ...queryParams, page: 0 });
+        // Recarrega a primeira página sem filtros
+        setIsLoading(true);
+        orderService.findAll(0, pageSize).then((response: any) => {
+            if (response.data && Array.isArray(response.data.content)) {
+                setAllOrders(response.data.content);
+                setOrders(response.data.content);
+                setIsLastPage(response.data.last);
+                if (response.data.totalPages) {
+                    setTotalPages(response.data.totalPages);
+                }
+                if (response.data.totalElements) {
+                    setTotalElements(response.data.totalElements);
+                }
+            } else if (response.data && Array.isArray(response.data)) {
+                setAllOrders(response.data);
+                setOrders(response.data);
+                setIsLastPage(true);
+            } else {
+                console.error("Resposta da API em formato inesperado:", response.data);
+                setErrorMessage("Erro ao carregar os pedidos: Formato de dados inesperado.");
+                setOrders([]);
+                setAllOrders([]);
+            }
+        }).catch((error: any) => {
+            console.error("Erro ao buscar pedidos:", error);
+            setErrorMessage(error.message || 'Erro ao carregar os pedidos.');
+            setOrders([]);
+            setAllOrders([]);
+        }).finally(() => {
+            setIsLoading(false);
+            setQueryParams({ ...queryParams, page: 0 }); // Reseta a página após limpar
+        });
     }
-
-
 
     function handleDeleteClick(orderId: number, productId: number) {
         setDialogConfirmationData({
@@ -199,12 +216,41 @@ export default function OrderHistory() {
             visable: true
         });
     }
+
     function handleNextPageClick() {
-        setQueryParams({ ...queryParams, page: queryParams.page + 1 }); /*
-        ao clicar no botão, ele ta dizendo que vai receber os produtos que já tinha na página
-        ...queryParams + page: queryParama.page + 1, e mais o produto da página seguinte */
+        setIsLoading(true);
+        const nextPage = queryParams.page + 1;
+        orderService.findAll(nextPage, pageSize).then((response: any) => {
+            if (response.data && Array.isArray(response.data.content)) {
+                setOrders(prevOrders => [...prevOrders, ...response.data.content]);
+                setIsLastPage(response.data.last);
+                if (response.data.totalPages) {
+                    setTotalPages(response.data.totalPages);
+                }
+                if (response.data.totalElements) {
+                    setTotalElements(response.data.totalElements);
+                }
+                setQueryParams({ ...queryParams, page: nextPage });
+            } else if (response.data && Array.isArray(response.data)) {
+                setOrders(prevOrders => [...prevOrders, ...response.data]);
+                setIsLastPage(true);
+            } else {
+                console.error("Resposta da API em formato inesperado:", response.data);
+                setErrorMessage("Erro ao carregar mais pedidos: Formato de dados inesperado.");
+            }
+        }).catch((error: any) => {
+            console.error("Erro ao buscar mais pedidos:", error);
+            setErrorMessage(error.message || 'Erro ao carregar mais pedidos.');
+        }).finally(() => {
+            setIsLoading(false);
+        });
     }
 
+    console.log(isLoading);
+console.log(errorMessage);
+console.log(totalPages);
+console.log(totalElements);
+console.log(isLastPage);
     return (
         <main>
             <section id="product-listing-section" className="dsc-container">
@@ -291,7 +337,7 @@ export default function OrderHistory() {
                     </tbody>
                 </table>
 
-                                    {!isLastPage &&
+                     {!isLastPage &&
                                         <ButtonNextPage onNextPage={handleNextPageClick} />
                 
                                     }
