@@ -10,7 +10,7 @@ import DialogInfo from '../../../components/DialogInfo';
 import ButtonNextPage from '../../../components/ButtonNextPage';
 
 // Defina a interface OrderResponse (se você ainda não tem)
-interface OrderResponse  {
+type OrderResponse =  {
     content: OrderDTO[];
     totalPages?: number;
     totalElements?: number;
@@ -35,7 +35,7 @@ export default function OrderHistory() {
     const [isLoading, setIsLoading] = useState<boolean>(false); // Declare isLoading
     const [errorMessage, setErrorMessage] = useState<string>(''); // Declare errorMessage
     const [totalPages, setTotalPages] = useState<number>(0);     // Declare totalPages
-    const [totalElements, setTotalElements] = useState<number>(0); // Declare totalElements
+    const [totalElements, setTotalElements] = useState<OrderResponse>(); // Declare totalElements
     const [isLastPage, setIsLastPage] = useState(false);
     const [queryParams, setQueryParams] = useState<QueryParams>({
             page: 0,
