@@ -42,7 +42,7 @@ export default function OrderHistory() {
     });
     useEffect(() => {
         setFilterDate(moment().format('YYYY-MM-DD'));
-        orderService.findAll({ sortBy: 'moment', direction: 'desc' }).then((response: any) => { 
+        orderService.findAll({ sortBy: 'moment', direction: 'desc' }).then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
           
             setAllOrders(response.data);
@@ -70,12 +70,13 @@ export default function OrderHistory() {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
         }
-    
-        setOrders([...filteredOrders].reverse());
-        const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
-        setTotalSales(salesTotal);
-    
-    }, [filterDate, allOrders, filterWeek, filterMonth]);
+        
+        setOrders(filteredOrders);
+
+            const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
+            setTotalSales(salesTotal);
+        
+        }, [filterDate, allOrders, filterWeek, filterMonth]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
