@@ -10,7 +10,7 @@ import DialogInfo from '../../../components/DialogInfo';
 import ButtonNextPage from '../../../components/ButtonNextPage';
 
 // Defina a interface OrderResponse (se você ainda não tem)
-type OrderResponse =  {
+interface OrderResponse {
     content: OrderDTO[];
     totalPages?: number;
     totalElements?: number;
@@ -19,8 +19,7 @@ type OrderResponse =  {
 }
 
 type QueryParams = {
-    page: number,
-    size: number
+    page: number
 }
 
 export default function OrderHistory() {
@@ -35,14 +34,20 @@ export default function OrderHistory() {
     const [isLoading, setIsLoading] = useState<boolean>(false); // Declare isLoading
     const [errorMessage, setErrorMessage] = useState<string>(''); // Declare errorMessage
     const [totalPages, setTotalPages] = useState<number>(0);     // Declare totalPages
-    const [totalElements, setTotalElements] = useState<number>(); // Declare totalElements
+    const [totalElements, setTotalElements] = useState<number>(0); // Declare totalElements
     const [isLastPage, setIsLastPage] = useState(false);
-    let minhaResposta: OrderResponse | null = null; // Inicializando com null
-    console.log(minhaResposta);
     const [queryParams, setQueryParams] = useState<QueryParams>({
-            page: 0,
-            size: 10
+            page: 0
         })
+
+        console.log(isLoading);
+        console.log(totalElements);
+        console.log(errorMessage);
+        console.log(totalPages);
+
+        let minhaResposta: OrderResponse | null = null; // Inicializando com null
+        
+        console.log(minhaResposta);
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -51,7 +56,6 @@ export default function OrderHistory() {
         visable: false,
         message: 'Sucesso'
     });
- 
 
     const [dialogConfirmationData, setDialogConfirmationData] = useState<{
         visable: boolean;
@@ -64,44 +68,40 @@ export default function OrderHistory() {
         productId: null,
         message: 'Tem certeza?'
     });
-
     useEffect(() => {
-        setFilterDate(moment().format('YYYY-MM-DD')); // Inicializa com a data atual na montagem
+        setFilterDate(moment().format('YYYY-MM-DD'));
         setIsLoading(true);
         setErrorMessage('');
-        orderService.findAll(queryParams.page, queryParams.size).then((response: any) => {
-            if (response.data && Array.isArray(response.data.content)) {
+        orderService.findAll(queryParams.page).then((response: any) => {
+            if (response.data && Array.isArray(response.data.content)) { // Verifique se response.data.content existe e é um array
                 setAllOrders(response.data.content);
                 setOrders(response.data.content);
                 setIsLastPage(response.data.last);
+                                // Se a resposta também tiver informações de paginação:
                 if (response.data.totalPages) {
                     setTotalPages(response.data.totalPages);
-                    console.log(totalPages);
                 }
                 if (response.data.totalElements) {
                     setTotalElements(response.data.totalElements);
-                    console.log(totalElements);
                 }
-            } else if (response.data && Array.isArray(response.data)) {
+            } else if (response.data && Array.isArray(response.data)) { // Caso a paginação não esteja implementada e a resposta seja diretamente um array
                 setAllOrders(response.data);
                 setOrders(response.data);
             } else {
                 console.error("Resposta da API em formato inesperado:", response.data);
                 setErrorMessage("Erro ao carregar os pedidos: Formato de dados inesperado.");
-                console.log(errorMessage);
-                setOrders([]);
+                setOrders([]); // Garante que 'order' seja um array vazio em caso de erro
                 setAllOrders([]);
             }
         }).catch((error: any) => {
             console.error("Erro ao buscar pedidos:", error);
             setErrorMessage(error.message || 'Erro ao carregar os pedidos.');
-            setOrders([]);
+            setOrders([]); // Garante que 'order' seja um array vazio em caso de erro
             setAllOrders([]);
-            console.log(isLoading)
         }).finally(() => {
             setIsLoading(false);
         });
-    }, []); // Array de dependências vazio, executa apenas na montagem inicial
+    }, []); // Removi as dependências para este efeito inicial
     
     useEffect(() => {
         let filteredOrders: OrderDTO[] = allOrders;
@@ -124,22 +124,18 @@ export default function OrderHistory() {
             });
         }
     
-        if (Array.isArray(filteredOrders)) {
-            const startIndex = queryParams.page * queryParams.size;
-            const endIndex = startIndex + queryParams.size;
-            const paginatedFilteredOrders = filteredOrders.slice(startIndex, endIndex);
-    
-            setOrders(paginatedFilteredOrders);
-            const salesTotal = paginatedFilteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
-            setTotalSales(salesTotal);
-            setIsLastPage(endIndex >= filteredOrders.length); // Correção aqui
-            setTotalElements(filteredOrders.length);
-            setTotalPages(Math.ceil(filteredOrders.length / queryParams.size));
-        } else {
-            // ... tratamento de erro ...
-            setIsLastPage(true); // Garante que o botão não apareça em caso de erro
-        }
-    }, [filterDate, filterMonth, filterWeek, queryParams.page, queryParams.size, allOrders]);
+        console.log("Valor de 'filteredOrders' antes de setOrders:", filteredOrders);
+    if (Array.isArray(filteredOrders)) {
+        setOrders(filteredOrders);
+        const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
+        setTotalSales(salesTotal);
+    } else {
+        console.error("Erro: 'filteredOrders' não é um array:", filteredOrders);
+        setOrders([]); // Garante que 'order' seja um array vazio em caso de erro
+        setTotalSales(0);
+    }
+
+}, [filterDate, allOrders, filterWeek, filterMonth]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
@@ -183,16 +179,16 @@ export default function OrderHistory() {
         }
         setFilterDate('');
         setFilterMonth('');
-   
         console.log(event.target.value)
     }
+
     function handleCleanFilter(event: any) {
         event.preventDefault();
         setFilterDate('');
         setFilterMonth('');
         setFilterWeek('');
-        setQueryParams({ ...queryParams, page: 0 }); // Reseta a página para 0
     }
+
 
 
     function handleDeleteClick(orderId: number, productId: number) {
@@ -203,7 +199,6 @@ export default function OrderHistory() {
             visable: true
         });
     }
-
     function handleNextPageClick() {
         setQueryParams({ ...queryParams, page: queryParams.page + 1 }); /*
         ao clicar no botão, ele ta dizendo que vai receber os produtos que já tinha na página
