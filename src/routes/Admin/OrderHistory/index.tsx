@@ -35,8 +35,10 @@ export default function OrderHistory() {
     const [isLoading, setIsLoading] = useState<boolean>(false); // Declare isLoading
     const [errorMessage, setErrorMessage] = useState<string>(''); // Declare errorMessage
     const [totalPages, setTotalPages] = useState<number>(0);     // Declare totalPages
-    const [totalElements, setTotalElements] = useState<OrderResponse>(); // Declare totalElements
+    const [totalElements, setTotalElements] = useState<number>(); // Declare totalElements
     const [isLastPage, setIsLastPage] = useState(false);
+    let minhaResposta: OrderResponse | null = null; // Inicializando com null
+    console.log(minhaResposta);
     const [queryParams, setQueryParams] = useState<QueryParams>({
             page: 0,
             size: 10
@@ -49,6 +51,7 @@ export default function OrderHistory() {
         visable: false,
         message: 'Sucesso'
     });
+ 
 
     const [dialogConfirmationData, setDialogConfirmationData] = useState<{
         visable: boolean;
@@ -122,17 +125,27 @@ export default function OrderHistory() {
         }
     
         console.log("Valor de 'filteredOrders' antes de setOrders:", filteredOrders);
-    if (Array.isArray(filteredOrders)) {
-        setOrders(filteredOrders);
-        const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
-        setTotalSales(salesTotal);
-    } else {
-        console.error("Erro: 'filteredOrders' não é um array:", filteredOrders);
-        setOrders([]); // Garante que 'order' seja um array vazio em caso de erro
-        setTotalSales(0);
-    }
-
-}, [filterDate, allOrders, filterWeek, filterMonth]);
+        if (Array.isArray(filteredOrders)) {
+            // Aplica a paginação aos resultados filtrados
+            const startIndex = queryParams.page * queryParams.size;
+            const endIndex = startIndex + queryParams.size;
+            const paginatedFilteredOrders = filteredOrders.slice(startIndex, endIndex);
+    
+            setOrders(paginatedFilteredOrders);
+            const salesTotal = paginatedFilteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
+            setTotalSales(salesTotal);
+            setIsLastPage(endIndex >= filteredOrders.length);
+            setTotalElements(filteredOrders.length); // Atualiza o total de elementos após a filtragem
+            setTotalPages(Math.ceil(filteredOrders.length / queryParams.size)); // Atualiza o total de páginas após a filtragem
+        } else {
+            console.error("Erro: 'filteredOrders' não é um array:", filteredOrders);
+            setOrders([]);
+            setTotalSales(0);
+            setIsLastPage(true);
+            setTotalElements(0);
+            setTotalPages(0);
+        }
+    }, [filterDate, filterMonth, filterWeek, queryParams.page, queryParams.size, allOrders]); 
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
@@ -156,7 +169,6 @@ export default function OrderHistory() {
         setFilterDate(event.target.value);
         setFilterMonth('');
         setFilterWeek('');
-        setQueryParams({ ...queryParams, page: 0 });
 
     };
 
@@ -165,7 +177,6 @@ export default function OrderHistory() {
         setFilterMonth(event.target.value);
         setFilterDate('');
         setFilterWeek('');
-        setQueryParams({ ...queryParams, page: 0 });
     }
 
     function handleFilterWeekChange(event: any) {
@@ -178,10 +189,9 @@ export default function OrderHistory() {
         }
         setFilterDate('');
         setFilterMonth('');
-        setQueryParams({ ...queryParams, page: 0 });
+   
         console.log(event.target.value)
     }
-
     function handleCleanFilter(event: any) {
         event.preventDefault();
         setFilterDate('');
