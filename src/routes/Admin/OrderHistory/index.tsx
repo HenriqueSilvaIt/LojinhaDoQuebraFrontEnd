@@ -7,40 +7,19 @@ import { formatDateToFilter } from '../../../services/product-services';
 import deleteImg from '../../../assets/delete.svg';
 import DialogConfirmation from '../../../components/DialogConfirmation';
 import DialogInfo from '../../../components/DialogInfo';
-import ButtonNextPage from '../../../components/ButtonNextPage';
-interface OrderResponse {
-    content: OrderDTO[];
-    totalPages?: number;
-    totalElements?: number;
-    number?: number;
-    size?: number;
-}
 
-type QueryParams = {
-    page: number
-}
 
 
 export default function OrderHistory() {
 
-      let minhaResposta: OrderResponse | null = null; // Inicializando com null
-
-        console.log(minhaResposta);
-  
+    
     const [allOrders, setAllOrders] = useState<OrderDTO[]>([]);
     const [order, setOrders] = useState<OrderDTO[]>([]);
     const [filterDate, setFilterDate] = useState<string>('');
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
-    const [totalSales, setTotalSales] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>('');
-    const [totalPages, setTotalPages] = useState<number>(0);
-    const [totalElements, setTotalElements] = useState<number>(0);
-    const [isLastPage, setIsLastPage] = useState(false);
-    const [queryParams, setQueryParams] = useState<QueryParams>({
-        page: 0
-    });
+    const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
+    
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -61,68 +40,42 @@ export default function OrderHistory() {
         productId: null,
         message: 'Tem certeza?'
     });
-
-    const pageSize = 10; // Defina o tamanho da página
-
     useEffect(() => {
         setFilterDate(moment().format('YYYY-MM-DD'));
-        setIsLoading(true);
-        setErrorMessage('');
-        orderService.findAll(queryParams.page, pageSize).then((response: any) => {
-            if (response.data && Array.isArray(response.data.content)) {
-                setAllOrders(response.data.content);
-                setOrders(response.data.content);
-                setIsLastPage(response.data.last);
-                if (response.data.totalPages) {
-                    setTotalPages(response.data.totalPages);
-                }
-                if (response.data.totalElements) {
-                    setTotalElements(response.data.totalElements);
-                }
-            } else if (response.data && Array.isArray(response.data)) {
-                setAllOrders(response.data);
-                setOrders(response.data);
-                setIsLastPage(true); // Se não houver paginação, considera a primeira carga como a última
-            } else {
-                console.error("Resposta da API em formato inesperado:", response.data);
-                setErrorMessage("Erro ao carregar os pedidos: Formato de dados inesperado.");
-                setOrders([]);
-                setAllOrders([]);
-            }
-        }).catch((error: any) => {
-            console.error("Erro ao buscar pedidos:", error);
-            setErrorMessage(error.message || 'Erro ao carregar os pedidos.');
-            setOrders([]);
-            setAllOrders([]);
-        }).finally(() => {
-            setIsLoading(false);
+        orderService.findAll({ sortBy: 'moment', direction: 'desc' }).then((response: any) => { 
+            // Acesse a propriedade 'content' para obter o array de pedidos
+          
+            setAllOrders(response.data);
+            setOrders(response.data);
         });
-    }, []); // Executa apenas na montagem inicial
-
+    }, []);
+    
     useEffect(() => {
         let filteredOrders: OrderDTO[] = allOrders;
-
+    
         if (filterDate) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => formatDateToFilter(order.moment) === filterDate);
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+                return formatDateToFilter(order.moment) === filterDate;
+            });
         }
-
+    
         if (filterMonth) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => moment(order.moment).format('YYYY-MM') === filterMonth);
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+                return moment(order.moment).format('YYYY-MM') === filterMonth;
+            });
         }
-
+    
         if (filterWeek) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => moment(order.moment).format('YYYY-[W]ww') === filterWeek);
+            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+                return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
+            });
         }
-
-        const startIndex = 0; // Na Opção 2, 'order' é atualizado diretamente
-        const endIndex = startIndex + pageSize;
-        setOrders(filteredOrders.slice(startIndex, endIndex));
-        setTotalSales(filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0));
-        setIsLastPage(filteredOrders.length <= order.length); // Atualiza isLastPage baseado nos dados filtrados
-        setTotalElements(filteredOrders.length);
-        setTotalPages(Math.ceil(filteredOrders.length / pageSize));
-
-    }, [filterDate, filterMonth, filterWeek, allOrders]);
+    
+        setOrders([...filteredOrders].reverse());
+        const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
+        setTotalSales(salesTotal);
+    
+    }, [filterDate, allOrders, filterWeek, filterMonth]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
@@ -146,6 +99,7 @@ export default function OrderHistory() {
         setFilterDate(event.target.value);
         setFilterMonth('');
         setFilterWeek('');
+
     };
 
     function handleFilterMonthChange(event: any) {
@@ -173,40 +127,9 @@ export default function OrderHistory() {
         setFilterDate('');
         setFilterMonth('');
         setFilterWeek('');
-        setQueryParams({ ...queryParams, page: 0 });
-        // Recarrega a primeira página sem filtros
-        setIsLoading(true);
-        orderService.findAll(0, pageSize).then((response: any) => {
-            if (response.data && Array.isArray(response.data.content)) {
-                setAllOrders(response.data.content);
-                setOrders(response.data.content);
-                setIsLastPage(response.data.last);
-                if (response.data.totalPages) {
-                    setTotalPages(response.data.totalPages);
-                }
-                if (response.data.totalElements) {
-                    setTotalElements(response.data.totalElements);
-                }
-            } else if (response.data && Array.isArray(response.data)) {
-                setAllOrders(response.data);
-                setOrders(response.data);
-                setIsLastPage(true);
-            } else {
-                console.error("Resposta da API em formato inesperado:", response.data);
-                setErrorMessage("Erro ao carregar os pedidos: Formato de dados inesperado.");
-                setOrders([]);
-                setAllOrders([]);
-            }
-        }).catch((error: any) => {
-            console.error("Erro ao buscar pedidos:", error);
-            setErrorMessage(error.message || 'Erro ao carregar os pedidos.');
-            setOrders([]);
-            setAllOrders([]);
-        }).finally(() => {
-            setIsLoading(false);
-            setQueryParams({ ...queryParams, page: 0 }); // Reseta a página após limpar
-        });
     }
+
+
 
     function handleDeleteClick(orderId: number, productId: number) {
         setDialogConfirmationData({
@@ -217,40 +140,8 @@ export default function OrderHistory() {
         });
     }
 
-    function handleNextPageClick() {
-        setIsLoading(true);
-        const nextPage = queryParams.page + 1;
-        orderService.findAll(nextPage, pageSize).then((response: any) => {
-            if (response.data && Array.isArray(response.data.content)) {
-                setOrders(prevOrders => [...prevOrders, ...response.data.content]);
-                setIsLastPage(response.data.last);
-                if (response.data.totalPages) {
-                    setTotalPages(response.data.totalPages);
-                }
-                if (response.data.totalElements) {
-                    setTotalElements(response.data.totalElements);
-                }
-                setQueryParams({ ...queryParams, page: nextPage });
-            } else if (response.data && Array.isArray(response.data)) {
-                setOrders(prevOrders => [...prevOrders, ...response.data]);
-                setIsLastPage(true);
-            } else {
-                console.error("Resposta da API em formato inesperado:", response.data);
-                setErrorMessage("Erro ao carregar mais pedidos: Formato de dados inesperado.");
-            }
-        }).catch((error: any) => {
-            console.error("Erro ao buscar mais pedidos:", error);
-            setErrorMessage(error.message || 'Erro ao carregar mais pedidos.');
-        }).finally(() => {
-            setIsLoading(false);
-        });
-    }
 
-    console.log(isLoading);
-console.log(errorMessage);
-console.log(totalPages);
-console.log(totalElements);
-console.log(isLastPage);
+
     return (
         <main>
             <section id="product-listing-section" className="dsc-container">
@@ -336,11 +227,6 @@ console.log(isLastPage);
                         )}
                     </tbody>
                 </table>
-
-                     {!isLastPage &&
-                                        <ButtonNextPage onNextPage={handleNextPageClick} />
-                
-                                    }
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
