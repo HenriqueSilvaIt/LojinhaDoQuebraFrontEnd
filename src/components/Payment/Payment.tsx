@@ -14,6 +14,8 @@ export default function Payment() {
     const [paymentMethod, setPaymentMethod] = useState<string>('');
     const [paymentStatus, setPaymentStatus] = useState<'idle' | 'pending' | 'success' | 'error'>('idle'); // Estado do pagamento
     const [paymentIntentId, setPaymentIntentId] = useState('');
+    const [formattedTotalValue, setFormattedTotalValue] = useState<any>();
+    const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
       const [dialogInfoData, setDialogInfoData] = useState<{
             visable: boolean;
             message: string;
@@ -22,8 +24,6 @@ export default function Payment() {
             message: 'Sucesso'
         });
     
-
-        const [cart] = useState<OrderDTO>(cartService.getCart());
         
     useEffect(() => {
         if (paymentIntentId) {
@@ -51,8 +51,9 @@ export default function Payment() {
                 return;
             }
             const name = cart.items.map(x => x.name).join(', ');
-            const formattedTotalValue = formatTotalValue(Number(cart.total));
             setPaymentStatus('pending');
+
+            setFormattedTotalValue(formatTotalValue(Number(cart.total)));
         setDialogInfoData({ visable: true, message: 'Aguardando pagamento...' }); // Define a mensagem correta
             setShowPaymentStatus(true);
             mercadoPagoService.criarIntencaoPagamento({
@@ -100,6 +101,9 @@ export default function Payment() {
 
         }
     };
+
+
+
 
     function handlePaymentMethod(event: any) {
         setPaymentMethod(event.target.value);
