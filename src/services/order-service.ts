@@ -3,12 +3,6 @@ import { requestBackend } from "../utils/requests";
 import { OrderDTO } from "../models/order";
 
 
-export type OrderSearchParams = {
-    sortBy?: string;
-    direction?: 'asc' | 'desc';
-    // Adicione outros parâmetros de pesquisa que sua API possa aceitar
-};
-
 export function findByIdRequest(id: number) {
     
     const config : AxiosRequestConfig = {
@@ -37,12 +31,16 @@ export function placeOrderRequest(cart: OrderDTO) {
     return requestBackend(config);
 }
 
-export function findAll(params?: OrderSearchParams) {
+export function findAll(page: number, size: number) {
     const config: AxiosRequestConfig = {
         url: `/orders`,
         method: "GET",
         withCredentials: true,
-        params: params // Adiciona os parâmetros à configuração da requisição
+        params: {
+            page,
+            size
+        }
+       // Adiciona os parâmetros à configuração da requisição
     };
     return requestBackend(config);
 }
