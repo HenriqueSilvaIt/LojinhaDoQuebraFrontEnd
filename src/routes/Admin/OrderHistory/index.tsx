@@ -200,7 +200,7 @@ export default function OrderHistory() {
                     <tbody>
                         {order.map((order) =>
                             order.items.map((item) => (
-                                <tr key={`${order.id}`}>
+                                <tr key={`${order.id}-${item.productId}`}>
                                     <td className="dsc-tb576">{order.id}</td>
                                     <td>{item.name}</td>
                                     <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
