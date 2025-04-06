@@ -40,7 +40,8 @@ export default function OrderHistory() {
         message: 'Tem certeza?'
     });
     useEffect(() => {
-        setFilterDate(moment().format('YYYY-MM-DD'));
+        setFilterDate('');
+       // setFilterDate(moment().format('YYYY-MM-DD'));
         orderService.findAll({ sortBy: 'moment', direction: 'desc' }).then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
