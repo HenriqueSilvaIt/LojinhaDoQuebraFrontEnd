@@ -6,6 +6,7 @@ import * as cartService from '../../services/cart-services'
 import { OrderDTO } from "../../models/order";
 import './style.css';
 
+
 export default function Payment() {
 
 
@@ -78,9 +79,9 @@ export default function Payment() {
                 additional_info: {
                     external_reference: "12321hadas-12321jasd-12321jasda-123j213asd",
                     print_on_terminal: true
-                }
+                    }
             }).then(response => {
-                setPaymentIntentId(response.data.Id);
+                setPaymentIntentId(response.data.id);
                 // Adicionando um atraso de 15 segundos antes de iniciar as verificações de status
                 setTimeout(() => {
                     const interval = setInterval(() => {
@@ -139,16 +140,16 @@ export default function Payment() {
 
         useEffect(() => {
             if (paymentIntentId) {
-                axios.get(`http://localhost:8091/mercado-pago-payment-status/${paymentIntentId}`)
+                axios.get(`https://lojinhadoquebrabackend-production.up.railway.app/mercado-pago-payment-status/${paymentIntentId}`)
                     .then(response => {
-                        setPaymentStatus(response.data);
+                        setPaymentStatus(response.data.status);
                     })
                     .catch(error => {
                         console.error('Erro ao obter status do pagamento:', error);
                         setError('Erro ao obter status do pagamento.');
                     });
             }
-        }, [paymentIntentId]);
+        }, [paymentIntentId, paymentStatus]);
 
         if (error) {
             return <p>{error}</p>;
