@@ -213,8 +213,8 @@ export default function OrderHistory() {
                                                     handleDeleteClick(order.id, item.productId);
                                                 } else {
                                                     console.error("IDs de pedido ou produto indefinidos.");
-                                                }
-                                            }}// Corrigido
+                                                }}// Corrigido
+                                            }
                                             className="dsc-product-listing-btn"
                                             src={deleteImg}
                                             alt="delet"
