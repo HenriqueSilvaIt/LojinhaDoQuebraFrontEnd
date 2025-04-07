@@ -6,8 +6,11 @@ import { OrderDTO } from "../../models/order";
 import './style.css';
 import loadingGif from '../../assets/loadin.gif';
 
+interface PaymentProps {
+    totalCartValue: number;
+}
 
-export default function Payment() {
+export default function Payment({ totalCartValue }: PaymentProps) {
 
 
     const [instalmmentValue, setInstamentValue] = useState<any>();
@@ -25,6 +28,11 @@ export default function Payment() {
         message: 'Sucesso'
     });
 
+    useEffect(() => {
+        if (totalCartValue !== undefined) {
+            setFormattedTotalValue(formatTotalValue(totalCartValue));
+        }
+    }, [totalCartValue]); // Executa quando totalCartValue muda
 
     useEffect(() => {
         if (paymentIntentId) {
@@ -83,7 +91,7 @@ export default function Payment() {
             }
             const name = cart.items.map(x => x.name).join(', ');
 
-            setFormattedTotalValue(formatTotalValue(Number(cart.total)));
+            setFormattedTotalValue(formatTotalValue(Number(totalCartValue)));
             setDialogInfoData({ visable: true, message: 'Iniciando' }); // Define a mensagem correta
             mercadoPagoService.criarIntencaoPagamento({
                 amount: formattedTotalValue,

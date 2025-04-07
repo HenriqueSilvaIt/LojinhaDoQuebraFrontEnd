@@ -255,7 +255,7 @@ export default function Cart() {
                                         }
                                     </div>
                                 </div>
-                                <Payment />
+                                <Payment totalCartValue={cart.total}/>
                             </div>
 
                         </div>
