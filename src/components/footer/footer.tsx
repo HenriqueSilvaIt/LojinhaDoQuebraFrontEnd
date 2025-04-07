@@ -19,7 +19,7 @@ export default function FooterQuebra() {
             </div>
             <div className="dsc-socialmedias">
                 <h4>Redes Sociais</h4>
-                <a href="https://www.instagram.com/lojinha_do_quebra?igsh=MXcwdnRvYTZicm9uNA=="><img src={imgInsta} alt="Instagram"/></a>
+                <a href="https://www.instagram.com/lojinha_do_quebra?igsh=MXcwdnRvYTZicm9uNA==" target="_blank"><img src={imgInsta} alt="Instagram"/></a>
                 <a href="a"><img src={facebook} alt="Facebook"/></a>
                 <a href="https://api.whatsapp.com/send?phone=5511992643264&text=Ol%C3%A1%20Lojinha%20do%20quebra%2C%20%0A%0ATenho%20interesse%20em%20um%20produto%20%F0%9F%98%80" target="_blank"><img src={whats} alt="whatsapp"/></a>
                 <a href="https://www.youtube.com/@atsdoces9430" target="_blank"><img src={youtube} alt="Youtube"/></a>
