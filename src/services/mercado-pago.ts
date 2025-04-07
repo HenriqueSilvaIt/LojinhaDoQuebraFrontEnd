@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, {  AxiosRequestConfig } from "axios";
 import QueryString from "qs";
 import { CLIENT_MERCADO, SECRET_MERCADO } from "../utils/system";
 import * as mercadoPagoRepository from '../localstorage/mercadopago-repostory';
@@ -54,6 +54,20 @@ export function criarIntencaoPagamento(pagamentoData: any) {
 }
 
 
+export const obterStatusIntencaoPagamento = (paymentIntentId: any) => {
+
+
+    const config : AxiosRequestConfig = {
+        method: "GET",
+        url: `/mercado-pago-payment-status/${paymentIntentId}`,
+        
+
+      }
+
+    return requestMercadoPago(config);
+};
+
+
 export const obterDispositivos = (storeId: any , posId :any)  => {
     return axios.get(`${API_URL}/dispositivos`, { params: { storeId, posId } });
 };
@@ -78,10 +92,6 @@ export const criarIntencaoPagamento = ( pagamentoData : any) => {
     return  axios(config);
 };*/
 
-
-export const obterStatusIntencaoPagamento = (paymentIntentId: any) => {
-    return axios.get(`${API_URL}/pagamentos/${paymentIntentId}`);
-};
 
 export const cancelarIntencaoPagamento = (deviceId: any, paymentIntentId: any) => {
     return axios.delete(`${API_URL}/pagamentos/${deviceId}/${paymentIntentId}`);

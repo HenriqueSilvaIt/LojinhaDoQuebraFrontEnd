@@ -90,7 +90,7 @@ export default function Catalog() {
        <h2 className="dsc-section-title  dsc-container dsc-mb20 dsc-mt20">Estoque</h2>
             : 
 
-            <h2 className="dsc-section-title  dsc-container dsc-mb20 dsc-mt20">Produtos disponíveis</h2>
+            <h2 className="dsc-section-title  dsc-container dsc-mb20 dsc-mt20">Produtos</h2>
 
     }
             <section id="catalog-section" className="dsc-container">

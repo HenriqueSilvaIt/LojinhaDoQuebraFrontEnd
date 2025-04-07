@@ -83,3 +83,15 @@
   @media (max-width: 576px) {
     
   }
+
+.dsc-dialog-box[paymentStatus="FINISHED"]  {
+  
+  color: white;
+  background-color: var(--color-bg-quartenary);
+
+}
+
+.dsc-dialog-box[paymentStatus="CANCELED"]  {
+  color: white;
+  background-color: red;
+}
