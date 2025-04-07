@@ -99,7 +99,7 @@
   color:var(--color-font-tertiary);
   background-color: rgb(208, 208, 11);
 }
-
+  
 .loading-container {
   display: flex;
   flex-direction: column; /* Coloca o GIF e o texto em coluna */

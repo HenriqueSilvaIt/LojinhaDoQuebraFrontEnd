@@ -1,0 +1,25 @@
+
+
+footer {
+    padding: 40px 20px;
+    background-color: red;
+    min-height: 200px;
+    color: var(--color-font-tertiary);
+}
+
+.footer-content {
+    display: flex;
+    justify-content:  space-between;
+    align-items: center;
+}
+
+.footer-content h4 {
+    margin-bottom: 5px;
+}
+
+.dsc-socialmedias img {
+
+    margin-right: 5px;
+    width: 40px;
+    height: 40px
+}
