@@ -100,3 +100,14 @@
   background-color: rgb(208, 208, 11);
 }
 
+.loading-container {
+  display: flex;
+  flex-direction: column; /* Coloca o GIF e o texto em coluna */
+  align-items: center; /* Centraliza horizontalmente */
+}
+
+.loading-container img {
+  width: 50px; /* Ajuste o tamanho conforme necessário */
+  height: 50px;
+  margin-bottom: 10px; /* Espaço entre o GIF e o texto */
+}

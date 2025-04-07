@@ -4,6 +4,7 @@ import ButtonSecondy from "../ButtonSecondy";
 import * as cartService from '../../services/cart-services'
 import { OrderDTO } from "../../models/order";
 import './style.css';
+import loadingGif from '../../assets/loadin.gif';
 
 
 export default function Payment() {
@@ -15,46 +16,46 @@ export default function Payment() {
     const [paymentIntentId, setPaymentIntentId] = useState('');
     const [formattedTotalValue, setFormattedTotalValue] = useState<any>();
     const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
-      const [dialogInfoData, setDialogInfoData] = useState<{
-            visable: boolean;
-            message: string;
-            'data-payment-status'?: any; 
-        }>({
-            visable: false,
-            message: 'Sucesso'
-        });
-    
-        
-        useEffect(() => {
-            if (paymentIntentId) {
-                const interval = setInterval(() => {
-                    mercadoPagoService.obterStatusIntencaoPagamento(paymentIntentId)
-                        .then(response => {
-                            const status = response.data.state;
-                            setPaymentStatus(status);
-                            setDialogInfoData(prev => ({
-                                ...prev,
-                                'data-payment-status': status,
-                            }));
-                        })
-                        .catch(error => {
-                            console.error('Erro ao obter status do pagamento:', error);
-                            setPaymentStatus('ERROR');
-                            setDialogInfoData(prev => ({
-                                ...prev,
-                                'data-payment-status': 'ERROR',
-                                message: 'Erro ao obter status do pagamento.',
-                            }));
-                        });
-                }, 3000); // Reduzi o intervalo para 3 segundos (ajuste conforme necessário)
-    
-                return () => clearInterval(interval);
-            }
-        }, [paymentIntentId]);
-    
- 
-        
-    
+    const [dialogInfoData, setDialogInfoData] = useState<{
+        visable: boolean;
+        message: string;
+        'data-payment-status'?: any;
+    }>({
+        visable: false,
+        message: 'Sucesso'
+    });
+
+
+    useEffect(() => {
+        if (paymentIntentId) {
+            const interval = setInterval(() => {
+                mercadoPagoService.obterStatusIntencaoPagamento(paymentIntentId)
+                    .then(response => {
+                        const status = response.data.state;
+                        setPaymentStatus(status);
+                        setDialogInfoData(prev => ({
+                            ...prev,
+                            'data-payment-status': status,
+                        }));
+                    })
+                    .catch(error => {
+                        console.error('Erro ao obter status do pagamento:', error);
+                        setPaymentStatus('ERROR');
+                        setDialogInfoData(prev => ({
+                            ...prev,
+                            'data-payment-status': 'ERROR',
+                            message: 'Erro ao obter status do pagamento.',
+                        }));
+                    });
+            }, 3000); // Reduzi o intervalo para 3 segundos (ajuste conforme necessário)
+
+            return () => clearInterval(interval);
+        }
+    }, [paymentIntentId]);
+
+
+
+
 
 
     function updateCart() {
@@ -74,7 +75,7 @@ export default function Payment() {
 
 
     const handlePagamento = () => {
-     updateCart();
+        updateCart();
         if (paymentMethod === 'credit_card' || paymentMethod === 'debit_card') {
             if (typeof cart.total !== 'number' || isNaN(cart.total)) {
                 console.error('Valor total do carrinho inválido:', cart.total);
@@ -83,7 +84,7 @@ export default function Payment() {
             const name = cart.items.map(x => x.name).join(', ');
 
             setFormattedTotalValue(formatTotalValue(Number(cart.total)));
-        setDialogInfoData({ visable: true, message: 'Iniciando' }); // Define a mensagem correta
+            setDialogInfoData({ visable: true, message: 'Iniciando' }); // Define a mensagem correta
             mercadoPagoService.criarIntencaoPagamento({
                 amount: formattedTotalValue,
                 description: name,
@@ -94,11 +95,11 @@ export default function Payment() {
                 additional_info: {
                     external_reference: "12321hadas-12321jasd-12321jasda-123j213asd",
                     print_on_terminal: true
-                    }
+                }
             }).then(response => {
                 setPaymentStatus('Aguardando pagamento');
                 setPaymentIntentId(response.data.id);
-       
+
             });
         } else if (paymentMethod === 'Dinheiro' || paymentMethod === 'Pix') {
             console.log('Pagamento com', paymentMethod, '. Intenção de pagamento não enviada.');
@@ -168,35 +169,40 @@ export default function Payment() {
             }
             <button className="dsc-btn dsc-btn-blue" onClick={handlePagamento}>Realizar Cobrança</button>
             {dialogInfoData.visable && (
-    <div className="dsc-dialog-background">
-        <div className="dsc-dialog-box" data-payment-status={paymentStatus}>
-            {paymentStatus === 'OPEN' && <p>Iniciando máquinha  ou Aperte cobrar</p>}
-            {paymentStatus === 'ON_TERMINAL' && <p>Aguardando pagamento</p>} 
-            {paymentStatus === 'PROCESSING' && <p>Processando pagamento</p>} 
-            {paymentStatus === 'PROCESSED' && <p>Pagamento aprovado</p>} 
-            {paymentStatus === 'CONFIRMATION_REQUIRED' && <p>Confirmação necessária no dispositivo</p>} 
-            {paymentStatus === 'FINISHED' && <p>Pagamento finalizado</p>} {/* Usa a mensagem do estado */}
-            {paymentStatus === 'CANCELED' && <p>Venda cancelada</p>} {/* Usa a mensagem do estado */}
-            {paymentStatus === 'ERROR' && <p>Erro no cartão</p>} {/* Usa a mensagem do estado */}
-            {paymentStatus === 'ABANDONED' && <p>Tempo limte excedido</p>}
-            {paymentStatus === undefined && null && <p>Iniciando</p>}
-            {!paymentStatus  && <p>Inicie novamente...</p>} {/* Usa a mensagem do estado */}
+                <div className="dsc-dialog-background">
+                    <div className="dsc-dialog-box" data-payment-status={paymentStatus}>
+                        {paymentStatus === 'OPEN' && <p>Iniciando máquinha  ou Aperte cobrar</p>}
+                        {paymentStatus === 'ON_TERMINAL' && <p>Aguardando pagamento</p>}
+                        {paymentStatus === 'PROCESSING' && (
+                            <div className="loading-container">
+                                <p>Processando pagamento...</p>
+                                <img src={loadingGif} alt="Processando pagamento..." />
+                            </div>
+                        )}
+                        {paymentStatus === 'PROCESSED' && <p>Pagamento aprovado</p>}
+                        {paymentStatus === 'CONFIRMATION_REQUIRED' && <p>Confirmação necessária no dispositivo</p>}
+                        {paymentStatus === 'FINISHED' && <p>Pagamento finalizado</p>} {/* Usa a mensagem do estado */}
+                        {paymentStatus === 'CANCELED' && <p>Venda cancelada</p>} {/* Usa a mensagem do estado */}
+                        {paymentStatus === 'ERROR' && <p>Erro no cartão</p>} {/* Usa a mensagem do estado */}
+                        {paymentStatus === 'ABANDONED' && <p>Tempo limte excedido</p>}
+                        {paymentStatus === undefined && null && <p>Iniciando</p>}
+                        {!paymentStatus && <p>Inicie novamente...</p>} {/* Usa a mensagem do estado */}
 
-            <div className="dsc-dialog-btn-container">
-                <div onClick={() => handleDialogPayment(false)}>
-                    <ButtonSecondy text="Fechar" />
+                        <div className="dsc-dialog-btn-container">
+                            <div onClick={() => handleDialogPayment(false)}>
+                                <ButtonSecondy text="Fechar" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-)}
-    
+            )}
+
 
         </div>
-        
+
 
 
     );
 
-  
+
 }
