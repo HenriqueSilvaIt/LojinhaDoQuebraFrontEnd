@@ -84,14 +84,19 @@
     
   }
 
-.dsc-dialog-box[paymentStatus="FINISHED"]  {
-  
-  color: white;
-  background-color: var(--color-bg-quartenary);
 
-}
-
-.dsc-dialog-box[paymentStatus="CANCELED"]  {
-  color: white;
+.dsc-dialog-box[data-payment-status="CANCELED"]  {
+  color:var(--color-font-tertiary);
   background-color: red;
 }
+
+.dsc-dialog-box[data-payment-status="FINISHED"]  {
+  color:var(--color-font-tertiary);
+  background-color: rgb(0, 134, 0) ;
+}
+
+.dsc-dialog-box[data-payment-status="ON_TERMINAL"]  {
+  color:var(--color-font-tertiary);
+  background-color: rgb(208, 208, 11);
+}
+

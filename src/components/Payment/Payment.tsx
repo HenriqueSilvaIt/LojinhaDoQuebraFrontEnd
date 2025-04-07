@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import * as mercadoPagoService from '../../services/mercado-pago';
-import axios from "axios";
 import ButtonSecondy from "../ButtonSecondy";
 import * as cartService from '../../services/cart-services'
 import { OrderDTO } from "../../models/order";
@@ -10,33 +9,52 @@ import './style.css';
 export default function Payment() {
 
 
-    const [showPaymentStatus, setShowPaymentStatus] = useState(false); // Novo estado
     const [instalmmentValue, setInstamentValue] = useState<any>();
     const [paymentMethod, setPaymentMethod] = useState<string>('');
-    const [paymentStatus, setPaymentStatus] = useState(); // Estado do pagamento
+    const [paymentStatus, setPaymentStatus] = useState<any>(); // Estado do pagamento
     const [paymentIntentId, setPaymentIntentId] = useState('');
     const [formattedTotalValue, setFormattedTotalValue] = useState<any>();
     const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
       const [dialogInfoData, setDialogInfoData] = useState<{
             visable: boolean;
             message: string;
+            'data-payment-status'?: any; 
         }>({
             visable: false,
             message: 'Sucesso'
         });
     
         
-    useEffect(() => {
-        if (paymentIntentId) {
-            const interval = setInterval(() => {
-                mercadoPagoService.obterStatusIntencaoPagamento(paymentIntentId).then(response => {
-                    setPaymentStatus(response.data.state);
-                });
-            }, 5000);
-
-            return () => clearInterval(interval);
-        }
-    }, [paymentIntentId]);
+        useEffect(() => {
+            if (paymentIntentId) {
+                const interval = setInterval(() => {
+                    mercadoPagoService.obterStatusIntencaoPagamento(paymentIntentId)
+                        .then(response => {
+                            const status = response.data.state;
+                            setPaymentStatus(status);
+                            setDialogInfoData(prev => ({
+                                ...prev,
+                                'data-payment-status': status,
+                            }));
+                        })
+                        .catch(error => {
+                            console.error('Erro ao obter status do pagamento:', error);
+                            setPaymentStatus('ERROR');
+                            setDialogInfoData(prev => ({
+                                ...prev,
+                                'data-payment-status': 'ERROR',
+                                message: 'Erro ao obter status do pagamento.',
+                            }));
+                        });
+                }, 3000); // Reduzi o intervalo para 3 segundos (ajuste conforme necessário)
+    
+                return () => clearInterval(interval);
+            }
+        }, [paymentIntentId]);
+    
+ 
+        
+    
 
 
     function updateCart() {
@@ -65,8 +83,7 @@ export default function Payment() {
             const name = cart.items.map(x => x.name).join(', ');
 
             setFormattedTotalValue(formatTotalValue(Number(cart.total)));
-        setDialogInfoData({ visable: true, message: 'Aguardando pagamento...' }); // Define a mensagem correta
-            setShowPaymentStatus(true);
+        setDialogInfoData({ visable: true, message: 'Iniciando' }); // Define a mensagem correta
             mercadoPagoService.criarIntencaoPagamento({
                 amount: formattedTotalValue,
                 description: name,
@@ -79,6 +96,7 @@ export default function Payment() {
                     print_on_terminal: true
                     }
             }).then(response => {
+                setPaymentStatus('Aguardando pagamento');
                 setPaymentIntentId(response.data.id);
        
             });
@@ -107,86 +125,11 @@ export default function Payment() {
 
     const handleDialogPayment = (confirm: boolean) => {
         setDialogInfoData({ ...dialogInfoData, visable: false });
+
         console.log(confirm);
     };
 
 
-
-    function PaymentStatus({ paymentIntentId }: { paymentIntentId: string }) {
-        const [paymentStatus, setPaymentStatus] = useState<any>(null);
-        const [error, setError] = useState<string | null>(null);
-
-        useEffect(() => {
-            if (paymentIntentId) {
-                axios.get(`https://lojinhadoquebrabackend-production.up.railway.app/mercado-pago-payment-status/${paymentIntentId}`)
-                    .then(response => {
-                        setPaymentStatus(response.data.status);
-                    })
-                    .catch(error => {
-                        console.error('Erro ao obter status do pagamento:', error);
-                        setError('Erro ao obter status do pagamento.');
-                    });
-            }
-        }, [paymentIntentId, paymentStatus]);
-
-        if (error) {
-            return <p>{error}</p>;
-        }
-
-        if (!paymentStatus) {
-            return <p>Carregando status do pagamento...</p>;
-        }
-
-        const status = paymentStatus.state;
-        let statusMessage = '';
-        let statusColor = 'black';
-
-        switch (status) {
-            case 'FINISHED':
-                statusMessage = 'Pagamento realizado com sucesso!';
-                statusColor = 'green';
-                break;
-            case 'CONFIRMATION_REQUIRED':
-                statusMessage = 'Confirmação necessária no dispositivo.';
-                statusColor = 'orange';
-                break;
-            case 'CANCELED':
-                statusMessage = 'Pagamento cancelado.';
-                statusColor = 'red';
-                break;
-            case 'ERROR':
-                statusMessage = 'Erro na transação.';
-                statusColor = 'red';
-                break;
-            case 'ABANDONED':
-                statusMessage = 'Pagamento abandonado.';
-                statusColor = 'gray';
-                break;
-            case 'OPEN':
-                statusMessage = 'Intenção de pagamento aberta.';
-                break;
-            case 'ON_TERMINAL':
-                statusMessage = 'Aguardando interação no terminal.';
-                break;
-            case 'PROCESSING':
-                statusMessage = 'Processando pagamento.';
-                break;
-            case 'PROCESSED':
-                statusMessage = 'Pagamento processado.';
-                break;
-            default:
-                statusMessage = 'Status do pagamento desconhecido.';
-                break;
-        }
-
-        return (
-            <div>
-                <h2>Status do Pagamento</h2>
-                <p style={{ color: statusColor }}>{statusMessage}</p>
-                <pre>{JSON.stringify(paymentStatus, null, 2)}</pre>
-            </div>
-        );
-    }
 
 
     return (
@@ -226,11 +169,19 @@ export default function Payment() {
             <button className="dsc-btn dsc-btn-blue" onClick={handlePagamento}>Realizar Cobrança</button>
             {dialogInfoData.visable && (
     <div className="dsc-dialog-background">
-        <div className="dsc-dialog-box">
-            {paymentStatus === 'pending' && <p>Aguardando pagamento...</p>}
-            {paymentStatus === 'CANCELED' && <p>Venda cancelada</p>} {/* Usa a mensagem do estado */}
-            {paymentStatus === 'ON_TERMINAL' && <p>Pague na máquinha</p>} 
+        <div className="dsc-dialog-box" data-payment-status={paymentStatus}>
+            {paymentStatus === 'OPEN' && <p>Iniciando máquinha  ou Aperte cobrar</p>}
+            {paymentStatus === 'ON_TERMINAL' && <p>Aguardando pagamento</p>} 
+            {paymentStatus === 'PROCESSING' && <p>Processando pagamento</p>} 
+            {paymentStatus === 'PROCESSED' && <p>Pagamento aprovado</p>} 
+            {paymentStatus === 'CONFIRMATION_REQUIRED' && <p>Confirmação necessária no dispositivo</p>} 
             {paymentStatus === 'FINISHED' && <p>Pagamento finalizado</p>} {/* Usa a mensagem do estado */}
+            {paymentStatus === 'CANCELED' && <p>Venda cancelada</p>} {/* Usa a mensagem do estado */}
+            {paymentStatus === 'ERROR' && <p>Erro no cartão</p>} {/* Usa a mensagem do estado */}
+            {paymentStatus === 'ABANDONED' && <p>Tempo limte excedido</p>}
+            {paymentStatus === undefined && null && <p>Iniciando</p>}
+            {!paymentStatus  && <p>Inicie novamente...</p>} {/* Usa a mensagem do estado */}
+
             <div className="dsc-dialog-btn-container">
                 <div onClick={() => handleDialogPayment(false)}>
                     <ButtonSecondy text="Fechar" />
