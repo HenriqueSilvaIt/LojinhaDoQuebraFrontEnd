@@ -6,7 +6,7 @@ import moment from 'moment'; // Importe moment.js
 import deleteImg from '../../../assets/delete.svg';
 import DialogConfirmation from '../../../components/DialogConfirmation';
 import DialogInfo from '../../../components/DialogInfo';
-
+import loadingi from '../../../assets/loadin.gif';
 
 
 export default function OrderHistory() {
@@ -18,6 +18,7 @@ export default function OrderHistory() {
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
     const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
+    const [loading, setLoading] = useState<boolean>(false); // Novo estado para controlar o loading
 
 
     const [dialogInfoData, setDialogInfoData] = useState<{
@@ -40,13 +41,18 @@ export default function OrderHistory() {
         message: 'Tem certeza?'
     });
     useEffect(() => {
-        setFilterDate('');
-       // setFilterDate(moment().format('YYYY-MM-DD'));
+        setFilterDate(moment().format('YYYY-MM-DD'));
+        setLoading(true); // Inicia o loading
+
         orderService.findAll({ sortBy: 'moment', direction: 'desc' }).then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
             setAllOrders(response.data);
             setOrders(response.data);
+            setLoading(false); // Finaliza o loading após receber os dados
+        }).catch(() => {
+            setLoading(false); // Finaliza o loading em caso de erro
+            setDialogInfoData({ visable: true, message: "Erro ao carregar os pedidos." });
         });
     }, []);
 
@@ -198,7 +204,16 @@ export default function OrderHistory() {
                             <th>Deletar pedido</th>
                         </tr>
                     </thead>
+
+                    {loading ? (
+                    <div className="dsc-loading-container">
+                        <img src={loadingi} alt="Carregando..." />
+                        <p>Carregando os dados...</p>
+                    </div>
+                ) :
                     <tbody>
+
+                        
                         {order.map((order) =>
                             order.items.map((item) => (
                                 <tr key={`${order.id}-${item.productId}`}>
@@ -224,7 +239,7 @@ export default function OrderHistory() {
                                 </tr>))
 
                         )}
-                    </tbody>
+                    </tbody> }
                 </table>
             </section>
 
