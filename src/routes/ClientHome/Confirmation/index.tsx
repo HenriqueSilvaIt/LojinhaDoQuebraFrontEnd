@@ -54,9 +54,9 @@ export default function Confirmation() {
                 </div>
                 <div className="dsc-btn-page-container">
 
-                    <Link to="/" >
-                        <div className="dsc-btn dsc-btn-white">
-                            Início
+                    <Link to="/cart" >
+                        <div className="dsc-btn dsc-btn-white dsc-box">
+                            Voltar ao caixa
                         </div>
                     </Link>
                 </div>
