@@ -145,17 +145,13 @@
 
 }
 
-.dsc-loading-container  {
-
-    margin-top: 100px;
+.dsc-loading-container{
+    margin: 0 auto;
+    margin-left: 200;
+    margin-top: 300px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100px;
     height: 100px;
-  }
-
-  .dsc-loading-container  {
-    margin: 0 auto;
   }
