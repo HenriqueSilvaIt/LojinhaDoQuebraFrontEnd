@@ -6,7 +6,7 @@ import moment from 'moment'; // Importe moment.js
 import deleteImg from '../../../assets/delete.svg';
 import DialogConfirmation from '../../../components/DialogConfirmation';
 import DialogInfo from '../../../components/DialogInfo';
-import loadingi from '../../../assets/loadin.gif';
+import loadingi from '../../../assets/loadi.gif';
 
 
 export default function OrderHistory() {

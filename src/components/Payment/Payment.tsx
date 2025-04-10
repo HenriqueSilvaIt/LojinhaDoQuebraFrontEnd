@@ -4,7 +4,7 @@ import ButtonSecondy from "../ButtonSecondy";
 import * as cartService from '../../services/cart-services'
 import { OrderDTO } from "../../models/order";
 import './style.css';
-import loadingGif from '../../assets/loadin.gif';
+import loadingGif from '../../assets/loadi.gif';
 
 interface PaymentProps {
     totalCartValue: number;
