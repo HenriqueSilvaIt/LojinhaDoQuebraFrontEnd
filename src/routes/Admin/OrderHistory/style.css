@@ -107,15 +107,24 @@
 }
 
 
-@media (min-width: 576px) {
+.dsc-loading-container{
+    margin-left: 100px;
+    margin-top: 50px;
+    display: grid;
+    grid-gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+  }
 
-    .dsc-loading-container{
-        margin-left: 450px;
-        margin-top: 50px;
-        width: 100px;
-        height: 100px;
-    
+@media(min-width: 576px) {
+
+    .dsc-loading-container {
+        margin-left: 500px
       }
+    
 
     .dsc-total-sales  h4 {
         font-size: 20px;
@@ -152,18 +161,4 @@
     padding: 10px;
 }
 
-
-
 }
-
-.dsc-loading-container{
-    margin-left: 100px;
-    margin-top: 50px;
-    display: grid;
-    grid-gap: 10px;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-  }

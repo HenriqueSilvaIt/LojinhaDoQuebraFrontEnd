@@ -73,14 +73,14 @@ export default function OrderHistory() {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
         }
-   // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
-   const sortedOrders = [...filteredOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
-   setOrders(sortedOrders);
+        // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
+        const sortedOrders = [...filteredOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
+        setOrders(sortedOrders);
 
-   const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
-   setTotalSales(salesTotal);
+        const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
+        setTotalSales(salesTotal);
 
-}, [filterDate, allOrders, filterWeek, filterMonth]);
+    }, [filterDate, allOrders, filterWeek, filterMonth]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
@@ -206,49 +206,48 @@ export default function OrderHistory() {
                     </thead>
 
                     {loading ? (
+                        <div className="dsc-loading-container">
+                            <img src={loadingi} alt="Carregando..." />
+                            <p>Carregando os dados...</p>
+                        </div>
+                    ) :
+                        <tbody>
+
+
+                            {order.map((order) =>
+                                order.items.map((item) => (
+                                    <tr key={`${order.id}-${item.productId}`}>
+                                        <td className="dsc-tb576">{order.id}</td>
+                                        <td>{item.name}</td>
+                                        <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
+                                        <td className="dsc-tb768">{item.quantity}</td>
+                                        <td>R$ {item.subTotal.toFixed(2)}</td>
+                                        <td>
+                                            <img
+                                                onClick={() => {
+                                                    if (order.id !== undefined && item.productId !== undefined) {
+                                                        handleDeleteClick(order.id, item.productId);
+                                                    } else {
+                                                        console.error("IDs de pedido ou produto indefinidos.");
+                                                    }
+                                                }// Corrigido
+                                                }
+                                                className="dsc-product-listing-btn"
+                                                src={deleteImg}
+                                                alt="delet"
+                                            />
+                                        </td>
+                                    </tr>))
+
+                            )}
+                        </tbody>}
+
                     <div className="dsc-loading-container">
-                         <p>Carregando os dados...</p>
                         <img src={loadingi} alt="Carregando..." />
-                       
-                    </div>
-                ) :
-                    <tbody>
-
-                        
-                        {order.map((order) =>
-                            order.items.map((item) => (
-                                <tr key={`${order.id}-${item.productId}`}>
-                                    <td className="dsc-tb576">{order.id}</td>
-                                    <td>{item.name}</td>
-                                    <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
-                                    <td className="dsc-tb768">{item.quantity}</td>
-                                    <td>R$ {item.subTotal.toFixed(2)}</td>
-                                    <td>
-                                        <img
-                                            onClick={() => {
-                                                if (order.id !== undefined && item.productId !== undefined) {
-                                                    handleDeleteClick(order.id, item.productId);
-                                                } else {
-                                                    console.error("IDs de pedido ou produto indefinidos.");
-                                                }}// Corrigido
-                                            }
-                                            className="dsc-product-listing-btn"
-                                            src={deleteImg}
-                                            alt="delet"
-                                        />
-                                    </td>
-                                </tr>))
-
-                        )}
-                    </tbody> }
-
-                    <div className="dsc-loading-container">
-                    <p>Carregando os dados...</p>
-                        <img src={loadingi} alt="Carregando..." />
-                        
+                        <p>Carregando os dados...</p>
                     </div>
                 </table>
-              
+
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
