@@ -146,12 +146,13 @@
 }
 
 .dsc-loading-container{
-    margin-left: 500px;
-    margin-top: 300px;
+    margin-left: 450px;
+    margin-top: 50px;
     display: grid;
     grid-gap: 10px;
     align-items: center;
     justify-content: center;
     width: 100px;
     height: 100px;
+    text-align: center;
   }
