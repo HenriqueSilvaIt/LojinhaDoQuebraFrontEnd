@@ -241,11 +241,6 @@ export default function OrderHistory() {
 
                             )}
                         </tbody>}
-
-                    <div className="dsc-loading-container">
-                        <img src={loadingi} alt="Carregando..." />
-                        <p>Carregando os dados...</p>
-                    </div>
                 </table>
 
             </section>
