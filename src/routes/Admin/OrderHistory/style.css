@@ -146,7 +146,7 @@
 }
 
 .dsc-loading-container{
-    margin: 0 auto;
+    margin-left: 500px;
     margin-top: 300px;
     display: grid;
     grid-gap: 10px;
