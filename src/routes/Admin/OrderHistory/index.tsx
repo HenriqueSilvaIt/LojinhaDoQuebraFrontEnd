@@ -9,6 +9,13 @@ import DialogInfo from '../../../components/DialogInfo';
 import loadingi from '../../../assets/loadi.gif';
 
 
+
+type QueryParams = {
+
+    page: number;
+
+}
+
 export default function OrderHistory() {
 
 
@@ -19,7 +26,7 @@ export default function OrderHistory() {
     const [filterWeek, setFilterWeek] = useState<string>('');
     const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
     const [loading, setLoading] = useState<boolean>(false); // Novo estado para controlar o loading
-
+    const [queryParams, setQueryParams ] = useState<QueryParams>({page: 0})
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -44,17 +51,17 @@ export default function OrderHistory() {
         setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
-        orderService.findAll({ sortBy: 'moment', direction: 'desc' }).then((response: any) => {
+        orderService.findAll({ sortBy: 'moment', direction: 'desc', page: queryParams.page, size: 20 }).then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
-            setAllOrders(response.data);
-            setOrders(response.data);
+            setAllOrders(response.data.content);
+            setOrders(response.data.content);
             setLoading(false); // Finaliza o loading após receber os dados
         }).catch(() => {
             setLoading(false); // Finaliza o loading em caso de erro
             setDialogInfoData({ visable: true, message: "Erro ao carregar os pedidos." });
         });
-    }, []);
+    }, [queryParams]);
 
     useEffect(() => {
         let filteredOrders: OrderDTO[] = allOrders;
