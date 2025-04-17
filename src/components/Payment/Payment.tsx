@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as mercadoPagoService from '../../services/mercado-pago';
 import ButtonSecondy from "../ButtonSecondy";
 import * as cartService from '../../services/cart-services'
 import { OrderDTO } from "../../models/order";
 import './style.css';
 import loadingGif from '../../assets/loadi.gif';
+import {ContextPaymentMethod} from '../../utils/context-payment';
 
 interface PaymentProps {
     totalCartValue: number;
@@ -14,7 +15,7 @@ export default function Payment({ totalCartValue }: PaymentProps) {
 
 
     const [instalmmentValue, setInstamentValue] = useState<any>();
-    const [paymentMethod, setPaymentMethod] = useState<string>('');
+    const {paymentMethod, setPaymentMethod} = useContext<any>(ContextPaymentMethod);
     const [paymentStatus, setPaymentStatus] = useState<any>(); // Estado do pagamento
     const [paymentIntentId, setPaymentIntentId] = useState('');
     const [formattedTotalValue, setFormattedTotalValue] = useState<any>();
@@ -61,26 +62,17 @@ export default function Payment({ totalCartValue }: PaymentProps) {
         }
     }, [paymentIntentId]);
 
-
-
-
-
-
     function updateCart() {
 
         const newCart = cartService.getCart();
         setCart(newCart);
     }
 
-
-
-
     function formatTotalValue(totalValue: number): number {
         const valueInCents = totalValue * 100;
         const roundedValue = Math.round(valueInCents);
         return Math.abs(roundedValue);
     }
-
 
     const handlePagamento = () => {
         updateCart();
@@ -118,10 +110,7 @@ export default function Payment({ totalCartValue }: PaymentProps) {
             setDialogInfoData({ visable: true, message: 'Selecione uma forma de pagamento.' });
 
         }
-    };
-
-
-
+    }
 
     function handlePaymentMethod(event: any) {
         setPaymentMethod(event.target.value);
@@ -137,10 +126,7 @@ export default function Payment({ totalCartValue }: PaymentProps) {
 
         console.log(confirm);
     };
-
-
-
-
+    
     return (
 
         <div className="dsc-payment-form">

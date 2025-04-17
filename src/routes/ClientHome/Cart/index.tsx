@@ -10,14 +10,13 @@ import * as productService from '../../../services/product-services';
 import { ProductDTO } from '../../../models/product';
 import Clock from '../../../components/ClockOn/clock';
 import Payment from '../../../components/Payment/Payment';
-
 type QueryParams = {
     name: string;
 }
 
 
-
 export default function Cart() {
+
 
     const [cart, setCart] = useState<OrderDTO>(cartService.getCart()); /* já estamos iniciando
     o use state pegando p rimeiro valor que está lá no localStorage */
@@ -83,7 +82,6 @@ export default function Cart() {
                     return productService.findById(item.productId)
                         .then(productResponse => {
                             const product = productResponse.data;
-                            console.log(productResponse.data);
                             if (product) {
                                 const updatedProduct: ProductDTO = {
                                     ...product,
@@ -97,10 +95,11 @@ export default function Cart() {
                 });
 
                 Promise.all(updatePromises)
-                    .then(() => {
+                    .then(() => {    
                         cartService.clearCart();
                         setContextCartCount(0);
                         navigate(`/confirmation/${response.data.id}`);
+                     
                     })
                     .catch(error => {
                         console.error("Erro ao atualizar a quantidade dos produtos:", error);
@@ -277,6 +276,7 @@ export default function Cart() {
                         Limpar Caixa
                     </div>
                 </div>
+
 
             </section>
         </main>

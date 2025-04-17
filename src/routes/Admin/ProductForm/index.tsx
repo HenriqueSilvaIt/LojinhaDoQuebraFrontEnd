@@ -10,6 +10,7 @@ import FormTextArea from '../../../components/FormTextArea';
 tem que fica igual no import da documentação ficial*/
 import { CategoryDTO } from '../../../models/category';
 import FormSelect from '../../../components/FormSelect';
+import * as imageService from '../../../services/image.service';
 import { selectStyles } from '../../../utils/select';
 
 
@@ -132,34 +133,6 @@ export default function ProductForm() {
         }
     });
 
-
-    async function uploadImageToCloudinary(file: File): Promise<string | null> {
-        try {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", "henrique");
-
-            const response = await fetch("https://api.cloudinary.com/v1_1/dordxectu/image/upload", {
-                method: "POST",
-                body: formData,
-            });
-
-            if (!response.ok) {
-                console.log(await response.text()); // This will print the error from Cloudinary
-                throw new Error(`Erro no upload: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            let imageUrl = data.secure_url.replace("/upload/", "/upload/f_auto,q_auto,w_500,h_500,c_fit/");
-            setLoading(true);
-            //console.log(data.secure_url);
-            return imageUrl;
-        } catch (error) {
-            console.error("Erro ao fazer upload da imagem:", error);
-            return null; // Retorna null em caso de erro
-        }
-    }
-
     /*useEffect para carregar as categoria*/
 
     useEffect(() => {
@@ -195,9 +168,7 @@ export default function ProductForm() {
 
 
     function handleInputChange(event: any) {
-
         event.preventDefault();
-
 
         /* chamando função para atualizar oque o usuário ta escrevendo no input
 
@@ -209,7 +180,6 @@ export default function ProductForm() {
         
         Agora novo formulário temos que preservar todo objeto, então vamos pegar tudo que já tinha no objeto, porém no campo
 value, vamos colocar o value criado na função event.target.valu*/
-
 
         /*chamando função que valida se o campo foi preenchido corretamente*/
 
@@ -235,7 +205,7 @@ value, vamos colocar o value criado na função event.target.valu*/
 
         event.preventDefault();
 
-         const requestBody = forms.toValues(formData);
+        const requestBody = forms.toValues(formData);
 
         /* valida qualquer erro de formulário do front end*/
         const formDataValidated = forms.dirtyAndValidateAll(formData);
@@ -291,8 +261,6 @@ value, vamos colocar o value criado na função event.target.valu*/
 
     // Define a functional component named UploadAndDisplayImage
 
-
-
     // Define a state variable to store the selected image
 
     const [imagem, setImagem] = useState<File | null>(null);
@@ -302,7 +270,7 @@ value, vamos colocar o value criado na função event.target.valu*/
     const [imagemUrl, setImagemUrl] = useState<string | null>(null); // Novo estado para o URL
     const [loading, setLoading] = useState<boolean>(false);
 
-console.log(imagem, imagemDirty);
+    console.log(imagem, imagemDirty);
 
     async function handleImagemChange(file: File) {
         setImagem(file);
@@ -318,22 +286,18 @@ console.log(imagem, imagemDirty);
             .resize(auto().gravity(autoGravity()).width(500).height(500)); // Transform the image: auto-crop to square aspect_ratio
 */
         try {
-            const imageUrl = await uploadImageToCloudinary(file);
-            console.log(imageUrl);
+            const imageUrl = await imageService.uploadImageToCloudinary(file);
+            setLoading(true);
             setImagemUrl(imageUrl); // Atualiza o estado imagemUrl
         } catch (error) {
             console.error("Erro ao fazer upload da imagem:", error);
         }
 
-
         /*  const imgUrl = /:(.*)/.exec(imagemPreview);
-
             const url = (imgUrl?.[0])
             setImgUrlB(url);*/
 
-
     }
-
 
     /* async function uploadImageToCloudinary(file: File): Promise<string> {
         const formData = new FormData();

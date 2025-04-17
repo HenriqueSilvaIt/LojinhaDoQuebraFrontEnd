@@ -22,6 +22,7 @@ import ProductListing from './routes/Admin/ProductListing/index.tsx';
 import ProductForm from './routes/Admin/ProductForm/index.tsx';
 import RegisterForm from './routes/ClientHome/RegisterForm/index.tsx';
 import OrderHistory from './routes/Admin/OrderHistory/index.tsx';
+import { ContextPaymentMethod } from './utils/context-payment.ts';
 
 export default function App() { /*export default quer dizer que estamos exportando e o default quer dizer que desse
   documento só estamos exportando essa função */
@@ -30,6 +31,8 @@ export default function App() { /*export default quer dizer que estamos exportan
 
   const [contextTokenPayload, setContextTokenPayload] = useState<AccessTokenPayloadDTO>(); /*
   com a informação do TOken*/
+
+  const [contextPaymentMethod, setContextPaymentMethod] = useState<string>();
 
 
   /* useEffect para iniciar o token com algum valor */
@@ -55,7 +58,7 @@ export default function App() { /*export default quer dizer que estamos exportan
      a primeira rota como sendo o caminho "/"que é  a rota raiz e no element dela
      você passa a página que você quer colocar como inicial (normalmente colocamos
      o componente dessa página) */
-
+<ContextPaymentMethod.Provider value={{ contextPaymentMethod, setContextPaymentMethod }}>
 <ContextToken.Provider value={{ contextTokenPayload, setContextTokenPayload }}>
     <ContextCartCount.Provider value={{ contextCartCount, setContextCartCount }}>
       <HistoryRouter history={history}>
@@ -82,6 +85,7 @@ export default function App() { /*export default quer dizer que estamos exportan
       </HistoryRouter>
     </ContextCartCount.Provider>
     </ContextToken.Provider>
+    </ContextPaymentMethod.Provider>
   ); /* cria uma rota irm para o admi
   /* o primeiro route é a rota principal
   vamos deixar o cabeçalho na rota mãe e os conteúdo da página vamos deixar
