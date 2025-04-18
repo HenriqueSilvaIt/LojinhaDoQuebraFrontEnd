@@ -1,15 +1,29 @@
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import * as orderService from '../../../services/order-service';
 import { OrderDTO } from "../../../models/order";
 import { Link } from "react-router-dom";
 import './style.css';
-import { ContextPaymentMethod } from "../../../utils/context-payment";
 import { handlePrint } from '../../../components/Recibo/recibo';
+import * as paymentService from '../../../services/payment-service';
 
 export default function Confirmation() {
+    const [paymentMethod, setPaymentMethod] = useState<string>('');
 
-    const { paymentMethod } = useContext<any>(ContextPaymentMethod);
+    useEffect(() => {
+        const savedPaymentMethod = paymentService.getPayment();
+        setPaymentMethod(savedPaymentMethod);
+        if (savedPaymentMethod === '"credit_card"') {
+            setPaymentMethod('Cartão de crédito');
+        }else if (savedPaymentMethod === '"debit_card"') {
+            setPaymentMethod('Cartão de débito');
+        } else if ( savedPaymentMethod === '"Dinheiro"')
+            setPaymentMethod('Dinheiro');
+        else if ( savedPaymentMethod === '"Pix"')
+                setPaymentMethod('Pix');
+    }, []);
+
+
     const params = useParams();
 
     const [order, setOrder] = useState<OrderDTO>();
@@ -25,7 +39,6 @@ export default function Confirmation() {
 
 
     function handleButtonClick() {
-        console.log("Forma de pagamento para impressão:", paymentMethod);
         console.log("Dados do pedido para impressão:", order);
         if (order) {
             handlePrint(order, paymentMethod);

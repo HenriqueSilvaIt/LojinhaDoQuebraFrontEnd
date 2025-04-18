@@ -4,8 +4,10 @@ import { OrderDTO } from "../../models/order";
 
 
 
-
 export function handlePrint(order: OrderDTO, paymentMethod: string) {
+
+
+
 
     if (!order || !order.items) {
         console.error("Dados do pedido incompletos para impressão.");
@@ -36,7 +38,7 @@ export function handlePrint(order: OrderDTO, paymentMethod: string) {
     textoRecibo += `Total:              R$ ${order.total?.toFixed(2)}\n`;
 
         textoRecibo += `Forma de Pagamento: ${paymentMethod}\n`;
-        
+
     textoRecibo += "------------------------------------------------\n";
     textoRecibo += "Obrigado pela sua compra!\n";
     textoRecibo += "------------------------------------------------\n\n\n\n\n";

@@ -1,12 +1,11 @@
-import { PaymentMethod } from "../models/payment";
 import * as paymentRepository from '../localstorage/payment-repository';
 
-export function savePayment(cart: PaymentMethod) {
-    paymentRepository.paymentMethodSave(cart);
+export function savePayment(payment: string) {
+    paymentRepository.save(payment);
 }
 
 
 /*função para retorna um objeto */
-export function getCart() : PaymentMethod{
+export function getPayment() : string{
     return paymentRepository.get();
 }

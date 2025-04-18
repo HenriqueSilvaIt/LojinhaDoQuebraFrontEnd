@@ -1,21 +1,19 @@
-import { PaymentMethod } from "../models/payment";
 import {PAYMENT_Key} from '../utils/system'
 
-export function paymentMethodSave(payment: PaymentMethod) {
+export function save(payment: string) {
     const obj = JSON.stringify(payment)
-localStorage.setPaymentMethod(PAYMENT_Key, obj);
+localStorage.setItem(PAYMENT_Key, obj);
 
 }
 
 /*método utilziado para buscar do local storage */
 
-export function get(): PaymentMethod {
+export function get(): string {
     const str = localStorage.getItem(PAYMENT_Key) || '';
-    const obj = JSON.parse(str) as PaymentMethod;
-
+    
     /* criando objeto e percorrendo item dto para o proto type reconhecer o objet 
     OrderItem */
   
 
-    return obj;
+    return str;
 }

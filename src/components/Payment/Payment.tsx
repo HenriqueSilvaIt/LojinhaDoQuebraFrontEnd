@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import * as mercadoPagoService from '../../services/mercado-pago';
 import ButtonSecondy from "../ButtonSecondy";
 import * as cartService from '../../services/cart-services'
 import { OrderDTO } from "../../models/order";
 import './style.css';
 import loadingGif from '../../assets/loadi.gif';
-import {ContextPaymentMethod} from '../../utils/context-payment';
+import * as paymentService from '../../services/payment-service';
 
 interface PaymentProps {
     totalCartValue: number;
@@ -15,7 +15,7 @@ export default function Payment({ totalCartValue }: PaymentProps) {
 
 
     const [instalmmentValue, setInstamentValue] = useState<any>();
-    const {paymentMethod, setPaymentMethod} = useContext<any>(ContextPaymentMethod);
+    const [paymentMethod, setPaymentMethod] = useState<string>('');
     const [paymentStatus, setPaymentStatus] = useState<any>(); // Estado do pagamento
     const [paymentIntentId, setPaymentIntentId] = useState('');
     const [formattedTotalValue, setFormattedTotalValue] = useState<any>();
@@ -114,6 +114,8 @@ export default function Payment({ totalCartValue }: PaymentProps) {
 
     function handlePaymentMethod(event: any) {
         setPaymentMethod(event.target.value);
+        const  newPaymentMethod = event.target.value;
+        paymentService.savePayment(newPaymentMethod);
     }
 
     function handleInstalment(event: any) {
