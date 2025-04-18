@@ -26,7 +26,7 @@ export default function OrderHistory() {
     const [filterWeek, setFilterWeek] = useState<string>('');
     const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
     const [loading, setLoading] = useState<boolean>(false); // Novo estado para controlar o loading
-    const [queryParams ] = useState<QueryParams>({page: 0})
+    const [queryParams] = useState<QueryParams>({page: 0})
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -200,6 +200,13 @@ export default function OrderHistory() {
                 {
 
                 }
+
+{loading ? (
+                        <div className="dsc-loading-container">
+                            <img src={loadingi} alt="Carregando..." />
+                            <p>Carregando os dados...</p>
+                        </div>
+                    ) :
                 <table className="dsc-table dsc-mb20 dsc-mt20">
                     <thead>
                         <tr>
@@ -212,18 +219,13 @@ export default function OrderHistory() {
                         </tr>
                     </thead>
 
-                    {loading ? (
-                        <div className="dsc-loading-container">
-                            <img src={loadingi} alt="Carregando..." />
-                            <p>Carregando os dados...</p>
-                        </div>
-                    ) :
+                
                         <tbody>
 
 
                             {order.map((order) =>
                                 order.items.map((item) => (
-                                    <tr key={`${order.id}-${item.productId}`}>
+                                    <tr key={`${item.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
                                         <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
@@ -247,9 +249,9 @@ export default function OrderHistory() {
                                     </tr>))
 
                             )}
-                        </tbody>}
+                        </tbody>
                 </table>
-
+}
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
