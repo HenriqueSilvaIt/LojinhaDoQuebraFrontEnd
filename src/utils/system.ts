@@ -1,4 +1,5 @@
 export const CART_KEY= "com.devsuperior.ecommerce/Cart";
+export const PAYMENT_Key= "com.devsuperior.ecommerce/Payment";
 export const TOKEN_KEy = "com.devsuperior.ecommerce/art";
 export const TOKEN_MERCADO= "mercado.api.livre";
 

@@ -69,7 +69,6 @@ export default function Confirmation() {
                     Venda número {order?.id} realizada!
                 </div>
                 <div className="dsc-btn-page-container">
-
         
                         <button onClick={handleButtonClick} className="dsc-btn dsc-btn-white dsc-bx">
                            Imprimir comprovante

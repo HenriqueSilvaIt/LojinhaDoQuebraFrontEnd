@@ -34,9 +34,9 @@ export function handlePrint(order: OrderDTO, paymentMethod: string) {
     });
     textoRecibo += "------------------------------------------------\n";
     textoRecibo += `Total:              R$ ${order.total?.toFixed(2)}\n`;
-    if (paymentMethod) {
+
         textoRecibo += `Forma de Pagamento: ${paymentMethod}\n`;
-    }
+        
     textoRecibo += "------------------------------------------------\n";
     textoRecibo += "Obrigado pela sua compra!\n";
     textoRecibo += "------------------------------------------------\n\n\n\n\n";

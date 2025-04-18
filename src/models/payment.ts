@@ -19,3 +19,7 @@ export type PaymentDataDTO = {
     additional_info: AdditionalInfoDTO;
   
 }
+
+export type PaymentMethod = {
+    paymentMethod: string;
+}
