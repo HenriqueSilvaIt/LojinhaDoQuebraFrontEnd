@@ -22,26 +22,26 @@ export function handlePrint(order: OrderDTO, paymentMethod: string) {
     textoRecibo += moment(order.moment).format("DD/MM/YYYY HH:mm") + "\n";
     textoRecibo += "Cupom Eletrônico\n";
     textoRecibo += `Número do Pedido: ${order.id}\n`;
-    textoRecibo += "------------------------------------------------\n";
-    textoRecibo += "Produto           Qtd  V. Unit          Subtotal\n";
-    textoRecibo += "------------------------------------------------\n";
+    textoRecibo += "------------------------------\n";
+    textoRecibo += "Produto     Qtd       Subtotal\n";
+    textoRecibo += "------------------------------\n";
 
     // Itens
     order.items.forEach(item => {
         const nomeProduto = item.name.padEnd(18, ' ');
         const quantidade = String(item.quantity).padStart(3, ' ');
-        const valorUnitario = `R$ ${item.price.toFixed(2)}`.padStart(8, ' ');
+     //   const valorUnitario = `R$ ${item.price.toFixed(2)}`.padStart(8, ' ');
         const subtotal = `R$ ${item.subTotal?.toFixed(2)}`.padStart(14, ' ');
-        textoRecibo += `${nomeProduto}${quantidade}   ${valorUnitario} ${subtotal}\n`;
+        textoRecibo += `${nomeProduto}${quantidade} ${valorUnitario} ${subtotal}\n`;
     });
-    textoRecibo += "------------------------------------------------\n";
-    textoRecibo += `Total:              R$ ${order.total?.toFixed(2)}\n`;
+    textoRecibo += "------------------------------\n";
+    textoRecibo += `Total: R$ ${order.total?.toFixed(2)}\n`;
 
         textoRecibo += `Forma de Pagamento: ${paymentMethod}\n`;
 
-    textoRecibo += "------------------------------------------------\n";
+    textoRecibo += "------------------------------\n";
     textoRecibo += "Obrigado pela sua compra!\n";
-    textoRecibo += "------------------------------------------------\n\n\n\n\n";
+    ttextoRecibo += "------------------------------\n\n\n\n\n";
 
 
     // Cria um elemento <pre> temporário
