@@ -26,7 +26,7 @@ export default function Confirmation() {
 
     const params = useParams();
 
-    const [order, setOrder] = useState<OrderDTO>();
+    const [order, setOrder] = useState<OrderDTO | null>(null); // Inicializa como null
 
     useEffect(() => {
            orderService.findByIdRequest(Number(params.orderId))
@@ -55,7 +55,7 @@ export default function Confirmation() {
 
                 <div className="dsc-card dsc-mb20">
 
-                    {order?.items.map(item => (
+                   {order?.items?.map(item => ( // Adiciona verificação extra para order?.items
 
                         <div key={item.productId} className="dsc-cart-item-container dsc-line-bottom">
                             <div className="dsc-cart-item-left">
@@ -72,15 +72,20 @@ export default function Confirmation() {
                     ))
                     }
 
-                    <div className="dsc-cart-total-container">
-                        <h4>Total:</h4>
-                        <h3>R$ {order?.total.toFixed(2)}</h3>
-                    </div>
+                                   {order && ( // Renderiza o total somente se o pedido existir
+                        <div className="dsc-cart-total-container">
+                            <h4>Total:</h4>
+                            <h3>R$ {order.total?.toFixed(2)}</h3>
+                        </div>
+                    )}
                 </div>
 
-                <div className="dsc-confirmation-message dsc-mb20">
-                    Venda número {order?.id} realizada!
-                </div>
+                {order && ( // Renderiza a mensagem de confirmação somente se o pedido existir
+                    <div className="dsc-confirmation-message dsc-mb20">
+                        Venda número {order.id} realizada!
+                    </div>
+                )}
+
                 <div className="dsc-btn-page-container">
         
                         <button onClick={handleButtonClick} className="dsc-btn dsc-btn-white dsc-bx">
