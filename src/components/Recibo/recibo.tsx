@@ -43,12 +43,16 @@ export function handlePrint(order: OrderDTO, paymentMethod: string) {
     textoRecibo += "Obrigado pela sua compra!\n";
     textoRecibo += "------------------------------------------------\n\n\n\n\n";
 
-    // Abre uma nova janela com o texto para impressão
 
-    document.writeln(`<pre>${textoRecibo}</pre>`);
-
-    window.print();
-    window.location.reload(); // Recarrega a página
-
-    // Restaura o conteúdo original da página após a impressão
+    // Cria um elemento <pre> temporário
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+        printWindow.document.write(`<pre style="white-space: pre-wrap;">${textoRecibo}</pre>`);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        // Não é necessário recarregar a página aqui, a janela de impressão se fecha sozinha
+    } else {
+        console.error("Não foi possível abrir a janela de impressão.");
+    }
 }
