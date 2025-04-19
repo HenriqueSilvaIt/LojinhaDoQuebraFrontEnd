@@ -223,8 +223,7 @@ export default function OrderHistory() {
                         <tbody>
 
 
-                            {order.map((order) =>
-                                order.items.map((item) => (
+                                                {order?.items?.map(item => ( // Adiciona verificação extra para order?.items
                                     <tr key={`${item.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
@@ -248,7 +247,7 @@ export default function OrderHistory() {
                                         </td>
                                     </tr>))
 
-                            )}
+                            }
                         </tbody>
                 </table>
 }
