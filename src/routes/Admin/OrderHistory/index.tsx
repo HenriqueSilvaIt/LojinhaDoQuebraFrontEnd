@@ -225,7 +225,7 @@ export default function OrderHistory() {
 
                             {order?.map(order => (
                                 order.items?.map(item => (// Adiciona verificação extra para order?.items
-                                    <tr key={`${order.id}${item.productId}`}>
+                                    <tr key={`${order?.id}-${item?.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
                                         <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
