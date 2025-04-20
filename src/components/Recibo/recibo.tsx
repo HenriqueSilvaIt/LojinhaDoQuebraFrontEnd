@@ -22,37 +22,32 @@ export function handlePrint(order: OrderDTO, paymentMethod: string) {
     textoRecibo += moment(order.moment).format("DD/MM/YYYY HH:mm") + "\n";
     textoRecibo += "Cupom Eletrônico\n";
     textoRecibo += `Número do Pedido: ${order.id}\n`;
-    textoRecibo += "------------------------------\n";
-    textoRecibo += "Produto     Qtd       Subtotal\n";
-    textoRecibo += "------------------------------\n";
+    textoRecibo += "-------------------------\n";
+
 
     // Itens
     order.items.forEach(item => {
-        const nomeProduto = item.name.padEnd(18, ' ');
-        const quantidade = String(item.quantity).padStart(3, ' ');
-     //   const valorUnitario = `R$ ${item.price.toFixed(2)}`.padStart(8, ' ');
-        const subtotal = `R$ ${item.subTotal?.toFixed(2)}`.padStart(14, ' ');
-        textoRecibo += `${nomeProduto}${quantidade} ${valorUnitario} ${subtotal}\n`;
+        const nomeProduto = item.name.padEnd(1, ' ');
+        const quantidade = String(item.quantity).padStart(1, ' ');
+       const valorUnitario = `R$ ${item.price.toFixed(2)}`.padStart(1, ' '); 
+        const subtotal = `R$ ${item.subTotal?.toFixed(2)}`.padStart(1, ' ');
+        textoRecibo += `Produto:\n`;
+        textoRecibo += `${nomeProduto}\n`;
+        textoRecibo += `Qtd: V.Uni: Subtotal:\n`;
+        textoRecibo += `${quantidade} ${valorUnitario} ${subtotal}\n`;
+        textoRecibo += "-------------------------\n";
     });
-    textoRecibo += "------------------------------\n";
     textoRecibo += `Total: R$ ${order.total?.toFixed(2)}\n`;
 
-        textoRecibo += `Forma de Pagamento: ${paymentMethod}\n`;
+        textoRecibo += `Forma de Pagamento: \n${paymentMethod}\n`;
 
-    textoRecibo += "------------------------------\n";
+    textoRecibo += "-------------------------\n";
     textoRecibo += "Obrigado pela sua compra!\n";
-    ttextoRecibo += "------------------------------\n\n\n\n\n";
+    textoRecibo += "-------------------------\n";
 
 
-    // Cria um elemento <pre> temporário
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-        printWindow.document.write(`<pre style="white-space: pre-wrap;">${textoRecibo}</pre>`);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-        // Não é necessário recarregar a página aqui, a janela de impressão se fecha sozinha
-    } else {
-        console.error("Não foi possível abrir a janela de impressão.");
-    }
+    document.writeln(`<pre>${textoRecibo}</pre>`);
+
+    window.print();
+    window.location.reload(); // Recarrega a página
 }

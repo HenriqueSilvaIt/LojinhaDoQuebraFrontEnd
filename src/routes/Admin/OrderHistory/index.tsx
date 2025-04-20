@@ -26,7 +26,7 @@ export default function OrderHistory() {
     const [filterWeek, setFilterWeek] = useState<string>('');
     const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
     const [loading, setLoading] = useState<boolean>(false); // Novo estado para controlar o loading
-    const [queryParams] = useState<QueryParams>({page: 0})
+    const [queryParams] = useState<QueryParams>({ page: 0 })
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -201,29 +201,30 @@ export default function OrderHistory() {
 
                 }
 
-{loading ? (
-                        <div className="dsc-loading-container">
-                            <img src={loadingi} alt="Carregando..." />
-                            <p>Carregando os dados...</p>
-                        </div>
-                    ) :
-                <table className="dsc-table dsc-mb20 dsc-mt20">
-                    <thead>
-                        <tr>
-                            <th className="dsc-tb576">Número da venda</th>
-                            <th>Nome da Produto</th>
-                            <th className="dsc-tb768">Data</th>
-                            <th className="dsc-tb768">Quantidade de produtos</th>
-                            <th>Valor</th>
-                            <th>Deletar pedido</th>
-                        </tr>
-                    </thead>
+                {loading ? (
+                    <div className="dsc-loading-container">
+                        <img src={loadingi} alt="Carregando..." />
+                        <p>Carregando os dados...</p>
+                    </div>
+                ) :
+                    <table className="dsc-table dsc-mb20 dsc-mt20">
+                        <thead>
+                            <tr>
+                                <th className="dsc-tb576">Número da venda</th>
+                                <th>Nome da Produto</th>
+                                <th className="dsc-tb768">Data</th>
+                                <th className="dsc-tb768">Quantidade de produtos</th>
+                                <th>Valor</th>
+                                <th>Deletar pedido</th>
+                            </tr>
+                        </thead>
 
-                
+
                         <tbody>
 
 
-                                                {order?.items?.map(item => ( // Adiciona verificação extra para order?.items
+                            {order.map(order => (
+                                order.items.map(item => (// Adiciona verificação extra para order?.items
                                     <tr key={`${item.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
@@ -247,10 +248,10 @@ export default function OrderHistory() {
                                         </td>
                                     </tr>))
 
-                            }
+                            ))}
                         </tbody>
-                </table>
-}
+                    </table>
+                }
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
