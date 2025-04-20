@@ -223,8 +223,8 @@ export default function OrderHistory() {
                         <tbody>
 
 
-                            {order.map(order => (
-                                order.items.map(item => (// Adiciona verificação extra para order?.items
+                            {order?.map(order => (
+                                order.items?.map(item => (// Adiciona verificação extra para order?.items
                                     <tr key={`${item.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
@@ -234,7 +234,7 @@ export default function OrderHistory() {
                                         <td>
                                             <img
                                                 onClick={() => {
-                                                    if (order.id !== undefined && item.productId !== undefined) {
+                                                    if (order?.id !== undefined && item.productId !== undefined) {
                                                         handleDeleteClick(order.id, item.productId);
                                                     } else {
                                                         console.error("IDs de pedido ou produto indefinidos.");
