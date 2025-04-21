@@ -19,7 +19,7 @@ export default function Confirmation() {
             setPaymentMethod('Cartão de débito');
         } else if ( savedPaymentMethod === '"Dinheiro"')
             setPaymentMethod('Dinheiro');
-        else if ( savedPaymentMethod === '"Pix"')
+        else if ( savedPaymentMethod === '"pi"')
                 setPaymentMethod('Pix');
     }, []);
 
