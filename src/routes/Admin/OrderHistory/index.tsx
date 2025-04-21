@@ -48,7 +48,7 @@ export default function OrderHistory() {
         message: 'Tem certeza?'
     });
     useEffect(() => {
-        setFilterDate(moment().format('YYYY-MM-DD'));
+       // setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
         orderService.findAll().then((response: any) => {
