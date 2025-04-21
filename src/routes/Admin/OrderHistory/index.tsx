@@ -51,7 +51,7 @@ export default function OrderHistory() {
        // setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
-        orderService.findAll({ sortBy: 'moment', direction: 'desc', size: 20 }).then((response: any) => {
+        orderService.findAll({ sort: 'moment', direction: 'desc', size: 70 }).then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
             setAllOrders(response.data.content);
@@ -223,7 +223,7 @@ export default function OrderHistory() {
 
                             {order?.map(order => (
                                 order.items?.map(item => (// Adiciona verificação extra para order?.items
-                                    <tr key={`${order?.id}`}>
+                                    <tr key={`${order?.id}-${item?.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
                                         <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>

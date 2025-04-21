@@ -3,9 +3,10 @@ import { requestBackend } from "../utils/requests";
 import { OrderDTO } from "../models/order";
 
 export type OrderSearchParams = {
-    sortBy?: string;
+    sort?: string;
     direction?: 'asc' | 'desc';
     size: number;
+
     // Adicione outros parâmetros de pesquisa que sua API possa aceitar
 };
 
