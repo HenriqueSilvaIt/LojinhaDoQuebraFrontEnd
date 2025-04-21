@@ -64,9 +64,8 @@ export default function OrderHistory() {
     }, []);
 
     useEffect(() => {
-        let filteredOrders: OrderDTO[] = allOrders;
-
-
+        let filteredOrders: OrderDTO[] = allOrders || []; // Garante que filteredOrders seja um array vazio por padrão
+    
         if (filterDate) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-MM-DD') === filterDate;
@@ -80,13 +79,10 @@ export default function OrderHistory() {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
         }
-        // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
         const sortedOrders = [...filteredOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
         setOrders(sortedOrders);
-
         const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
-
     }, [filterDate, allOrders, filterWeek, filterMonth]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
