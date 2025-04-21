@@ -48,7 +48,7 @@ export default function OrderHistory() {
         message: 'Tem certeza?'
     });
     useEffect(() => {
-        setFilterDate(moment().format('YYYY-MM-DD'));
+       // setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
         orderService.findAll({ sortBy: 'moment', direction: 'desc', page: queryParams.page, size: 20 }).then((response: any) => {
@@ -82,12 +82,12 @@ export default function OrderHistory() {
         }*/
 
         // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
-        const sortedOrders = [...allOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
-        setOrders(sortedOrders);
+    //    const sortedOrders = [...allOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
+       // setOrders(sortedOrders);
         const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
 
-    }, [filterDate, allOrders, filterWeek, filterMonth]);
+    }, [ allOrders]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
