@@ -201,12 +201,7 @@ export default function OrderHistory() {
 
                 }
 
-{loading ? (
-                        <div className="dsc-loading-container">
-                            <img src={loadingi} alt="Carregando..." />
-                            <p>Carregando os dados...</p>
-                        </div>
-                    ) :
+
                 <table className="dsc-table dsc-mb20 dsc-mt20">
                     <thead>
                         <tr>
@@ -219,13 +214,18 @@ export default function OrderHistory() {
                         </tr>
                     </thead>
 
-                
+                    {loading ? (
+                        <div className="dsc-loading-container">
+                            <img src={loadingi} alt="Carregando..." />
+                            <p>Carregando os dados...</p>
+                        </div>
+                    ) :
                         <tbody>
 
 
-                        {order?.map(order => (
-                                order.items?.map(item => (// Adiciona verificação extra para order?.items
-                                    <tr key={`${order?.id}-${item?.productId}`}>
+                        {order.map(order => (
+                                order.items.map(item => (// Adiciona verificação extra para order?.items
+                                    <tr key={`${order.id}-${item.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
                                         <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
@@ -234,7 +234,7 @@ export default function OrderHistory() {
                                         <td>
                                             <img
                                                 onClick={() => {
-                                                    if (order?.id !== undefined && item.productId !== undefined) {
+                                                    if (order.id !== undefined && item.productId !== undefined) {
                                                         handleDeleteClick(order.id, item.productId);
                                                     } else {
                                                         console.error("IDs de pedido ou produto indefinidos.");
@@ -251,8 +251,9 @@ export default function OrderHistory() {
 ))}
 
                         </tbody>
-                </table>
 }
+                </table>
+
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
