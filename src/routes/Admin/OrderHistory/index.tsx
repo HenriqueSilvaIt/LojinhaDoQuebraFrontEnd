@@ -24,7 +24,7 @@ export default function OrderHistory() {
     const [filterDate, setFilterDate] = useState<string>('');
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
-    const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
+    const [totalSales] = useState<number>(0); // Novo estado para o total de vendas
     const [loading, setLoading] = useState<boolean>(false); // Novo estado para controlar o loading
     const [queryParams] = useState<QueryParams>({ page: 0 })
 
@@ -62,10 +62,10 @@ export default function OrderHistory() {
             setDialogInfoData({ visable: true, message: "Erro ao carregar os pedidos." });
         });
     }, [queryParams]);
-
+/*
     useEffect(() => {
      let filteredOrders: OrderDTO[] = allOrders;
-/*
+
 
         if (filterDate) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
@@ -79,7 +79,7 @@ export default function OrderHistory() {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
-        }*/
+        }
 
         // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
     //    const sortedOrders = [...allOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
@@ -87,7 +87,7 @@ export default function OrderHistory() {
         const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
 
-    }, [ allOrders]);
+    }, [ allOrders]); */
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
