@@ -156,7 +156,6 @@ export default function OrderHistory() {
     return (
         <main>
             <section id="product-listing-section" className="dsc-container">
-
                 <h2 className="dsc-section-title dsc-mb20">Histórico de vendas</h2>
                 <div className="dsc-btn-page-container dsc-mb20">
                     <div className="dsc-filter-container">
@@ -224,7 +223,7 @@ export default function OrderHistory() {
 
                             {order?.map(order => (
                                 order.items?.map(item => (// Adiciona verificação extra para order?.items
-                                    <tr key={`${order?.id}-${item?.productId}`}>
+                                    <tr key={`${order?.id}`}>
                                         <td className="dsc-tb576">{order.id}</td>
                                         <td>{item.name}</td>
                                         <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
