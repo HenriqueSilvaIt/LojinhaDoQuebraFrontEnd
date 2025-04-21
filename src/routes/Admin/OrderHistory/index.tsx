@@ -10,11 +10,11 @@ import loadingi from '../../../assets/loadi.gif';
 
 
 
-/*type QueryParams = {
+type QueryParams = {
 
     page: number;
 
-}*/
+}
 
 export default function OrderHistory() {
 
@@ -24,9 +24,9 @@ export default function OrderHistory() {
     const [filterDate, setFilterDate] = useState<string>('');
     const [filterMonth, setFilterMonth] = useState<string>('');
     const [filterWeek, setFilterWeek] = useState<string>('');
-    const [totalSales] = useState<number>(0); // Novo estado para o total de vendas
+    const [totalSales, setTotalSales] = useState<number>(0); // Novo estado para o total de vendas
     const [loading, setLoading] = useState<boolean>(false); // Novo estado para controlar o loading
-    //const [queryParams] = useState<QueryParams>({ page: 0 })
+    const [queryParams] = useState<QueryParams>({page: 0})
 
     const [dialogInfoData, setDialogInfoData] = useState<{
         visable: boolean;
@@ -48,10 +48,10 @@ export default function OrderHistory() {
         message: 'Tem certeza?'
     });
     useEffect(() => {
-       // setFilterDate(moment().format('YYYY-MM-DD'));
+        setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
-        orderService.findAll({ sort: 'moment', direction: 'desc', size: 70 }).then((response: any) => {
+        orderService.findAll().then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
             setAllOrders(response.data.content);
@@ -61,10 +61,10 @@ export default function OrderHistory() {
             setLoading(false); // Finaliza o loading em caso de erro
             setDialogInfoData({ visable: true, message: "Erro ao carregar os pedidos." });
         });
-    }, []);
-/*
+    }, [queryParams]);
+
     useEffect(() => {
-     let filteredOrders: OrderDTO[] = allOrders;
+        let filteredOrders: OrderDTO[] = allOrders;
 
 
         if (filterDate) {
@@ -80,14 +80,14 @@ export default function OrderHistory() {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
         }
-
         // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
-    //    const sortedOrders = [...allOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
-       // setOrders(sortedOrders);
+        const sortedOrders = [...filteredOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
+        setOrders(sortedOrders);
+
         const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
 
-    }, [ allOrders]); */
+    }, [filterDate, allOrders, filterWeek, filterMonth]);
 
     function handleDialogConfirmationAnswer(answer: boolean, orderId: number | null, productId: number | null) {
         if (answer === true && orderId !== null && productId !== null) {
@@ -153,9 +153,11 @@ export default function OrderHistory() {
     }
 
 
+
     return (
         <main>
             <section id="product-listing-section" className="dsc-container">
+
                 <h2 className="dsc-section-title dsc-mb20">Histórico de vendas</h2>
                 <div className="dsc-btn-page-container dsc-mb20">
                     <div className="dsc-filter-container">
@@ -199,29 +201,29 @@ export default function OrderHistory() {
 
                 }
 
-                {loading ? (
-                    <div className="dsc-loading-container">
-                        <img src={loadingi} alt="Carregando..." />
-                        <p>Carregando os dados...</p>
-                    </div>
-                ) :
-                    <table className="dsc-table dsc-mb20 dsc-mt20">
-                        <thead>
-                            <tr>
-                                <th className="dsc-tb576">Número da venda</th>
-                                <th>Nome da Produto</th>
-                                <th className="dsc-tb768">Data</th>
-                                <th className="dsc-tb768">Quantidade de produtos</th>
-                                <th>Valor</th>
-                                <th>Deletar pedido</th>
-                            </tr>
-                        </thead>
+{loading ? (
+                        <div className="dsc-loading-container">
+                            <img src={loadingi} alt="Carregando..." />
+                            <p>Carregando os dados...</p>
+                        </div>
+                    ) :
+                <table className="dsc-table dsc-mb20 dsc-mt20">
+                    <thead>
+                        <tr>
+                            <th className="dsc-tb576">Número da venda</th>
+                            <th>Nome da Produto</th>
+                            <th className="dsc-tb768">Data</th>
+                            <th className="dsc-tb768">Quantidade de produtos</th>
+                            <th>Valor</th>
+                            <th>Deletar pedido</th>
+                        </tr>
+                    </thead>
 
-
+                
                         <tbody>
 
 
-                            {order?.map(order => (
+                        {order?.map(order => (
                                 order.items?.map(item => (// Adiciona verificação extra para order?.items
                                     <tr key={`${order?.id}-${item?.productId}`}>
                                         <td className="dsc-tb576">{order.id}</td>
@@ -246,10 +248,11 @@ export default function OrderHistory() {
                                         </td>
                                     </tr>))
 
-                            ))}
+))}
+
                         </tbody>
-                    </table>
-                }
+                </table>
+}
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
