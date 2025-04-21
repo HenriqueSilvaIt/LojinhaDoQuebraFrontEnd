@@ -5,7 +5,6 @@ import { OrderDTO } from "../models/order";
 export type OrderSearchParams = {
     sortBy?: string;
     direction?: 'asc' | 'desc';
-    page: number;
     size: number;
     // Adicione outros parâmetros de pesquisa que sua API possa aceitar
 };
