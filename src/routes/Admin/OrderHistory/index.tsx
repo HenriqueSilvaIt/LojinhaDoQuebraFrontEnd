@@ -64,8 +64,8 @@ export default function OrderHistory() {
     }, [queryParams]);
 
     useEffect(() => {
-        let filteredOrders: OrderDTO[] = allOrders;
-
+     let filteredOrders: OrderDTO[] = allOrders;
+/*
 
         if (filterDate) {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
@@ -79,11 +79,11 @@ export default function OrderHistory() {
             filteredOrders = filteredOrders.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
-        }
-        // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
-        const sortedOrders = [...filteredOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
-        setOrders(sortedOrders);
+        }*/
 
+        // Ordena os pedidos filtrados por data em ordem decrescente (mais recente primeiro)
+        const sortedOrders = [...allOrders].sort((a, b) => moment(b.moment).valueOf() - moment(a.moment).valueOf());
+        setOrders(sortedOrders);
         const salesTotal = filteredOrders.reduce((acc: any, order: any) => acc + order.total, 0);
         setTotalSales(salesTotal);
 
