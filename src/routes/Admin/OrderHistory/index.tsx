@@ -221,38 +221,41 @@ export default function OrderHistory() {
                         </div>
                     ) :
                         <tbody>
-
-
-                        {order?.map(order => (
-                                order?.items.map(item => (// Adiciona verificação extra para order?.items
-                                    <tr key={`${order?.id}-${item?.productId}`}>
-                                        <td className="dsc-tb576">{order.id}</td>
-                                        <td>{item.name}</td>
-                                        <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
-                                        <td className="dsc-tb768">{item.quantity}</td>
-                                        <td>R$ {item.subTotal.toFixed(2)}</td>
-                                        <td>
-                                            <img
-                                                onClick={() => {
-                                                    if (order.id !== undefined && item.productId !== undefined) {
-                                                        handleDeleteClick(order.id, item.productId);
-                                                    } else {
-                                                        console.error("IDs de pedido ou produto indefinidos.");
-                                                    }
-                                                }// Corrigido
-                                                }
-                                                className="dsc-product-listing-btn"
-                                                src={deleteImg}
-                                                alt="delet"
-                                            />
-                                        </td>
-                                    </tr>))
-
-))}
-
-                        </tbody>
-}
-                </table>
+ {order?.map(order => (
+        order?.items?.map(item => {
+            // Adicionamos uma verificação para garantir que 'item' não seja undefined
+            if (item) {
+                return (
+                    <tr key={`${order?.id}-${item?.productId}`}>
+                        <td className="dsc-tb576">{order.id}</td>
+                        <td>{item.name}</td>
+                        <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
+                        <td className="dsc-tb768">{item.quantity}</td>
+                        <td>R$ {item.subTotal.toFixed(2)}</td>
+                        <td>
+                            <img
+                                onClick={() => {
+                                    if (order.id !== undefined && item.productId !== undefined) {
+                                        handleDeleteClick(order.id, item.productId);
+                                    } else {
+                                        console.error("IDs de pedido ou produto indefinidos.");
+                                    }
+                                }}
+                                className="dsc-product-listing-btn"
+                                src={deleteImg}
+                                alt="delet"
+                            />
+                        </td>
+                    </tr>
+                );
+            }
+            // Se 'item' for undefined, não retornamos nada (ou podemos retornar um fragmento vazio)
+            return null;
+        })
+    ))}
+    </tbody>
+    }
+        </table>
 
             </section>
 
