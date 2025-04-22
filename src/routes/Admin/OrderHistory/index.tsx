@@ -54,6 +54,7 @@ export default function OrderHistory() {
         orderService.findAll().then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
+
             setAllOrders(response.data.content);
             setOrders(response.data.content);
             setLoading(false); // Finaliza o loading após receber os dados
@@ -217,8 +218,8 @@ export default function OrderHistory() {
                         </div>
                     ) :
                         <tbody>
- {order.map(order => (
-        order.items.map(item => {
+ {order?.map(order => (
+        order.items?.map(item => {
             // Adicionamos uma verificação para garantir que 'item' não seja undefined
                 return (
                     <tr key={`${order.id}-${item.productId}`}>
