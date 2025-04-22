@@ -67,15 +67,15 @@ export default function OrderHistory() {
         let filteredOrders: OrderDTO[] = allOrders || []; // Garante que filteredOrders seja um array vazio por padrão
     
         if (filterDate) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+            filteredOrders = filteredOrders?.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-MM-DD') === filterDate;
             });
         } else if (filterMonth) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+            filteredOrders = filteredOrders?.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-MM') === filterMonth;
             });
         } else if (filterWeek) {
-            filteredOrders = filteredOrders.filter((order: OrderDTO) => {
+            filteredOrders = filteredOrders?.filter((order: OrderDTO) => {
                 return moment(order.moment).format('YYYY-[W]ww') === filterWeek;
             });
         }
@@ -220,7 +220,6 @@ export default function OrderHistory() {
  {order?.map(order => (
         order?.items?.map(item => {
             // Adicionamos uma verificação para garantir que 'item' não seja undefined
-            if (item) {
                 return (
                     <tr key={`${order?.id}-${item?.productId}`}>
                         <td className="dsc-tb576">{order.id}</td>
@@ -244,10 +243,8 @@ export default function OrderHistory() {
                         </td>
                     </tr>
                 );
-            }
-            // Se 'item' for undefined, não retornamos nada (ou podemos retornar um fragmento vazio)
-            return null;
-        })
+       
+ } )
     ))}
     </tbody>
     }
