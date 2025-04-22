@@ -48,14 +48,14 @@ export default function OrderHistory() {
         message: 'Tem certeza?'
     });
     useEffect(() => {
-       // setFilterDate(moment().format('YYYY-MM-DD'));
+        setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
         orderService.findAll().then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
-            setAllOrders(response.data);
-            setOrders(response.data);
+            setAllOrders(response.data.content);
+            setOrders(response.data.content);
             setLoading(false); // Finaliza o loading após receber os dados
         }).catch(() => {
             setLoading(false); // Finaliza o loading em caso de erro
