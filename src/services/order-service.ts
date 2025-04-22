@@ -23,14 +23,18 @@ export function findByIdRequest(id: number) {
 
 /*Função para salvar um pedido que contem um ou mais produto*/
 
-export function placeOrderRequest(cart: OrderDTO) {
+export function placeOrderRequest(cart: OrderDTO, size = 60) {
 
         /* vamos salvar lá no backend por isso usamos o axio*/
     const config : AxiosRequestConfig = {
         url: "/orders",
         method: "POST",
         withCredentials: true, /*precisa estar logado*/
-        data: cart /* o corpo se chamada data no axio da pra ver é o body lá no postman, e oque tem dentro 
+        data: cart,
+        params: { 
+            size: size
+
+        } /* o corpo se chamada data no axio da pra ver é o body lá no postman, e oque tem dentro 
         do corpo do pedido é o carrinho, porque o carrinho  que estamos passando como argumento
          dessa função, porque no cart(carrinmh) tm o produtos do pedido*/
     }
