@@ -19,6 +19,8 @@ type QueryParams = {
 
 export default function OrderHistory() {
 
+
+   
     const [queryParams, setQueryParams] = useState<QueryParams>({
         page: 0});
     const [isLastPage, setIsLastPage] = useState<boolean>(false);
@@ -51,7 +53,7 @@ export default function OrderHistory() {
         message: 'Tem certeza?'
     });
     useEffect(() => {
-       // setFilterDate(moment().format('YYYY-MM-DD'));
+       setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
         orderService.findAll(queryParams.page).then((response: any) => {
