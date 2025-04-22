@@ -39,7 +39,7 @@ export function placeOrderRequest(cart: OrderDTO) {
     return requestBackend(config);
 }
 
-export function findAll(size = 60) {
+export function findAll(size = 400) {
     const config: AxiosRequestConfig = {
         url: `/orders`,
         method: "GET",
