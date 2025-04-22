@@ -261,8 +261,7 @@ export default function OrderHistory() {
     }
         </table>
       {!isLastPage &&
-                        <ButtonNextPage onNextPage={handleNextPageClick} />
-
+                        <ButtonNextPage onNextPage={() => handleNextPageClick()}/>
                     }
             </section>
 
