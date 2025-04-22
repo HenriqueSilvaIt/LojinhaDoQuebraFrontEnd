@@ -218,35 +218,33 @@ export default function OrderHistory() {
                         </div>
                     ) :
                         <tbody>
- {order?.map(order => (
-        order?.items?.map(item => {
-            // Adicionamos uma verificação para garantir que 'item' não seja undefined
-                return (
-                    <tr key={`${order?.id}-${item?.productId}`}>
-                        <td className="dsc-tb576">{order.id}</td>
-                        <td>{item.name}</td>
-                        <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
-                        <td className="dsc-tb768">{item.quantity}</td>
-                        <td>R$ {item.subTotal.toFixed(2)}</td>
-                        <td>
-                            <img
-                                onClick={() => {
-                                    if (order.id !== undefined && item.productId !== undefined) {
-                                        handleDeleteClick(order.id, item.productId);
-                                    } else {
-                                        console.error("IDs de pedido ou produto indefinidos.");
-                                    }
-                                }}
-                                className="dsc-product-listing-btn"
-                                src={deleteImg}
-                                alt="delet"
-                            />
-                        </td>
-                    </tr>
-                );
-       
- } )
-    ))}
+   {order?.map(singleOrder => (
+    singleOrder?.items?.map(item => {
+      return (
+        <tr key={`${singleOrder?.id}-${item?.productId}`}>
+          <td className="dsc-tb576">{singleOrder.id}</td>
+          <td>{item.name}</td>
+          <td className="dsc-tb768">{moment(singleOrder.moment).format('DD/MM/YYYY HH:mm')}</td>
+          <td className="dsc-tb768">{item.quantity}</td>
+          <td>R$ {item.subTotal.toFixed(2)}</td>
+          <td>
+            <img
+              onClick={() => {
+                if (singleOrder.id !== undefined && item.productId !== undefined) {
+                  handleDeleteClick(singleOrder.id, item.productId);
+                } else {
+                  console.error("IDs de pedido ou produto indefinidos.");
+                }
+              }}
+              className="dsc-product-listing-btn"
+              src={deleteImg}
+              alt="delet"
+            />
+          </td>
+        </tr>
+      );
+    })
+  ))}
     </tbody>
     }
         </table>
