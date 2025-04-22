@@ -57,6 +57,7 @@ export default function OrderHistory() {
 
             setAllOrders(response.data.content);
             setOrders(response.data.content);
+            console.log(order);
             setLoading(false); // Finaliza o loading após receber os dados
         }).catch(() => {
             setLoading(false); // Finaliza o loading em caso de erro
