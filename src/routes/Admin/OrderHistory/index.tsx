@@ -54,9 +54,8 @@ export default function OrderHistory() {
         orderService.findAll().then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
-            setAllOrders(response.data.content);
-            setOrders(response.data.content);
-            console.log(response.data.content);
+            setAllOrders(response.data);
+            setOrders(response.data);
             setLoading(false); // Finaliza o loading após receber os dados
         }).catch(() => {
             setLoading(false); // Finaliza o loading em caso de erro
