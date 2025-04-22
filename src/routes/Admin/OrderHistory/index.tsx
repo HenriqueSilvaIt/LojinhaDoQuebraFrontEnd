@@ -7,18 +7,21 @@ import deleteImg from '../../../assets/delete.svg';
 import DialogConfirmation from '../../../components/DialogConfirmation';
 import DialogInfo from '../../../components/DialogInfo';
 import loadingi from '../../../assets/loadi.gif';
+import ButtonNextPage from '../../../components/ButtonNextPage';
 
 
 
-/*type QueryParams = {
+type QueryParams = {
 
     page: number;
 
-}*/
+}
 
 export default function OrderHistory() {
 
-
+    const [queryParams, setQueryParams] = useState<QueryParams>({
+        page: 0});
+    const [isLastPage, setIsLastPage] = useState<boolean>(false);
     const [allOrders, setAllOrders] = useState<OrderDTO[]>([]);
     const [order, setOrders] = useState<OrderDTO[]>([]);
     const [filterDate, setFilterDate] = useState<string>('');
@@ -51,7 +54,7 @@ export default function OrderHistory() {
        // setFilterDate(moment().format('YYYY-MM-DD'));
         setLoading(true); // Inicia o loading
 
-        orderService.findAll().then((response: any) => {
+        orderService.findAll(queryParams.page).then((response: any) => {
             // Acesse a propriedade 'content' para obter o array de pedidos
 
 
@@ -59,6 +62,7 @@ export default function OrderHistory() {
             setOrders(response.data.content);
             console.log(response.data);
             console.log(response.data.content);
+            setIsLastPage(response.data.last);
             setLoading(false); // Finaliza o loading após receber os dados
         }).catch(() => {
             setLoading(false); // Finaliza o loading em caso de erro
@@ -151,7 +155,11 @@ export default function OrderHistory() {
         });
     }
 
-
+    function handleNextPageClick() {
+        setQueryParams({ ...queryParams, page: queryParams.page + 1 }); /*
+        ao clicar no botão, ele ta dizendo que vai receber os produtos que já tinha na página
+        ...queryParams + page: queryParama.page + 1, e mais o produto da página seguinte */
+    }
 
     return (
         <main>
@@ -252,7 +260,10 @@ export default function OrderHistory() {
     </tbody>
     }
         </table>
+      {!isLastPage &&
+                        <ButtonNextPage onNextPage={handleNextPageClick} />
 
+                    }
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (

@@ -39,13 +39,14 @@ export function placeOrderRequest(cart: OrderDTO) {
     return requestBackend(config);
 }
 
-export function findAll(size = 400) {
+export function findAll(page: number, size = 20) {
     const config: AxiosRequestConfig = {
         url: `/orders`,
         method: "GET",
         withCredentials: true,
         params: { 
-            size: size
+            size: size,
+            page: page
 
         } 
        // Adiciona os parâmetros à configuração da requisição
