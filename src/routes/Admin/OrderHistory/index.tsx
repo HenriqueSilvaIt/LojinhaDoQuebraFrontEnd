@@ -68,7 +68,7 @@ export default function OrderHistory() {
             setLoading(false); // Finaliza o loading em caso de erro
             setDialogInfoData({ visable: true, message: "Erro ao carregar os pedidos." });
         });
-    }, []);
+    }, [queryParams]);
 
     useEffect(() => {
         let filteredOrders: OrderDTO[] = allOrders || []; // Garante que filteredOrders seja um array vazio por padrão
