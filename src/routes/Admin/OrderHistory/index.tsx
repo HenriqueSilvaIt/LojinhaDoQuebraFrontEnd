@@ -228,7 +228,7 @@ export default function OrderHistory() {
                             <img src={loadingi} alt="Carregando..." />
                             <p>Carregando os dados...</p>
                         </div>
-                    ) :
+                    ) : 
                         <tbody>
  {order?.map(order => (
         order.items?.map(item => {
@@ -259,12 +259,14 @@ export default function OrderHistory() {
        
  } )
     ))}
+
+{!isLastPage &&
+                        <ButtonNextPage onNextPage={() => handleNextPageClick()}/>
+                    }
     </tbody>
     }
         </table>
-      {!isLastPage &&
-                        <ButtonNextPage onNextPage={() => handleNextPageClick()}/>
-                    }
+ 
             </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
