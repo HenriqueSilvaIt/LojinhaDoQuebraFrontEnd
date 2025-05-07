@@ -95,6 +95,30 @@ variedades.
 </p>
 
 ### Mobile <a name="layout-mobile"></a>
+### Tela Inicial - Cadastro (Preenchimento de cidade e logradouro automático de acordo com o CEP)
+
+PC             |  Mobile
+:-------------------------:|:-------------------------:
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/tela%20c.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/Mobil.png)
+
+
+### Lista de endereços cadastrados
+
+PC             |  Mobile
+:-------------------------:|:-------------------------:
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/c-%20listpng.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/m%20-%20lit.png)
+
+### Cenário de preenchimento incorreto
+
+PC             |  Mobile
+:-------------------------:|:-------------------------:
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/c%20-%20e.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/m%20e.png)
+
+### Contato
+
+PC             |  Mobile
+:-------------------------:|:-------------------------:
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/contac.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/m%20-%20cont.png)
 
 <p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
   <img alt="Screenshot mobile 1" src="./assets/mobile-login.svg" width="200px">
@@ -270,7 +294,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 ## 🦸 Autor <a name="autor"></a>
 
 <a href="https://github.com/HenriqueSilvaIt">
- <img src="https://github.com/HenriqueSilvaIt/Assets/blob/main/Lojinha%20do%20quebra/file.jpeg" width="100px" alt="Henrique Silva" />
+ <img src="https://github.com/HenriqueSilvaIt/Assets/blob/main/Lojinha%20do%20quebra/fil.jpeg" width="100px" alt="Henrique Silva" />
  <br />
  <sub><b>HenriqueSilva</b></sub></a>
  <br />
