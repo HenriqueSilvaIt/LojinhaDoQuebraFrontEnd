@@ -299,7 +299,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
  <sub><b>HenriqueSilva</b></sub></a>
  <br />
 
-[![Linkedin Badge](https://img.shields.io/badge/-HenriqueSilva-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/lucasbarzan/)](https://www.linkedin.com/in/henriqueoliveirati/) 
+[![Linkedin Badge](https://img.shields.io/badge/-HenriqueSilva-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://https://www.linkedin.com/in/henriqueoliveirati)](https://www.linkedin.com/in/henriqueoliveirati/) 
 [![Gmail Badge](https://img.shields.io/badge/-henriqueoliveiraaa@yahoo.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:lucasbarzand@gmail.com)](mailto:henriqueoliveiraaa@yahoo.com)
 
 ---
@@ -308,4 +308,4 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 Este projeto esta sob a licença [MIT](./LICENSE).
 
-Feito com ❤️ por Lucas Barzan 👋🏽 [Entre em contato!](https://www.linkedin.com/in/lucasbarzan/)
+Desenvolvido por Henrique Silva 👋🏽 [Entre em contato!](https://www.linkedin.com/in/henriqueoliveirati)
