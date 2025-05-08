@@ -3,7 +3,7 @@
 </h1>
 
 <h3 align="center">
-    🛒 Sistema web  PDV 
+     Sistema web  PDV 
 </h3>
 
 <p align="center">
