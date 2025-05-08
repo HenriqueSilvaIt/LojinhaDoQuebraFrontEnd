@@ -135,10 +135,6 @@ $ dentro da IDE execute o projeto no botão RUN
 
 ```
 
-<p align="center">
-  <a href="https://github.com/lucasbarzan/gobarber/blob/master/Insomnia_API_GoBarber.json" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
-</p>
-
 
 #### 🧭 Rodando a aplicação web (Frontend) <a name="rodando-a-aplicacao-web-frontend"></a>
 
