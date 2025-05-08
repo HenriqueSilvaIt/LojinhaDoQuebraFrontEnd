@@ -169,7 +169,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[ESLint](https://eslint.org/)**
 -   **[Prettier](https://prettier.io/)**
 
-#### **Server**  ([Java 17](https://nodejs.org/en/) <a name="tecnologias-server"></a>
+#### **Server**  ([Java 17])(https://nodejs.org/en/) <a name="tecnologias-server"></a>
 
 -   **[Spring boot](https://expressjs.com/)**
 -   **[Railway](https://aws.amazon.com/pt/sdk-for-node-js/)**
