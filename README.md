@@ -10,9 +10,6 @@
   <img alt="GitHub language count" src="https://img.shields.io/badge/languages-4-green">
 </p>
 
-<h4 align="center">
-	Concluído 
-</h4>
 
 Tabela de conteúdos
 =================
