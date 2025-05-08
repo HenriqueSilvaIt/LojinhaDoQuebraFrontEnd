@@ -7,7 +7,7 @@
 </h3>
 
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/lucasbarzan/gofinances?color=%2304D361">
+  <img alt="GitHub language count" src="https://img.shields.io/badge/languages-4-green">
     
    <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
    <a href="https://github.com/lucasbarzan/gofinances/stargazers">
@@ -67,9 +67,7 @@ variedades.
   - [x] Consultar produtos disponíveis
   - [x] Entrar em contato com a loja pelo link do whatsapp
   - [x] Visualizar endereço da loja
-
-
-
+        
 ---
 
 ## 🎨 Layout <a name="layout"></a>
@@ -95,30 +93,38 @@ variedades.
 </p>
 
 ### Mobile <a name="layout-mobile"></a>
-### Tela Inicial - Cadastro (Preenchimento de cidade e logradouro automático de acordo com o CEP)
+
+### Login
 
 PC             |  Mobile
 :-------------------------:|:-------------------------:
-![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/tela%20c.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/Mobil.png)
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Login.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Login%20Mobile.png)
 
 
-### Lista de endereços cadastrados
-
-PC             |  Mobile
-:-------------------------:|:-------------------------:
-![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/c-%20listpng.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/m%20-%20lit.png)
-
-### Cenário de preenchimento incorreto
+### Produtos
 
 PC             |  Mobile
 :-------------------------:|:-------------------------:
-![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/c%20-%20e.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/m%20e.png)
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Tela%20deprodutos.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Produtos%20Mobile.png)
 
-### Contato
+
+### Caixa
+
+Sem produtos           |  Com produtos
+:-------------------------:|:-------------------------:
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/CaixaLivre.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Caixa%20com%20produtos.png)
+
+### Área administrativa - Histórico de vendas
 
 PC             |  Mobile
 :-------------------------:|:-------------------------:
-![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/contac.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/ViaCep%20-%20Java%20Script/m%20-%20cont.png)
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Hist%C3%B3rico%20de%20venda%20%20com%20produt.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Hist%C3%B3ricode%20vendaMobile.png)
+
+### Cadastro de produtos
+
+PC             |  Mobile
+:-------------------------:|:-------------------------:
+![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Cadastro.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Cadastro%20Mobile.png)
 
 <p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
   <img alt="Screenshot mobile 1" src="./assets/mobile-login.svg" width="200px">
@@ -274,20 +280,9 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 #### **Utilitários** <a name="utilitarios"></a>
 
--   Protótipo:  **[Figma](https://www.figma.com/)**
 -   Editor:  **[Visual Studio Code](https://code.visualstudio.com/)**
 -   Teste de API:  **[Insomnia](https://insomnia.rest/)**
 -   Fontes:  **[Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab)**
-
-
----
-
-## 💪 Como contribuir no projeto <a name="como-contribuir"></a>
-
-1. Faça um **fork** do projeto.
-2. Crie uma nova branch com as suas alterações: `git checkout -b my-feature`
-3. Salve as alterações e crie uma mensagem de commit contando o que você fez: `git commit -m "feature: My new feature"`
-4. Envie as suas alterações: `git push origin my-feature`
 
 ---
 
