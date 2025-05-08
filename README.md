@@ -93,7 +93,7 @@ PC             |  Mobile
 :-------------------------:|:-------------------------:
 ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Hist%C3%B3rico%20de%20venda%20%20com%20produt.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Hist%C3%B3ricode%20vendaMobile.png)
 
-### Cadastro de produtos
+### Área administrativa - Cadastro de produtos
 
 PC             |  Mobile
 :-------------------------:|:-------------------------:
