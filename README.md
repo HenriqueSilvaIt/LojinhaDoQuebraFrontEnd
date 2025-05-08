@@ -185,8 +185,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[HTML](https://www.npmjs.com/package/uuidv4)**
 -   **[CSS](https://date-fns.org/)**
 
-> Veja o arquivo  [package.json](https://github.com/lucasbarzan/gobarber/blob/master/mobile/package.json)
-
 #### **Utilitários** <a name="utilitarios"></a>
 
 -   Editor:  **[Visual Studio Code](https://code.visualstudio.com/)**
