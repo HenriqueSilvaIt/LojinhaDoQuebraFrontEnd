@@ -73,20 +73,6 @@ variedades.
   <img alt="Layout no Figma" src="https://img.shields.io/badge/Acessar%20Layout%20-Figma-%2304D361">
 </a> -->
 
-### Web <a name="layout-web"></a>
-
-<p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
-  <img alt="Screenshot web 1" src="./assets/web-login.svg" width="400px">
-
-  <img alt="Screenshot web 2" src="./assets/web-signup.svg" width="400px">
-</p>
-
-<p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
-  <img alt="Screenshot web 3" src="https://github.com/HenriqueSilvaIt/Assets/blob/main/Lojinha%20do%20quebra/Screenshot%202025-05-07%20104637.png" width="400px">
-  
-  <img alt="Screenshot web 4" src="./assets/web-profile.svg" width="400px">
-</p>
-
 ### Mobile <a name="layout-mobile"></a>
 
 ### Login
