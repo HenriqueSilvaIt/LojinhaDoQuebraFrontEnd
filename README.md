@@ -260,7 +260,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 ## 🦸 Autor <a name="autor"></a>
 
 <a href="https://github.com/HenriqueSilvaIt">
- <img src="https://github.com/HenriqueSilvaIt/Assets/blob/main/Lojinha%20do%20quebra/fil.jpeg" width="100px" alt="Henrique Silva" />
+ <img src="https://github.com/HenriqueSilvaIt/Assets/blob/main/l/fil.jpeg" width="100px" alt="Henrique Silva" />
  <br />
  <sub><b>HenriqueSilva</b></sub></a>
  <br />
