@@ -69,14 +69,14 @@ variedades.
 
 ### Login
 
-PC             |  Mobile
+PC             |  Mobile📱 
 :-------------------------:|:-------------------------:
 ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Login.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Login%20Mobile.png)
 
 
 ### Produtos
 
-PC             |  Mobile
+PC             |  Mobile📱 
 :-------------------------:|:-------------------------:
 ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Tela%20deprodutos.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Produtos%20Mobile.png)
 
@@ -89,13 +89,13 @@ Sem produtos           |  Com produtos
 
 ### Área administrativa - Histórico de vendas
 
-PC             |  Mobile
+PC             |  Mobile📱 
 :-------------------------:|:-------------------------:
 ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Hist%C3%B3rico%20de%20venda%20%20com%20produt.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Hist%C3%B3ricode%20vendaMobile.png)
 
 ### Área administrativa - Cadastro de produtos
 
-PC             |  Mobile
+PC             |  Mobile📱 
 :-------------------------:|:-------------------------:
 ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Cadastro.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Cadastro%20Mobile.png)
 
@@ -104,37 +104,37 @@ PC             |  Mobile
 ## 🚀 Como executar o projeto <a name="como-executar-o-projeto"></a>
 
 Este projeto é divido em duas partes:
-1. Frontend Web (pasta web) 
-2. Backend 
+1. Frontend Web: https//github.com/HenriqueSilvaIt/LojinhaDoQuebraFrontEnd.git
+2. Backend : https://github.com/HenriqueSilvaIt/LojinhaDoQuebraBackend.git
 
 💡 Tanto o Frontend Web quanto o Mobile precisam que o Backend esteja sendo executado para funcionar
 
 ### Pré-requisitos <a name="pre-requisitos"></a>
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
-[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/). 
-Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/).
+[Git](https://git-scm.com)
+[VSCode](https://code.visualstudio.com/).
 
 #### 🎲 Rodando o Backend <a name="rodando-o-backend"></a>
 
 ```bash
 
 # Clone este repositório
-$ git clone git@github.com:lucasbarzan/gobarber.git
+2. Backend : https://github.com/HenriqueSilvaIt/LojinhaDoQuebraBackend.git
 
 # Acesse a pasta do projeto no terminal/cmd
-$ cd gobarber
+$ cd LojinhaDoQuebraBackend
 
-# Vá para a pasta do backend
-$ cd server
+# Abra o projeto em uma IDE de preferencia
+$ IntelliJ, Spring Boot Suite, Eclipse e etc.
 
 # Instale as dependências
-$ npm install
+$  mvn clean
 
 # Execute a aplicação em modo de desenvolvimento
-$ npm run dev:server
+$ dentro da IDE execute o projeto no botão RUN
 
-# O servidor inciará na porta:3333 - acesse http://localhost:3333 
+# O servidor inciará na porta:8080 - acesse http://localhost:8080 
 
 ```
 
@@ -148,30 +148,20 @@ $ npm run dev:server
 ```bash
 
 # Clone este repositório
-$ git clone git@github.com:lucasbarzan/gobarber.git
+$ git clone https: https//github.com/HenriqueSilvaIt/LojinhaDoQuebraFrontEnd.git
 
 # Acesse a pasta do projeto no seu terminal/cmd
-$ cd gobarber
-
-# Vá para a pasta do frontend
-$ cd web
+$ cd LojinhaDoQuebraFrontEnd
 
 # Instale as dependências
-$ npm install
+$ yarn 
 
 # Execute a aplicação em modo de desenvolvimento
-$ npm run start
+$ yarn dev
 
-# A aplicação será aberta na porta:3000 - acesse http://localhost:3000
+# A aplicação será aberta na porta:5173 - acesse http://localhost:5173
 
 ```
-
-
-#### 📱 Rodando a aplicação mobile (Frontend) <a name="rodando-a-aplicacao-mobile"></a>
-
-Siga as instruções [deste link](https://react-native.rocketseat.dev/) para configurar o ambiente de desenvolvimento mobile em React Native e poder rodar a aplicação na sua máquina.
-
-
 ---
 
 ## 🛠 Tecnologias <a name="tecnologias"></a>
@@ -184,60 +174,19 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 #### **Server**  ([NodeJS](https://nodejs.org/en/)  +  [TypeScript](https://www.typescriptlang.org/)) <a name="tecnologias-server"></a>
 
--   **[Express](https://expressjs.com/)**
--   **[AWS SDK](https://aws.amazon.com/pt/sdk-for-node-js/)**
--   **[bcryptjs](https://www.npmjs.com/package/bcryptjs)**
--   **[uuidv4](https://www.npmjs.com/package/uuidv4)**
--   **[Celebrate](https://github.com/arb/celebrate)**
--   **[class-transformer](https://github.com/typestack/class-transformer)**
--   **[date-fns](https://date-fns.org/)**
+-   **[Spring boot](https://expressjs.com/)**
+-   **[Railway](https://aws.amazon.com/pt/sdk-for-node-js/)**
+-   **[PostGree](https://www.npmjs.com/package/bcryptjs)**
 -   **[CORS](https://expressjs.com/en/resources/middleware/cors.html)**
--   **[node-postgres](https://node-postgres.com/)**
--   **[mongodb](https://mongodb.github.io/node-mongodb-native/)**
--   **[ioredis](https://github.com/luin/ioredis)**
--   **[redis](https://www.npmjs.com/package/redis)**
--   **[TypeORM](https://typeorm.io/)**
--   **[ts-node](https://github.com/TypeStrong/ts-node)**
--   **[Nodemailer](https://nodemailer.com/about/)**
--   **[Multer](https://github.com/expressjs/multer)**
--   **[rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible)**
--   **[dotENV](https://github.com/motdotla/dotenv)**
--   **[tsyringe](https://github.com/microsoft/tsyringe)**
--   **[Handlebars](https://handlebarsjs.com/)**
--   **[Jest](https://jestjs.io/)**
-
-> Veja o arquivo  [package.json](https://github.com/lucasbarzan/gobarber/blob/master/server/package.json)
-
+-   **[Banco de dados H2](https://node-postgres.com/)**
+- 
 #### **Website**  ([React](https://reactjs.org/)  +  [TypeScript](https://www.typescriptlang.org/)) <a name="tecnologias-website"></a>
 
 -   **[React Router Dom](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom)**
--   **[React Icons](https://react-icons.github.io/react-icons/)**
--   **[React Day Picker](https://react-day-picker.js.org/)**
--   **[React Spring](https://www.react-spring.io/)**
--   **[Unform](https://github.com/Rocketseat/unform)**
--   **[Styled Components](https://styled-components.com/)**
 -   **[Axios](https://github.com/axios/axios)**
--   **[Yup](https://github.com/jquense/yup)**
--   **[uuidv4](https://www.npmjs.com/package/uuidv4)**
--   **[date-fns](https://date-fns.org/)**
--   **[polished](https://polished.js.org/)**
-
-> Veja o arquivo  [package.json](https://github.com/lucasbarzan/gobarber/blob/master/web/package.json)
-
-#### **Mobile**  ([React Native](https://reactnative.dev/)  +  [TypeScript](https://www.typescriptlang.org/)) <a name="tecnologias-mobile"></a>
-
--   **[React Navigation](https://reactnavigation.org/)**
--   **[React Native Gesture Handler](https://github.com/software-mansion/react-native-gesture-handler)**
--   **[React Native Screens](https://github.com/software-mansion/react-native-screens)**
--   **[React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)**
--   **[React Native Image Picker](https://github.com/react-native-community/react-native-image-picker)**
--   **[React Native Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context)**
--   **[React Native iPhone X Helper](https://github.com/ptelad/react-native-iphone-x-helper)**
--   **[@react-native-community/async-storage](https://github.com/react-native-community/async-storage)**
--   **[@react-native-community/datetimepicker](https://github.com/react-native-community/datetimepicker)**
--   **[Styled Components](https://styled-components.com/)**
--   **[Axios](https://github.com/axios/axios)**
--   **[Yup](https://github.com/jquense/yup)**
+-   **[TypeScript](https://github.com/jquense/yup)**
+-   **[HTML](https://www.npmjs.com/package/uuidv4)**
+-   **[CSS](https://date-fns.org/)**
 
 > Veja o arquivo  [package.json](https://github.com/lucasbarzan/gobarber/blob/master/mobile/package.json)
 
