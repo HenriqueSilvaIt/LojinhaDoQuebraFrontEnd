@@ -121,16 +121,6 @@ PC             |  Mobile
 :-------------------------:|:-------------------------:
 ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Cadastro.png)  |  ![](https://github.com/HenriqueSilvaIt/Assets/blob/main/l/Cadastro%20Mobile.png)
 
-<p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
-  <img alt="Screenshot mobile 1" src="./assets/mobile-login.svg" width="200px">
-
-  <img alt="Screenshot mobile 2" src="./assets/mobile-list.svg" width="200px">
-  
-  <img alt="Screenshot mobile 3" src="./assets/mobile-appointment.svg" width="200px">
-  
-  <img alt="Screenshot mobile 4" src="./assets/mobile-profile.svg" width="200px">
-</p>
-
 ---
 
 ## 🚀 Como executar o projeto <a name="como-executar-o-projeto"></a>
