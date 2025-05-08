@@ -67,14 +67,6 @@ variedades.
 
 ## 🎨 Layout <a name="layout"></a>
 
-<--O layout da aplicação está disponível no Figma:
-
-<a href="https://www.figma.com/file/8szO6rJwdHlSaF95n2vKgW/GoBarber">
-  <img alt="Layout no Figma" src="https://img.shields.io/badge/Acessar%20Layout%20-Figma-%2304D361">
-</a> -->
-
-### Mobile <a name="layout-mobile"></a>
-
 ### Login
 
 PC             |  Mobile
