@@ -165,7 +165,6 @@ $ yarn dev
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
--   **[EditorConfig](https://editorconfig.org/)**
 -   **[ESLint](https://eslint.org/)**
 -   **[Prettier](https://prettier.io/)**
 
@@ -189,7 +188,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 -   Editor:  **[Visual Studio Code](https://code.visualstudio.com/)**
 -   Teste de API:  **[Insomnia](https://insomnia.rest/)**
--   Fontes:  **[Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab)**
 
 ---
 
