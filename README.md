@@ -8,11 +8,6 @@
 
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/badge/languages-4-green">
-    
-   <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
-   <a href="https://github.com/lucasbarzan/gofinances/stargazers">
-    <img alt="Stargazers" src="https://img.shields.io/github/stars/lucasbarzan/gofinances?style=social">
-  </a>
 </p>
 
 <h4 align="center">
