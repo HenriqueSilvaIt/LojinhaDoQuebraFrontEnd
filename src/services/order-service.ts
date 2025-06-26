@@ -60,6 +60,18 @@ export function findAll(page: number, minDate: string, maxDate: string) {
     return requestBackend(config);
 }
 
+export function findTotalAmount(minDate: string, maxDate: string) {
+    const config: AxiosRequestConfig = {
+        url: `/orders/total`,
+        method: "GET",
+        withCredentials: true,
+        params: {
+            minDate,
+            maxDate
+        }
+    };
+    return requestBackend(config);
+}
 
 export function deleteById(orderItemId: number, productId: number) {
     const config : AxiosRequestConfig = { 

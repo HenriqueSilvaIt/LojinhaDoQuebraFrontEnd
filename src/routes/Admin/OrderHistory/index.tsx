@@ -29,6 +29,8 @@
             maxDate:'' });
         const [isLastPage, setIsLastPage] = useState<boolean>(false);
         const [allOrders, setAllOrders] = useState<HistoryDTO[]>([]);
+            const [totalPeriodAmount, setTotalPeriodAmount] = useState<number>(0);
+
         const [filterDate, setFilterDate] = useState<string>('');
         const [filterMonth, setFilterMonth] = useState<string>('');
         const [filterWeek, setFilterWeek] = useState<string>('');
@@ -130,13 +132,19 @@
             orderService.findAll(queryParams.page, queryParams.minDate, queryParams.maxDate)
             .then((response: any) => {
                 // Acesse a propriedade 'content' para obter o array de pedidos
-                setAllOrders(response.data.content);
-                setIsLastPage(response.data.last);
+                  setAllOrders(response.data.historyPage.content);
+                    // Acesse a propriedade 'historyPage.last' para verificar se é a última página
+                    setIsLastPage(response.data.historyPage.last);
+                setTotalPeriodAmount(response.data.totalAmountForPeriod);
             }).catch(() => {
                 setDialogInfoData({ visable: true, message: "Erro ao carregar os pedidos." });
             }).finally(() => {
                 setLoading(false)
-        });}  }, [queryParams]);
+        });}
+    
+    
+    
+    }, [queryParams]);
         
 
         function handleFilterDateChange(event: any) {
@@ -249,8 +257,7 @@
                     </div>
                     <div className="dsc-total-sales">
                         <h3>Total de vendas: </h3>
-                        <h4> R$ {allOrders.reduce((accumalator, order) => accumalator + (
-                            order.subTotal * order.quantity), 0).toFixed(2)}</h4>
+                        <h4> R$ {totalPeriodAmount.toFixed(2)}</h4>
                     </div>
                     {
 
@@ -305,13 +312,17 @@
     )}
 
 
-    {!isLastPage &&
-                            <ButtonNextPage onNextPage={() => handleNextPageClick()}/>
-                        }
         </tbody>
     
             </table>
     }
+
+    
+    {!isLastPage &&
+    <div className='dsc-button-next-page'>
+                            <ButtonNextPage  onNextPage={() => handleNextPageClick()}/>
+                                </div>
+                        }
                 </section>
 
                 {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
