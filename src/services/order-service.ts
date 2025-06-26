@@ -1,6 +1,8 @@
 import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "../utils/requests";
 import { OrderDTO } from "../models/order";
+import moment from 'moment'; // Importe moment.js
+
 /*
 export type OrderSearchParams = {
     sortBy?: string;
@@ -39,16 +41,18 @@ export function placeOrderRequest(cart: OrderDTO) {
     return requestBackend(config);
 }
 
-export function findAll(page: number, size = 1100, sort = 'moment', direction = 'desc') {
+
+
+export function findAll(page: number, minDate: string, maxDate: string) {
     const config: AxiosRequestConfig = {
         url: `/orders`,
         method: "GET",
         withCredentials: true,
         params: { 
-            size: size,
-            page: page,
-            sort: sort,
-            direction: direction
+            minDate,
+            maxDate,
+            page
+         
 
         } 
        // Adiciona os parâmetros à configuração da requisição
