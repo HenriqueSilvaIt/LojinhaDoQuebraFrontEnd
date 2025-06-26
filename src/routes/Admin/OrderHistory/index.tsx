@@ -311,13 +311,13 @@
 
 
         </tbody>
-       {!isLastPage &&
+           {!isLastPage &&
     <div className='dsc-button-next-page'>
                             <ButtonNextPage  onNextPage={() => handleNextPageClick()}/>
                                 </div>
                         }
+    
             </table>
-            
     }
 
     
