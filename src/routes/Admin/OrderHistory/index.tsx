@@ -119,7 +119,7 @@
                     maxDate: newMaxDate,
                 }));
             }
-        }, [filterDate, filterMonth, filterWeek]);
+        }, [filterDate, filterMonth, filterWeek, queryParams.minDate, queryParams.maxDate]);
 
         
 
@@ -135,7 +135,7 @@
                   setAllOrders(response.data.historyPage.content);
                     // Acesse a propriedade 'historyPage.last' para verificar se é a última página
                     setIsLastPage(response.data.historyPage.last);
-                setTotalPeriodAmount(response.data.totalAmountForPeriod);
+                setTotalPeriodAmount(response.data.totalAmountForPeriod || 0);
             }).catch(() => {
                 setDialogInfoData({ visable: true, message: "Erro ao carregar os pedidos." });
             }).finally(() => {
