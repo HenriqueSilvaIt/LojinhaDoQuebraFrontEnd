@@ -142,8 +142,6 @@
                 setLoading(false)
         });}
     
-    
-    
     }, [queryParams]);
         
 
@@ -313,16 +311,17 @@
 
 
         </tbody>
-    
-            </table>
-    }
-
-    
-    {!isLastPage &&
+       {!isLastPage &&
     <div className='dsc-button-next-page'>
                             <ButtonNextPage  onNextPage={() => handleNextPageClick()}/>
                                 </div>
                         }
+            </table>
+            
+    }
+
+    
+ 
                 </section>
 
                 {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
