@@ -108,10 +108,8 @@
 
 .dsc-button-next-page{
     margin-top: 20px;
-    margin-left: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-left: 275px;
+   
 }
 
 .dsc-loading-container{
