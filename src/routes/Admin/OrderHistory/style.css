@@ -124,6 +124,16 @@
 
 @media(min-width: 576px) {
 
+    .dsc-loading-container{
+    display: grid;
+    grid-gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+  }
+
     .dsc-button-next-page{
     margin-top: 15px;
     margin-left: 470px;

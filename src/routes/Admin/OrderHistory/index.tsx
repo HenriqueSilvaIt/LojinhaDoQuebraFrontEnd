@@ -274,7 +274,7 @@ export default function OrderHistory() {
                         <thead>
                             <tr>
                                 <th className="dsc-tb576">Número da venda</th>
-                                <th>Nome da Produto</th>
+                                <th className="dsc-tb576">Nome da Produto</th>
                                 <th className="dsc-tb768">Data</th>
                                 <th className="dsc-tb768">Quantidade de produtos</th>
                                 <th>Valor</th>
@@ -315,19 +315,18 @@ export default function OrderHistory() {
                             )}
 
                 
-                                           {loading &&
+                                           {loading ? (
                     <div className="dsc-loading-container">
                         <img src={loadingi} alt="Carregando..." />
                         <p>Carregando os dados...</p>
-                    </div>
-                
-            }
-                        </tbody>
-                        {!isLastPage &&
+                    </div>): !isLastPage &&
                             <div className='dsc-button-next-page'>
                                 <ButtonNextPage onNextPage={() => handleNextPageClick()} />
                             </div>
-                        }
+                
+            }
+                        </tbody>
+                       
 
                     </table>
                 
