@@ -321,7 +321,10 @@ export default function OrderHistory() {
 
                     </table>
                 
-                                  {loading ? (
+                 
+            </section>
+
+                 {loading ? (
                     <div className="dsc-loading-container">
                         <img src={loadingi} alt="Carregando..." />
                         <p>Carregando os dados...</p>
@@ -332,8 +335,6 @@ export default function OrderHistory() {
                 
             }
 
-
-            </section>
 
             {dialogConfirmationData.visable && dialogConfirmationData.orderId !== null && dialogConfirmationData.productId !== null && (
                 <DialogConfirmation
