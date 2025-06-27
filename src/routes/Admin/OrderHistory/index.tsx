@@ -287,7 +287,7 @@
                         <tr key={`${order.orderId}-${order.productId}`}>
                             <td className="dsc-tb576">{order.orderId}</td>
                             <td>{order.productName}</td>
-                            <td className="dsc-tb768">{moment(order.moment).format('DD/MM/YYYY HH:mm')}</td>
+                            <td className="dsc-tb768">{moment(order.orderMoment).format('DD/MM/YYYY HH:mm')}</td>
                             <td className="dsc-tb768">{order.quantity}</td>
                             <td>R$ {order.subTotal.toFixed(2)}</td>
                             <td>
