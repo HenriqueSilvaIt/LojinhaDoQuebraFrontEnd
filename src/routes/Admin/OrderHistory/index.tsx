@@ -131,9 +131,15 @@ export default function OrderHistory() {
             orderService.findAll(queryParams.page, queryParams.minDate, queryParams.maxDate)
                 .then((response: any) => {
                     // Acesse a propriedade 'content' para obter o array de pedidos
-                    const nextPage = response.data.historyPage.content;
+                    const newOrders = response.data.historyPage.content;
            
-                    setAllOrders(allOrders.concat(nextPage));
+                    if (queryParams.page === 0) {
+                        // Se é a primeira página (ou um novo filtro), substitui os pedidos
+                        setAllOrders(newOrders);
+                    } else {
+                        // Se é uma página subsequente, concatena os novos pedidos
+                        setAllOrders(prevOrders => prevOrders.concat(newOrders));
+                    }
                     // Acesse a propriedade 'historyPage.last' para verificar se é a última página
                     setIsLastPage(response.data.historyPage.last);
                     setTotalPeriodAmount(response.data.totalAmountForPeriod || 0);
