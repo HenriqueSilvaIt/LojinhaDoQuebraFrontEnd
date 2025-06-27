@@ -131,7 +131,9 @@ export default function OrderHistory() {
             orderService.findAll(queryParams.page, queryParams.minDate, queryParams.maxDate)
                 .then((response: any) => {
                     // Acesse a propriedade 'content' para obter o array de pedidos
-                    setAllOrders(response.data.historyPage.content);
+                    const nextPage = response.data.historyPage.content;
+           
+                    setAllOrders(allOrders.concat(nextPage));
                     // Acesse a propriedade 'historyPage.last' para verificar se é a última página
                     setIsLastPage(response.data.historyPage.last);
                     setTotalPeriodAmount(response.data.totalAmountForPeriod || 0);
