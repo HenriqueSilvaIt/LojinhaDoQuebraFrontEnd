@@ -268,12 +268,7 @@ export default function OrderHistory() {
                 {
 
                 }
-                {loading ? (
-                    <div className="dsc-loading-container">
-                        <img src={loadingi} alt="Carregando..." />
-                        <p>Carregando os dados...</p>
-                    </div>
-                ) :
+             
 
                     <table className="dsc-table dsc-mb20 dsc-mt20">
                         <thead>
@@ -311,13 +306,24 @@ export default function OrderHistory() {
                                             src={deleteImg}
                                             alt="delet"
                                         />
+
+
+                                           {loading &&
+                                           <tr>
+                    <td className="dsc-loading-container">
+                        <img src={loadingi} alt="Carregando..." />
+                        <p>Carregando os dados...</p>
+                    </td>
+                    </tr>
+                
+            }
                                     </td>
                                 </tr>
                             )
 
                             )}
 
-
+                
                         </tbody>
                         {!isLastPage &&
                             <div className='dsc-button-next-page'>
@@ -326,7 +332,7 @@ export default function OrderHistory() {
                         }
 
                     </table>
-                }
+                
 
 
 
