@@ -108,7 +108,7 @@
 
 .dsc-button-next-page{
     margin-top: 20px;
-    margin-left: 320px;
+    margin-left: 50px;
    
 }
 
@@ -125,6 +125,12 @@
   }
 
 @media(min-width: 576px) {
+
+    .dsc-button-next-page{
+    margin-top: 15px;
+    margin-left: 470px;
+   
+}
 
     .dsc-loading-container {
         margin-left: 470px;
