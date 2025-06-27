@@ -271,7 +271,7 @@ export default function OrderHistory() {
                 {loading ? (
                     <div className="dsc-loading-container">
                         <img src={loadingi} alt="Carregando..." />
-                        <p>Carregando os d'ados...</p>
+                        <p>Carregando os dados...</p>
                     </div>
                 ) :
 
