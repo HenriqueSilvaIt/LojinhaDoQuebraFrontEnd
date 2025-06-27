@@ -317,7 +317,11 @@ export default function OrderHistory() {
                 
               
                         </tbody>
-                                                    {loading ? (
+                  
+
+                    </table>
+                
+                                  {loading ? (
                     <div className="dsc-loading-container">
                         <img src={loadingi} alt="Carregando..." />
                         <p>Carregando os dados...</p>
@@ -327,10 +331,6 @@ export default function OrderHistory() {
                             </div>
                 
             }
-
-                    </table>
-                
-
 
 
             </section>

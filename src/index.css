@@ -482,6 +482,7 @@ breakpoints */
   .dsc-tb576 {
     display: table-cell; /*
         a partir do 576 vai ser mostrado */
+      
   }
 
   .dsc-table td:nth-child(1) {
