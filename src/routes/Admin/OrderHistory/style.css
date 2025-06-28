@@ -107,7 +107,7 @@
 }
 
 .dsc-button-next-page{
-    margin-top: 20px auto;
+    margin-top: 0 auto;
     max-width: 300px;
 
 }
@@ -140,9 +140,8 @@
   }
 
     .dsc-button-next-page{
-    margin-top: 15px;
     max-width: 300px;
-    margin-left: 470px;
+    margin-left: 120px;
    
 }
 
@@ -186,4 +185,12 @@
     padding: 10px;
 }
 
+}
+
+@media(min-width: 990px) {
+        .dsc-button-next-page{
+    max-width: 300px;
+    margin-left: 470px;
+   
+}
 }
