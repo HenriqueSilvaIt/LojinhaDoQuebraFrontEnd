@@ -1,24 +1,28 @@
 import './style.css';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import FormInput from '../../../components/FormInput';
 import * as forms from '../../../utils/form';
-import * as productService from '../../../services/product-services';
-import * as categoryService from '../../../services/category-service';
+import * as userService from '../../../services/user-service';
 /*o import é só import Select from 'react-select';, se você importa automatico vai trazer errado
  tem que fica igual no import da documentação ficial*/
-import { CategoryDTO } from '../../../models/category';
+import { RoleDTO } from '../../../models/role.';
+import DialogInfo from '../../../components/DialogInfo';
 
 
 
 export default function RegisterForm() {
 
-    const params = useParams(); /* para colocara rota ul */
-
     const navigate = useNavigate();
 
-    const isEditing = params.productId !== 'create'; /* se a rota for dirente de create significa que estou editando um
-    produto e não criando um novo, se for create está editando  */
+    const [dialogInfoData, setDialogInfoData] = useState<{
+        visable: boolean;
+        message: string;
+    }>({
+        visable: false,
+        message: 'Sucesso'
+    });
+
 
     const [formData, setFormData] = useState<any>({ /* any é para o type script
         n reclemar dos valores, para objeto ser um objeto livre e ter qualquer atributo dentro dele
@@ -42,7 +46,7 @@ export default function RegisterForm() {
             type: "text", /* para aceitar somente númeroes*/
             placeholder: "Email",
             validation: function (value: any) {
-                return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value.toLowerCase());/*v convertido para Number*/ 
+                return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value.toLowerCase());/*v convertido para Number*/
             },
             /*messagem de erro caso essa função de falso*/
             message: "Favor informar o seu email"
@@ -51,11 +55,11 @@ export default function RegisterForm() {
             value: "", // Alterado para null, pois agora será um arquivo
             id: "phone",
             name: "phone",
-            type: "Number", // Mantém o tipo como "file"
+            type: "tel",
             placeholder: "Telefone",
-            validation: function (value: number) {
-                return  Number(value);
-            },   
+            validation: function (value: string) {
+                return /^\d{10,11}$/.test(value.replace(/\D/g, ''));
+            },
             message: "Favor informar um telefone válido"
 
         },
@@ -71,26 +75,27 @@ export default function RegisterForm() {
             },
             message: "Favor informar uma senha com pelo menos 1 letra, 1 número e 1 caracterer especial"
         },
-        birthdate: {
+        birthDate: {
             value: "", /* valor inicial lista vazia, e depois o usuário 
             vai escolher uma ou mais categoria*/
-            id: "birthdate",
-            name: "birthdate",
+            id: "birtDate",
+            name: "birthDate",
+            type: "date",
             /*type n precisa porque já é um select do react*/
             placeholder: "DD/MM/YYYY",
-            validation: function (value: number /* do tipo lista de categoria */) {
-                return value;   /* tem que ter pelo menos uma categoria*/
+            validation: function (value: string /* do tipo lista de categoria */) {
+                return value.length > 0 && /^\d{4}-\d{2}-\d{2}$/.test(value);
             },
-            message: "Digite a data de nascimento"  
+            message: "Digite a data de nascimento"
         },
         role: {
-            value: [], /* valor inicial lista vazia, e depois o usuário 
+            value: [] as RoleDTO[], /* valor inicial lista vazia, e depois o usuário 
             vai escolher uma ou mais categoria*/
             id: "role",
             name: "role",
             /*type n precisa porque já é um select do react*/
             placeholder: "Perfil",
-            validation: function (value: CategoryDTO[] /* do tipo lista de categoria */) {
+            validation: function (value: RoleDTO[] /* do tipo lista de categoria */) {
                 return value.length > 0;   /* tem que ter pelo menos uma categoria*/
             },
             message: "Escolha ao menos uma categoria",
@@ -98,46 +103,8 @@ export default function RegisterForm() {
     });
 
 
-    /*useEffect para carregar as categoria*/
-
-    useEffect(() => {
-        categoryService.findAllRequest() /* para buscar a lita de categoria do bakcend*/
-            .then(response => {
-                setCategories(response.data) /* colocando as categorias
-                no useStat*/
-            })
-    }, []);
-
-
-    useEffect(() => {
-
-        if (isEditing)/* se for verdade o iediting quer
-        dizer que a rota n é create, é de edição de produto */ {
-            productService.findById(Number(params.productId)) /*number para converter para número
-            se n vai reclamara*/
-                .then(response => {
-                    console.log(response.data); /* vai retornar o produto(objeto)
-                    ou seja se for uma rota diferente de create, ele vai trazer o formulário
-                    já com os dados do produto preenchido porque é editação*/
-                    const newFormData = forms.updateAll(formData, response.data)
-                    setFormData(newFormData); /*deixando os campos fo formulário já preenchido -  gerando
-                    um novo objeto e no campo value vai colocar o valor que estava no banco de dados */
-                })
-        }
-    }, [formData])
-
-
-
-
     function handleInputChange(event: any) {
 
-        const { name, type, files } = event.target;
-
-        if (type === "file") {
-            setFormData(forms.updateAndValidate(formData, name, files[0])); // Armazena o arquivo
-        } else {
-            setFormData(forms.updateAndValidate(formData, name, event.target.value));
-        }
         /* chamando função para atualizar oque o usuário ta escrevendo no input
 
            const dataUpdate = forms.update(formData/*objeto já com as informações do input , event.target.name/*campo da cainha
@@ -159,6 +126,14 @@ export default function RegisterForm() {
             que é q primeira função dataUpdate e valdia se for executado corretamente
             que é e a segunda função dataValited  (dataUpdate já está dentro da dataValited),
             por que aqui só colocamos  dataValited*/
+        setFormData((prevFormData: any) => ({
+            ...prevFormData,
+            role: {
+                ...prevFormData.role,
+                value: [{ authority: "ROLE_CLIENT" } as RoleDTO] // Cria um array com o objeto RoleDTO
+            }
+        }));
+
 
     }
 
@@ -166,10 +141,6 @@ export default function RegisterForm() {
         setFormData(forms.dirtAndValidate(formData, name)); /* agora 
             com função dirty and validate, ele fica vermelho */
     }
-
-    const [categories, setCategories] = useState<CategoryDTO>();
-
-    console.log(categories);
 
     /*salvar produto  editado ou craido no formulário */
     function handleSubmit(event: any) {
@@ -187,69 +158,43 @@ export default function RegisterForm() {
 
         }
         const requestBody = forms.toValues(formData);
-        // Adiciona o arquivo de imagem ao FormData
-        if (formData.imgUrl.value) {
-            requestBody.append("imgUrl", formData.imgUrl.value);
-        }
-
-
-        if (isEditing) {
-            requestBody.id = params.productId; /* vamos setar o Id
-            porque estamos editando o produto, caso n tiver editando n
-            colocamos o id porque ele pega automatico do banco */
-        }
 
         /*valida erro de formulário do backend caso o front n pega*/
 
 
-        // Adiciona os outros campos ao FormData
-        Object.entries(forms.toValues(formData)).forEach(([key, value]) => {
-            if (key !== "imgUrl") { // Ignora o campo imgUrl aqui, pois já o pegamos abaixo
-                requestBody.append(key, value);
-            }
-        });
 
 
-        const request = isEditing
-            ? productService.updateRequest(requestBody) /*editar produto */
-            : productService.insertRequest(requestBody) /* salvar novo produto */
-
+        const request = userService.insertNewUser(requestBody) /*editar produto */
+  
         request
-            .then(() => {
-                navigate("/admin/products");
-            }).catch(erro => {
-                const newInputs = forms.setBackendErrors(formData, erro.response.data.errors);
+            .then((response) => {
+                if (response.status < 400) {
+                    setDialogInfoData({ visable: true, message: "Usuário criado com sucesso" });
+
+                }
+            }).catch(error => {
+                setDialogInfoData({ visable: true, message: "Usuário já existe" });
+
+                console.error("Error registering user:", error.response?.data || error);
+                if (error.response && error.response.data && error.response.data.errors) {
+                    const newInputs = forms.setBackendErrors(formData, error.response.data.errors);
+                    setFormData(newInputs);
+                } else {
+                    // Fallback for network errors or unexpected responses
+                    alert("An unexpected error occurred during registration. Please try again.");
+                }
+                const newInputs = forms.setBackendErrors(formData, error.response.data.errors);
                 setFormData(newInputs);
             })
 
 
-
-        /* console.log(forms.toValues(formData)); to values 
-         converte todo objeto  do formData somente para os dados do formulário 
-         para enviarmos para nosso backend */
-
     }
 
-    // Define a functional component named UploadAndDisplayImage
-
-    // Define a state variable to store the selected image
-/*
-
-    const [imagem, setImagem] = useState<File | null>(null);
-    const [imagemPreview, setImagemPreview] = useState<string | null>(null);
-    const [imagemDirty, setImagemDirty] = useState(false);
-    const [imagemInvalida, setImagemInvalida] = useState(false);
-
-    function handleImagemChange(file: File) {
-        setImagem(file);
-        setImagemPreview(URL.createObjectURL(file));
-        setImagemInvalida(file.size > 1000000); // 1MB de limite
+    // --- NOVA FUNÇÃO PARA FECHAR O DIÁLOGO E NAVEGAR ---
+    function handleDialogCloseAndNavigate() {
+        setDialogInfoData({ ...dialogInfoData, visable: false }); // Esconde o diálogo
+        navigate("/login"); // Redireciona para a tela de login
     }
-
-    function handleImagemTurnDirty(nome: string) {
-        setImagemDirty(true);
-    }*/
-
 
     return (
 
@@ -294,8 +239,8 @@ export default function RegisterForm() {
                                 no formData do categories, exceto o validate que estamos
                                 desistruturando excluindo lá no Componente FormSelect*/
                                     className="dsc-form-control "
-                                onTurnDirty={handleTurnDirty} 
-                                onChange={handleInputChange}/*turn dirty é para
+                                    onTurnDirty={handleTurnDirty}
+                                    onChange={handleInputChange}/*turn dirty é para
                                 ficar vermelho caso o usuário n termine de escrever o que tem que ser preenchido
                                 e clique no próximo campo */
                                 />
@@ -303,15 +248,15 @@ export default function RegisterForm() {
                             </div>
 
                             <div>
-                                <FormInput {...formData.birthdate}
+                                <FormInput {...formData.birthDate}
                                     className="dsc-form-control"
                                     onTurnDirty={handleTurnDirty}
                                     onChange={handleInputChange}
                                 />
-                                <div className="dsc-form-error">{formData.birthdate.message}</div>
+                                <div className="dsc-form-error">{formData.birthDate.message}</div>
                             </div>
                         </div>
-                      
+
                         <div className="dsc-product-form-buttons">
                             <Link to="/admin/products">
                                 <button type="reset" className="dsc-btn dsc-btn-white">Cancelar</button>
@@ -320,6 +265,13 @@ export default function RegisterForm() {
                         </div>
                     </form>
                 </div>
+
+                {dialogInfoData.visable && (
+                    <DialogInfo
+                        message={dialogInfoData.message}
+                        onDialogClose={dialogInfoData.message === "Usuário criado com sucesso" ? handleDialogCloseAndNavigate : () => setDialogInfoData({ ...dialogInfoData, visable: false })} />
+                )}
+
             </section>
         </main>
 

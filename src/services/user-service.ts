@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "../utils/requests";
+import { UserDTO } from "../models/user";
 
 /*Busc usuário logado*/
 
@@ -16,5 +17,20 @@ export function findLoggedUser() {
 
 /* o preparamos o cabeçalho acima, e vamos passar o cabeçalho já com o token na requisição na url abaixo*/
 
+
+}
+
+
+
+export function insertNewUser(obj: UserDTO) {
+
+    const config: AxiosRequestConfig = {
+        method: "POST",
+        url: "/users",
+        withCredentials: false,
+        data: obj
+    }
+
+    return requestBackend(config);
 
 }
