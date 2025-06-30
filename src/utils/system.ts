@@ -21,4 +21,3 @@ export const SECRET_MERCADO = import.meta.env.VITE_SECRET_MERCADO ?? "sQk5vli1Cq
 export const MERCADO_URL = import.meta.env.VITE_MERCADO_URL ?? "https://api.mercadopago.com/oauth/token"; 
 
 export const DEVICE_ID = import.meta.env.VITE_DEVICE_ID ?? "NEWLAND_N950__N950NCB901528800"; 
-
