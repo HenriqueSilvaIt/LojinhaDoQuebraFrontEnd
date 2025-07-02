@@ -10,7 +10,7 @@ export const BASE_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:80
 
 // tiver configurado na ferramenta na nuvem a variavel, por padrão tem que ser pega
 // diretóreto de lá,  mas com oestamos rodando na máquina vamos coloc aqu 
- */
+*/
 export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID ?? "myclientid";
 export const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET ?? "myclientsecret";
 
